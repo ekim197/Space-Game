@@ -2,6 +2,9 @@
 #include <iostream>
 #include <vector>
 #include "Entity.h"
+#include "Player.h"
+#include "Obstacle.h"
+#include "Collision.h"
 
 const float VIEW_WIDTH = 2048.0f;
 const float VIEW_HEIGHT = 1152.0f;
@@ -15,51 +18,55 @@ int main(){
     // Create a View
     sf::View view(sf::Vector2f(0.0f,0.0f), sf::Vector2f(VIEW_WIDTH,VIEW_HEIGHT));
 
-    // Create a Player
-    sf::Texture playerTexture;
-    playerTexture.loadFromFile("Space_Ship.png");
-    Entity body(&playerTexture, sf::Vector2f(200.0f, 200.0f), 0.03f);
-    Entity body1(nullptr, sf::Vector2f(200.0f, 200.0f), 0.03f);
+    // Create Textures
+    sf::Texture playerTexture, asteroidTexture;
+    Collision::CreateTextureAndBitmask(playerTexture, "resources/Space_Ship.png");
+    Collision::CreateTextureAndBitmask(asteroidTexture, "resources/Asteroid1.png");
+
+    // Create Player
+    Player body(&playerTexture, sf::Vector2f(1024.0f,700.0f), 0.03f);
 
     // Create Objects
-    sf::RectangleShape object1(sf::Vector2f(200.0f, 200.0f));
-    object1.setFillColor(sf::Color::Red);
-    object1.setPosition(sf::Vector2f(1000.0f,0.0f));
-    sf::CircleShape object2(100);
-    object2.setFillColor(sf::Color::Green);
-    object2.setPosition(sf::Vector2f(1000.0f,0.0f));
+    Asteroid ast1(&asteroidTexture, sf::Vector2f(1000.0f,0.0f), .01);
 
     // Start the Display
     while(window.isOpen()){
-        sf::Event event;
 
         // Checks for window polls
+        sf::Event event;
         while(window.pollEvent(event)){
             switch(event.type){
-                case sf::Event::Closed:
+                case sf::Event::Closed:                     // Close
                     window.close();
                     break;
-                case sf::Event::Resized:
+                case sf::Event::Resized:                    // Resized
                     resizeView(window, view);
+                    break;
+                case sf::Event::EventType::LostFocus:       // LostFocus
+                    std::cout << "Lost Focus\n";
+                    break;
+                case sf::Event::EventType::GainedFocus:     // GainedFocus
+                    std::cout << "Gained Focus\n";
                     break;
                 default:
                     break;
             }
         }
 
+        // Actions
         body.update();
-        body1.update();
-
+        ast1.rotate();
         view.setCenter(sf::Vector2f(VIEW_WIDTH/2, body.getPosition().y - VIEW_HEIGHT/3));
 
+        // Collision detection
+        if(Collision::PixelPerfectTest(body.getBody(), ast1.getBody()))
+            std::cout << "Collision detected\n";
+
         // Clear window
-        window.clear();
-        // Display
+        window.clear(sf::Color(20,20,20));
         window.setView(view);
-        window.draw(object1);
-        body1.draw(window);
+        ast1.draw(window);
         body.draw(window);
-        window.draw(object2);
         window.display();
     }
     return 0;
