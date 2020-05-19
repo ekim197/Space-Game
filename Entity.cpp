@@ -1,27 +1,20 @@
 #include "Entity.h"
+#include <iostream>
 
-Entity::Entity(sf::Texture* texture, sf::Vector2f size, float spd, bool isBg){
-    speed = spd;
+Entity::Entity(sf::Texture *objTexture, sf::Vector2f objPosition, float objSpeed)
+    : speed(objSpeed){
+    // Body
+    body.setTexture(*objTexture);
+    body.setPosition(objPosition);
+    body.setOrigin(body.getGlobalBounds().width / 2, body.getGlobalBounds().height / 2);
+
     velocity = sf::Vector2f(0.0f,0.0f);
-    body.setSize(size);
-    body.setOrigin( body.getSize() / 2.0f);
-    body.setPosition(1024.0f,700.0f);
-    body.setTexture(texture);
 }
 
-void Entity::update(){
-    velocity.x *= 0.98f;
-    velocity.y *= 0.98f;
+Entity::~Entity(){}
 
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-        velocity.y -= speed;
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-        velocity.y += speed;
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-        velocity.x -= speed;
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-        velocity.x += speed;
-
-
-    body.move(velocity);
+std::string Entity::name() const{
+    std::string className = typeid(*this).name();
+    className = className.substr(className.find_first_not_of("0123456789"));
+    return className;
 }
