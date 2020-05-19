@@ -1,31 +1,28 @@
+#pragma once
 #include <SFML/Graphics.hpp>
+#include <typeinfo.h>
+#include <string>
 
 class Entity{
-    sf::RectangleShape body;     // The body of the Enitity (Rectangle for now)
-    float speed;                // The speed the entity inherits
-    sf::Vector2f velocity;      // The actual movement speed the entity experiences
-    bool isBackground;          // Whether the Player can interact with the Entity
+protected:
+    sf::Sprite body;
+    float speed;
+    sf::Vector2f velocity;
+    bool inView;
 
 public:
     //Constructors and Destructors
-    Entity(sf::Texture* texture, sf::Vector2f size = sf::Vector2f(100.0f, 100.0f) , float spd = 0.0f, bool isBg = 0);
-    Entity(const Entity& obj) = default;
-    ~Entity(){}
+    Entity(sf::Texture *objTexture, sf::Vector2f objPosition, float objSpeed);
+    virtual ~Entity() = 0;
 
     // Getters
-    sf::RectangleShape getBody(){ return body; }
-    float getSpeed() { return speed; }
-    sf::Vector2f getVelocity() { return velocity; }
-    bool getIsBg() { return isBackground; }
-    sf::Vector2f getPosition(){ return body.getPosition();}
-
-    // Setters
-    void setBody(sf::RectangleShape objBody) { body = objBody; }
-    void setSpeed(float objSpeed) { speed = objSpeed; }
-    void setIsBg(bool objIsBg) { isBackground = objIsBg; }
+    std::string name() const;                                                       // gets Name of class
+    sf::Sprite getBody() const { return body; }                                           // gets Body
+    float getSpeed () const { return speed; }                                         // gets Speed
+    sf::Vector2f getVelocity() const { return velocity; }                            // gets Velocity
+    sf::Vector2f getPosition() const { return body.getPosition(); }                  // gets Position
+    sf::FloatRect getGlobalBounds() const { return body.getGlobalBounds(); }         // gets GlobalBounds
 
     //Other
-    void update();
-    void draw(sf::RenderWindow& window) { window.draw(body); };
-
+    void draw(sf::RenderWindow& window){ window.draw(body); }
 };
