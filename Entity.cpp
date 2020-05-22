@@ -1,7 +1,7 @@
 #include "Entity.h"
 #include <iostream>
 
-Entity::Entity(sf::Texture *objTexture, sf::Vector2f objPosition, float objSpeed)
+Entity::Entity(sf::Texture* objTexture, sf::Vector2f objPosition, float objSpeed)
     : speed(objSpeed){
     // Body
     body.setTexture(*objTexture);

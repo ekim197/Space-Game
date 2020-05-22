@@ -1,7 +1,7 @@
-#include "Player.h"
+#include "Entity.h"
 #include <iostream>
 
-Player::Player(sf::Texture *objTexture, sf::Vector2f objPosition, float objSpeed, int objPassenger, int objGold)
+Player::Player(sf::Texture* objTexture, sf::Vector2f objPosition, float objSpeed, int objPassenger, int objGold)
     : Entity(objTexture, objPosition, objSpeed), passenger(objPassenger), gold(objGold){
 
     sf::Vector2f scaleFactor(200 / body.getGlobalBounds().width, 200 / body.getGlobalBounds().height);
@@ -10,8 +10,8 @@ Player::Player(sf::Texture *objTexture, sf::Vector2f objPosition, float objSpeed
 
 void Player::update(){
     // Lets the ship slow down
-    velocity.x *= 0.99f;
-    velocity.y *= 0.99f;
+    velocity.x *= 0.95f;
+    velocity.y *= 0.95f;
 
     // Update any movement
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
@@ -29,5 +29,5 @@ void Player::update(){
 
 void Player::explode(){
     // Play the explosion audio
-    inView = false;
+    isExplode = true;
 }
