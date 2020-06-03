@@ -8,12 +8,7 @@ StoreState::StoreState(Game* game)
     this->game = game;
 }
 
-StoreState::~StoreState()
-{
-    //dtor
-}
-
-void StoreState::draw(const float dt)
+void StoreState::draw()
 {
     sf::RectangleShape background(sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT));
     sf::Texture backgroundTexture;

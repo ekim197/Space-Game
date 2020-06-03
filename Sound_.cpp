@@ -1,6 +1,6 @@
 #include <SFML/Audio.hpp>
-#include <iostream> 
-#include <unordered_map> 
+#include <iostream>
+#include <unordered_map>
 #include <string>
 #include <vector>
 #include "Sound_.h"
@@ -10,7 +10,7 @@ Sound_::Sound_(std::vector<std::string> s) {
 	//Using overloaded assignment operator in vector
 	listOfSoundFiles = s;
 
-	for (int i = 0; i < listOfSoundFiles.size(); i++) {
+	for (size_t i = 0; i < listOfSoundFiles.size(); i++) {
 		if (isFileTypeWav) {
 			sf::SoundBuffer buffer;
 
@@ -167,3 +167,4 @@ std::unordered_map<std::string, sf::SoundBuffer> Sound_::soundBuffers{};
 std::vector<std::string> Sound_::listOfSoundFiles{};
 sf::Sound Sound_::sound_player{};
 sf::Music Sound_::music_player{};
+

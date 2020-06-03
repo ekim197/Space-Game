@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <typeinfo.h>
 #include <string>
+#include "Animation.h"
+
 
 class Entity{
 protected:
@@ -15,64 +17,24 @@ protected:
 public:
     //Constructors and Destructors
     Entity() = default;
-    Entity(sf::Texture* objTexture, sf::Vector2f objPosition, float objSpeed);
-    virtual ~Entity() = 0;
+    Entity(sf::Texture* objText, sf::Vector2f pos, float spd);
+    virtual ~Entity(){}
 
     // Getters
     std::string name() const;                                                       // gets Name of class
-    sf::Sprite getBody() const { return body; }                                           // gets Body
+    sf::Sprite getBody() const { return body; }                                       // gets Body
     float getSpeed () const { return speed; }                                         // gets Speed
     sf::Vector2f getVelocity() const { return velocity; }                            // gets Velocity
     sf::Vector2f getPosition() const { return body.getPosition(); }                  // gets Position
     sf::FloatRect getGlobalBounds() const { return body.getGlobalBounds(); }         // gets GlobalBounds
 
-    //Other
-    void draw(sf::RenderWindow& window){ window.draw(body); }
-};
+    // Setters
+    virtual void setPosition(sf::Vector2f objPos) { body.setPosition(objPos); }
+    virtual void setPosition(float x, float y) { body.setPosition(x,y); }
 
-class Player: public Entity{
-protected:
-    int passenger;
-    int gold;
-    bool isExplode;
-
-public:
-    // Constructors
-    Player() = default;
-    Player(sf::Texture* objTexture, sf::Vector2f objPosition, float objSpeed, int objPassenger = 1, int objGold = 0);
-
-    // Actions
-    void update();
-    void explode();
-    void unexplode(){isExplode = false;}
-
-    // Getters
-    int getPassenger() const { return passenger; }
-    int getGold() const { return gold; }
-    bool getIsExplode(){ return isExplode; }
-};
-
-class Obstacle: public Entity{
-protected:
-    float rotation;
-
-public:
-    // Constructor
-    Obstacle() = default;
-    Obstacle(sf::Texture* objTexture, sf::Vector2f objPosition, float objSpeed = 0, float objRotation = 0, float objScale = 1)
-        :Entity(objTexture, objPosition, objSpeed), rotation(objRotation)
-        { body.scale(objScale, objScale); }
-};
-
-class Asteroid: public Obstacle{
-public:
-    // Constructor
-    Asteroid() = default;
-    Asteroid(sf::Texture* objTexture, sf::Vector2f objPosition, float objRotation)
-        :Obstacle(objTexture, objPosition, 0, objRotation){}
-
-    // Action
-    void rotate() { body.rotate(rotation); }
+    // Other
+    virtual void update(float dt) = 0;
+    virtual void draw(sf::RenderWindow& window){ window.draw(body); }
 };
 
 #endif // ENTITY_H

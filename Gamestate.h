@@ -6,6 +6,8 @@
 #include <SFML\Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "Entity.h"
+#include "Obstacle.h"
+#include "Coin.h"
 
 class Game;
 
@@ -17,7 +19,7 @@ class Gamestate
         virtual ~Gamestate(){};
 
         Game* game;
-        virtual void draw(const float dt) = 0;
+        virtual void draw() = 0;
         virtual void update(const float dt) = 0;
         virtual void handle_input() = 0;
 
@@ -29,11 +31,11 @@ class Menustate : public Gamestate
 {
     public:
         Menustate(Game* game);
-        virtual ~Menustate();
+        ~Menustate() = default;
 
-        virtual void draw(const float dt);
-        virtual void update(const float dt);
-        virtual void handle_input();
+        void handle_input();
+        void update(const float dt);
+        void draw();
 
     private:
         sf::View view;
@@ -50,17 +52,23 @@ class Menustate : public Gamestate
 // Play
 class PlayState : public Gamestate
 {
+    float timer1;
+    std::vector<Obstacle*> obsList;
+
     public:
         PlayState(Game* game);
-        virtual ~PlayState();
+        ~PlayState() = default;
 
-        virtual void draw(const float dt);
-        virtual void update(const float dt);
-        virtual void handle_input();
+        void handle_input();
+        void update(const float dt);
+        void draw();
+        void collide(Obstacle* obj);
+        void collide(Coin* obj);
 
     private:
         void pause_game();
         void setup();
+
 };
 
 // Store
@@ -68,11 +76,11 @@ class StoreState : public Gamestate
 {
     public:
         StoreState(Game* game);
-        virtual ~StoreState();
+        ~StoreState() = default;
 
-        virtual void draw(const float dt);
-        virtual void update(const float dt);
-        virtual void handle_input();
+        void handle_input();
+        void update(const float dt);
+        void draw();
 
     private:
 };

@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Audio.hpp>
-#include <iostream> 
-#include <unordered_map> 
+#include <iostream>
+#include <unordered_map>
 #include <string>
 #include <vector>
 
@@ -15,7 +15,7 @@ public:
 	static sf::Sound sound_player;
 	static sf::Music music_player;
 
-	Sound_();	
+	Sound_();
 	Sound_(std::vector<std::string> s);
 	Sound_(const Sound_&);
 	static void addSound(std::string s);
@@ -30,5 +30,3 @@ public:
 	Sound_& operator=(const Sound_& other);
 	~Sound_();
 };
-
-

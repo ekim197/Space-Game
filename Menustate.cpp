@@ -10,7 +10,7 @@ Menustate::Menustate(Game* game)
     text.setFont(font);
     text.setPosition(100, 100);
     text.setCharacterSize(200); // in pixels, not points!
-    //text.setColor(sf::Color::White);   // set the color
+    text.setFillColor(sf::Color::White);   // set the color
     text.setStyle(sf::Text::Bold); // set the text style
 
     //set positions of things
@@ -25,13 +25,7 @@ Menustate::Menustate(Game* game)
     buttons[1].setString("Store");
     buttons[2].setString("Quit");
 
-
     this->game = game;
-}
-
-Menustate::~Menustate()
-{
-    //dtor
 }
 
 void Menustate::handle_input()
@@ -73,8 +67,6 @@ void Menustate::handle_input()
 
         default:
             break;
-
-
         }
     }
 
@@ -87,7 +79,6 @@ void Menustate::handle_input()
         else if (isTextClicked(buttons[2]))
             game->window.close();
 
-
     }
 }
 
@@ -96,8 +87,9 @@ void Menustate::update(const float dt)
 
 }
 
-void Menustate::draw(const float dt)
+void Menustate::draw()
 {
+    // Setup
     sf::RectangleShape background(sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT));
     sf::Texture backgroundTexture;
     backgroundTexture.loadFromFile("resources/background_temp.png");
@@ -106,19 +98,18 @@ void Menustate::draw(const float dt)
     sf::View view(sf::Vector2f(0.0f,0.0f), sf::Vector2f(VIEW_WIDTH,VIEW_HEIGHT));
     view.setCenter(sf::Vector2f(VIEW_WIDTH/2, VIEW_HEIGHT/2));
 
+    // Draw Background
     game->window.setView(view);
     game->window.draw(background);
 
+    // Draw Buttons
     for (auto x : buttons)
         game->window.draw(x);
-
 }
 
 void Menustate::load_game()
 {
-
     game->push_state(new PlayState(game));
-
 }
 
 void Menustate::load_store()
@@ -133,8 +124,6 @@ bool Menustate::isTextClicked(sf::Text text)
     //If mouse position is in the rectangle do whatever
     if (rect.contains(sf::Mouse::getPosition(game->window)))
         return true;
-
-
     //Otherwise, don't do anything
     return false;
 }
