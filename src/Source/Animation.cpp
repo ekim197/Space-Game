@@ -1,5 +1,4 @@
 #include "Animation.h"
-#include <iostream>
 
 Animation::Animation(sf::Texture* texture, sf::Vector2u iCount, float swTime)
     : imageCount(iCount), currentImage(0,0), totalTime(0), switchTime(swTime){

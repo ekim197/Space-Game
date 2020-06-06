@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <typeinfo.h>
 #include <string>
+#include <iostream>
 #include "Animation.h"
 
 class Entity{

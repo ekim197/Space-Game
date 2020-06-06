@@ -1,5 +1,4 @@
 #include "Obstacle.h"
-#include <iostream>
 
 Obstacle::Obstacle(sf::Texture* text, sf::Vector2u iCount, sf::Vector2f pos, int iCX , int iCY, float rot, float scl)
     :Entity(text, pos, 0), imageCount(iCount), rotation(rot){

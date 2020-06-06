@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-class Sound_ {
+class Sound_{
 private:
 	static std::string getFileType(std::string s);
 	static bool isFileTypeWav(std::string s);

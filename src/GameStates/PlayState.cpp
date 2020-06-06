@@ -1,19 +1,11 @@
-#include <iostream>
-#include <string>
-#include <list>
-#include <SFML\Graphics.hpp>
-#include <SFML/Audio.hpp>
-#include "Gamestate.h"
-#include "Collision.h"
+#include "GameState.h"
 
 using namespace Collision;
 
-PlayState::PlayState(Game* game) : timer1(0.5), timer2(1), timer3(10){
+PlayState::PlayState(Game* game) : timerInsertAsteroid(0.5), timerInsertCoin(1), timerInsertPlanet(10), timerCrash(0){
+    // Push Game
     this->game = game;
 
-    // Music
-    game->music[0].stop();
-    game->music[1].play();
 
     // Reset Player1
     game->player1.setPosition(VIEW_WIDTH/2, game->player1.getPosition().y);
@@ -52,16 +44,16 @@ void PlayState::handle_input(){
 
 void PlayState::update(const float dt){
     // Time
-    timer1 += dt;
-    timer2 += dt;
-    timer3 += dt;
+    timerInsertAsteroid += dt;
+    timerInsertCoin += dt;
+    timerInsertPlanet += dt;
 
     // Insert Entities
-    if(timer1 >= 0.5)
+    if(timerInsertAsteroid >= 0.5)
         insertAsteroid(abs(game->rng));
-    if(timer2 >= 1)
+    if(timerInsertCoin >= 1)
         insertCoin(abs(game->rng) / 1234);
-    if(timer3 >= 10)
+    if(timerInsertPlanet >= 10)
         insertPlanet(abs(game->rng) / 100);
 
     // Collision detection & CheckPastYet
@@ -79,7 +71,7 @@ void PlayState::update(const float dt){
 
     // Update Text
     std::string goldString = "GOLD: " + std::to_string(game->player1.getGold());
-    std::string crewString = "CREW: " + std::to_string(game->player1.getVelocity().y);
+    std::string crewString = "CREW: " + std::to_string(game->player1.getCrew());
     int dist = abs(game->player1.getPosition().y);
     dist -= dist % 100;
     std::string distString = "DIST: " + std::to_string(dist) + " km";
@@ -93,6 +85,13 @@ void PlayState::update(const float dt){
 
     // Update View
     game->view.setCenter(sf::Vector2f(VIEW_WIDTH/2, game->player1.getPosition().y - VIEW_HEIGHT/3));
+
+    // Check if exploded
+    if(game->player1.getIsExplode()){
+        timerCrash += dt;
+        if(timerCrash >= 5)
+            game->push_state(new EventState(game, 1));
+    }
 }
 
 void PlayState::draw(){
@@ -177,13 +176,13 @@ void PlayState::insertAsteroid(int rng){
         /*Select Image*/            rng % 4, (rng / 100000) % 4,
         /*Rotation*/                0.3,
         /*Scale*/                   1 ));
-    timer1 = 0;
+    timerInsertAsteroid = 0;
 }
 
 void PlayState::insertCoin(int rng){
     obsList.push_back(new Coin( &game->coinTexture, sf::Vector2u(10,1),
         /*Position*/            sf::Vector2f(rng % 2048, game->player1.getPosition().y - 2 * VIEW_HEIGHT)));
-    timer2 = 0;
+    timerInsertCoin = 0;
 }
 
 void PlayState::insertPlanet(int rng){
@@ -197,10 +196,11 @@ void PlayState::insertPlanet(int rng){
         /*Select Image*/            rng % 4, 0,
         /*Rotation*/                0,
         /*Scale*/                   3 ));
-    timer3 = 0;
+    timerInsertPlanet = 0;
 }
 
 void PlayState::pause_game(){
-    game->push_state(new Menustate(game));
+    //game->push_state(new MenuState(game));
+    game->pop_state();
 }
 

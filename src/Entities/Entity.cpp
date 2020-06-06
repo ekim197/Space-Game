@@ -1,5 +1,4 @@
 #include "Entity.h"
-#include <iostream>
 
 Entity::Entity(sf::Texture* text, sf::Vector2f pos, float spd)
     : speed(spd), velocity(0,0){

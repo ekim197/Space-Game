@@ -1,6 +1,4 @@
-#include <iostream>
-#include <SFML\Graphics.hpp>
-#include "Gamestate.h"
+#include "GameState.h"
 
 StoreState::StoreState(Game* game){
     // Set Game
@@ -30,7 +28,7 @@ void StoreState::handle_input(){
             //pause game
         case sf::Event::KeyPressed:
             if (event.key.code == sf::Keyboard::Escape)
-                game->push_state(new Menustate(game));
+                game->push_state(new MenuState(game));
             break;
 
         default:

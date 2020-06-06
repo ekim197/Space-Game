@@ -1,8 +1,3 @@
-#include <SFML/Audio.hpp>
-#include <iostream>
-#include <unordered_map>
-#include <string>
-#include <vector>
 #include "Sound_.h"
 
 std::unordered_map<std::string, sf::SoundBuffer> Sound_::soundBuffers{};

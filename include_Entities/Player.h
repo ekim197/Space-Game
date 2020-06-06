@@ -5,9 +5,12 @@
 
 class Player: public Entity{
 protected:
-    sf::Sprite leftWing;
-    sf::Sprite rightWing;
+    sf::Sprite leftWing[2];
+    sf::Sprite rightWing[2];
     sf::Sprite explosion;
+    sf::Sprite mainStatus;
+    sf::Sprite leftStatus;
+    sf::Sprite rightStatus;
     Animation animation;
     int crew;
     int gold;
@@ -24,10 +27,11 @@ public:
     void update(float dt) override;
     void draw(sf::RenderWindow& window) override;
     void move() override;
+    void moveStatus();
 
     // Getters
-    sf::Sprite getRightWing() { return rightWing; }
-    sf::Sprite getLeftWing() { return leftWing; }
+    sf::Sprite getRightWing() { return rightWing[0]; }
+    sf::Sprite getLeftWing() { return leftWing[0]; }
     sf::Sprite getExplosion() {return explosion; }
     Animation getAnimation() { return animation; }
     int getCrew() const { return crew; }
@@ -43,6 +47,8 @@ public:
     void setNumLeftHit(int numHit) { numLeftHit = numHit; }
     void setPosition(sf::Vector2f objPos) override;
     void setPosition(float x, float y) override;
+    void setStatusPosition(sf::Vector2f objPos);
+    void setStatusPosition(float x, float y);
     void setOrigin(sf::Vector2f objPos) override;
     void setOrigin(float x, float y) override;
 
@@ -53,11 +59,10 @@ public:
     void loseGold(int gld = 1) { gold -= gld; }
 
     // Action
-    void explode(){ isExplode = true; }
     void reset();
-    void hitRight(){ numRightHit += 1; }
-    void hitLeft(){ numLeftHit += 1; }
-
+    void explode();
+    void hitRight();
+    void hitLeft();
 };
 
 #endif // PLAYER_H

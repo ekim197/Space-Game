@@ -1,9 +1,4 @@
 #include "Game.h"
-#include <iostream>
-#include <vector>
-#include <SFML\Graphics.hpp>
-#include "Collision.h"
-#include "Sound_.h"
 
 Game::Game(){
     window.create(sf::VideoMode(VIEW_WIDTH, VIEW_HEIGHT), "Endless Void", sf::Style::Close | sf::Style::Titlebar);
@@ -15,14 +10,14 @@ Game::~Game(){
         pop_state();
 }
 
-Gamestate* Game::current_state(){
+GameState* Game::current_state(){
     if(states.empty())
         return nullptr;
     else
         return states.back();
 }
 
-void Game::push_state(Gamestate* state){
+void Game::push_state(GameState* state){
     states.push_back(state);
 }
 
@@ -82,49 +77,48 @@ void Game::setup(){
     music[1].setLoop(true);
 
     // Create Player
-    if(!Collision::CreateTextureAndBitmask(playerTexture[0], "resources/Space_Ship_Main_Body.png")){
-        std::cerr << "Space_Ship0.png failed to load\n";
-        exit(2);
-    }
-    if(!Collision::CreateTextureAndBitmask(playerTexture[1], "resources/Space_Ship_Left_Wing.png")){
-        std::cerr << "Space_Ship1.png failed to load\n";
-        exit(2);
-    }
-    if(!Collision::CreateTextureAndBitmask(playerTexture[2], "resources/Space_Ship_Right_Wing.png")){
-        std::cerr << "Space_Ship2.png failed to load\n";
-        exit(2);
-    }
-    if(!playerTexture[3].loadFromFile("resources/explosion.png")){
-        std::cerr << "Space_Ship_explosion.png failed to load\n";
-        exit(2);
-    }
+    makeCollisionTexture(playerTexture[0], "resources/Ship_Sprite/Main_Body.png");
+    makeCollisionTexture(playerTexture[1], "resources/Ship_Sprite/Main_Left_Wing.png");
+    makeCollisionTexture(playerTexture[2], "resources/Ship_Sprite/Main_Right_Wing.png");
+    makeCollisionTexture(playerTexture[3], "resources/Ship_Sprite/Damaged_Left_Wing.png");
+    makeCollisionTexture(playerTexture[4], "resources/Ship_Sprite/Damaged_Right_Wing.png");
+    makeTexture(playerTexture[5], "resources/Ship_Sprite/Status_Main_Body.png");
+    makeTexture(playerTexture[6], "resources/Ship_Sprite/Status_Left_Wing.png");
+    makeTexture(playerTexture[7], "resources/Ship_Sprite/Status_Right_Wing.png");
+    makeTexture(playerTexture[8], "resources/Ship_Sprite/explosion.png");
+
     player1 = Player(playerTexture, sf::Vector2u(9,9), sf::Vector2f(VIEW_WIDTH/2, 0.0f), 0.02f, 15, 0);
 
-    // Create Collision Textures
-    if(!Collision::CreateTextureAndBitmask(asteroidTexture, "resources/Asteroids.png")){
-        std::cerr << "Asteroids.png failed to load\n";
-        exit(3);
-    }
-    if(!Collision::CreateTextureAndBitmask(planetTexture, "resources/Planets.png")){
-        std::cerr << "Planets.png failed to load\n";
-        exit(4);
-    }
-    if(!Collision::CreateTextureAndBitmask(coinTexture, "resources/coin.png")){
-        std::cerr << "coin.png failed to load\n";
-        exit(5);
-    }
+    // Create Entity Textures
+    makeCollisionTexture(asteroidTexture, "resources/Asteroids.png");
+    makeCollisionTexture(planetTexture, "resources/Planets.png");
+    makeCollisionTexture(coinTexture, "resources/coin.png");
 
     // Create Fonts
-    if(!font[0].loadFromFile("resources/Mont-Heavy.otf")){
-        std::cerr << "Mont-Heavy.otf failed to load\n";
-        exit(5);
-    }
-    if(!font[1].loadFromFile("resources/Doctor-Glitch.otf")){
-        std::cerr << "Doctor-Glitch.otf failed to load\n";
-        exit(5);
-    }
-    if(!font[2].loadFromFile("resources/Glitch-City.ttf")){
-        std::cerr << "GlitchCity.ttf failed to load\n";
-        exit(5);
+    makeFont(font[0], "resources/Mont-Heavy.otf");
+    makeFont(font[1], "resources/Doctor-Glitch.otf");
+    makeFont(font[2], "resources/Glitch-City.ttf");
+
+}
+
+
+void Game::makeCollisionTexture(sf::Texture& text, std::string file){
+        if(!Collision::CreateTextureAndBitmask(text, file)){
+            std::cerr << file << " failed to load\n";
+            exit(1);
+        }
+}
+
+void Game::makeTexture(sf::Texture& text, std::string file){
+        if(!text.loadFromFile(file)){
+            std::cerr << file << " failed to load\n";
+            exit(2);
+        }
+}
+
+void Game::makeFont(sf::Font& font, std::string file){
+    if(!font.loadFromFile(file)){
+        std::cerr << file << " failed to load\n";
+        exit(3);
     }
 }
