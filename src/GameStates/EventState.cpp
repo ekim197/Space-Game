@@ -45,17 +45,17 @@ EventState::EventState(Game* game, int type): eventType(type){
         background.setTexture(&backgroundTexture);
 
         textInfo.setString("You crashed and the main hull is breached,");
-        textInfo2.setString("someone is going to have to fix it, but its dangerous...");
+        textInfo2.setString("someone is going to have to fix it, but its too risky...");
 
-        choiceButtons[0].setString("Option 1: Sacrifice 1 person(guarentee to lose on passenger)");
-        choiceButtons[1].setString("Option 2: Risk 3 people(60% chance they all survive)");
+        choiceButtons[0].setString("Option 1: Sacrifice 1 person(guarantee to lose on passenger)");
+        choiceButtons[1].setString("Option 2: Send out 3 people(60% chance they survive)");
     }
     else if(eventType == 2){
         backgroundTexture.loadFromFile("resources/event2.png");
         background.setTexture(&backgroundTexture);
 
-        textInfo.setString("You are the last person on the ship, and the ship won't fix ");
-        textInfo2.setString("itself, There is no options left, you must fix the ship:");
+        textInfo.setString("There isn't much of the crew left. There is no options left,");
+        textInfo2.setString(" you must fix the ship, its a 50-50 chance you will live");
 
         choiceButtons[0].setString("");
         choiceButtons[1].setString("");
@@ -65,7 +65,7 @@ EventState::EventState(Game* game, int type): eventType(type){
         background.setTexture(&backgroundTexture);
 
         textInfo.setString("Your ship has veered off course. You can use the");
-        textInfo2.setString("              findYourWayBack module by EngiAtom(EA) ");
+        textInfo2.setString("findYourWayBack module by EngiAtom(EA) ");
 
         choiceButtons[0].setString("Option 1: Try to figure it out yourself(What's the worst that could happen)");
         choiceButtons[1].setString("Option 2: Pay 3 gold to use the module (guarantee to get back)");
@@ -117,7 +117,17 @@ void EventState::draw(){
 }
 
 void EventState::update(const float dt){
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && dt != 0){
+        if (isTextClicked(choiceButtons[0])){
+            game->player1.loseCrew();
+            game->push_state(new PlayState(game));
+        }
+        else if(isTextClicked(choiceButtons[1])){
+            game->player1.loseCrew(3);
+            game->push_state(new PlayState(game));
+        }
 
+    }
 }
 
 bool EventState::isTextClicked(sf::Text text){

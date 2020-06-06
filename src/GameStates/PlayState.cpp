@@ -6,7 +6,6 @@ PlayState::PlayState(Game* game) : timerInsertAsteroid(0.5), timerInsertCoin(1),
     // Push Game
     this->game = game;
 
-
     // Reset Player1
     game->player1.setPosition(VIEW_WIDTH/2, game->player1.getPosition().y);
     game->player1.reset();
@@ -89,9 +88,21 @@ void PlayState::update(const float dt){
     // Check if exploded
     if(game->player1.getIsExplode()){
         timerCrash += dt;
-        if(timerCrash >= 5)
-            game->push_state(new EventState(game, 1));
+        if(timerCrash >= 3){
+            if(game->player1.getCrew() > 3)
+                game->push_state(new EventState(game, 1));
+            else
+                game->push_state(new EventState(game, 2));
+        }
     }
+
+    // Check if veered off course
+    if(game->player1.getPosition().x < 0 || game->player1.getPosition().x > VIEW_HEIGHT){
+        timerOffCourse += dt;
+        if(timerOffCourse >= 5)
+            game->push_state(new EventState(game, 3));
+    }
+
 }
 
 void PlayState::draw(){

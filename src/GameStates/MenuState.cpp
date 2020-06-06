@@ -6,7 +6,7 @@ MenuState::MenuState(Game* game){
     game->music[0].play();
 
     // Text
-    title.setFont(game->font[1]);
+    title.setFont(game->font[2]);
     title.setPosition( 800, 100);
     title.setCharacterSize(200); // in pixels, not points!
     title.setFillColor(sf::Color::White);   // set the color

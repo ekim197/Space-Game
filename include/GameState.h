@@ -57,7 +57,7 @@ public:
 class PlayState : public GameState{
 private:
     float timerInsertAsteroid, timerInsertCoin, timerInsertPlanet;
-    float timerCrash;
+    float timerCrash, timerOffCourse;
     int rng1, rng2, rng3;
     std::vector<Entity*> obsList;
     std::vector<sf::Text> gameText;
