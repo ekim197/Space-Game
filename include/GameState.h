@@ -47,12 +47,9 @@ public:
 /*_____________Menu_____________*/
 class MenuState : public GameState{
 protected:
-    void load_game();
-    void load_store();
-
     std::vector<sf::Text> buttons;
     sf::Text title;
-    const int NUM_BUTTONS = 3;
+    const int NUM_BUTTONS = 4;
 
     bool isTextClicked(sf::Text text);
 public:
@@ -80,30 +77,31 @@ protected:
 
 public:
     // Constructor and Destructor
+    PlayState() = default;
     PlayState(Game* game);
     ~PlayState();
 
     // Loop
     virtual void handle_input() override;
-    virtual void update(const float dt) override;
+    virtual void update(const float dt);
+    virtual void update(const float dt, Player& player);
     virtual void draw() override;
-    void reset();
+    void reset(Player& player);
 
     // Collision Detection
-    bool collide(Entity* obj);
-    bool collide(Obstacle* obj);
-    bool collide(Coin* obj);
+    bool collide(Entity* obj, Player& player);
+    bool collide(Obstacle* obj, Player& player);
+    bool collide(Coin* obj, Player& player);
 
     // Check if Past Yet
-    bool checkPastYet(Entity* obj);
-    int checkBadEvent(float dt);
+    bool checkPastYet(Entity* obj, Player& player);
+    int checkBadEvent(float dt, Player& player);
 
     // Insert
     void insertAsteroid(int rng);
     void insertPlanet(int rng);
     void insertCoin(int rng);
 };
-
 
 /*_____________Store_____________*/
 class StoreState : public GameState{
@@ -122,11 +120,8 @@ public:
 class EventState : public GameState{
 private:
     sf::RectangleShape background;
-    sf::Texture backgroundTexture;
     sf::Text textInfo, textInfo2;
     int eventType;
-    sf::Font font1;
-    sf::Font font2;
     std::vector<sf::Text> choiceButtons;
     bool isTextClicked(sf::Text text);
 
@@ -145,38 +140,37 @@ class BackdoorState : public PlayState{
 
 public:
     // Constructor and Destructor
-    BackdoorState(Game* game, int type);
+    BackdoorState(Game* game);
 
     // Loop
-    virtual void handle_input() override;
     virtual void update(const float dt) override;
+    virtual void update(const float dt, Player& player) override;
     virtual void draw() override;
 };
 
 /*_____________Tutorial_____________*/
 class TutorialState : public PlayState{
-
 public:
     // Constructor and Destructor
-    TutorialState(Game* game, int type);
+    TutorialState(Game* game);
 
     // Loop
-    virtual void handle_input() override;
     virtual void update(const float dt) override;
+    virtual void update(const float dt, Player& player) override;
     virtual void draw() override;
 };
 
 /*_____________Pause_____________*/
 class PauseState : public MenuState{
-
+    bool isOneFramePass;
 public:
     // Constructor and Destructor
-    PauseState(Game* game): MenuState(game){}
+    PauseState(Game* game): MenuState(game), isOneFramePass(false){}
 
     // Loop
 //virtual void handle_input() override;
 //virtual void update(const float dt) override;
-//virtual void draw() override;
+    virtual void draw() override;
 };
 
 /*_____________End_____________*/
@@ -191,6 +185,3 @@ public:
 };
 
 #endif // GameState_H
-
-
-

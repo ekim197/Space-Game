@@ -1,15 +1,17 @@
 #include "GameState.h"
 
+using namespace Resource;
+
 StoreState::StoreState(Game* game){
     // Set Game
     this->game = game;
 }
 
 void StoreState::draw(){
+    // Background
+    game->window.clear();
     sf::RectangleShape background(sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT));
-    sf::Texture backgroundTexture;
-    backgroundTexture.loadFromFile("resources/store_temp.png");
-    background.setTexture(&backgroundTexture);
+    background.setTexture(&backgroundTexture[2]);
 
     // Set View
     sf::View view(sf::Vector2f(0.0f,0.0f), sf::Vector2f(VIEW_WIDTH,VIEW_HEIGHT));

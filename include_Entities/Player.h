@@ -22,6 +22,8 @@ public:
     // Constructors
     Player() = default;
     Player(sf::Texture* text, sf::Vector2u aICount, sf::Vector2f pos, float spd, int crw, int gld);
+    Player(const Player& obj) = default;
+    Player& operator=(const Player& obj) = default;
 
     // Window Action
     void update(float dt) override;

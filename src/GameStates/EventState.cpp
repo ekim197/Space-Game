@@ -2,34 +2,32 @@
 #include "Gamestate.h"
 #include <iostream>
 
+using namespace Resource;
+
 EventState::EventState(Game* game, int type): eventType(type){
     // Push Game
     this->game = game;
 
     // Music
-    game->music[0].stop();
-    game->music[1].play();
+    music[0].stop();
+    music[1].play();
 
     // Background
     background.setSize(sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT * 2/3));
 
     // Text
-    font1.loadFromFile("resources/Roboto-Italic.ttf"); //font for choices button
-    font2.loadFromFile("resources/Roboto-Black.ttf"); // font for event information
-
-
-    textInfo.setFont(font2);
+    textInfo.setFont(font[4]);
     textInfo.setPosition(300, 825);
     textInfo.setCharacterSize(50); // in pixels, not points!
     textInfo.setFillColor(sf::Color::White);
 
-    textInfo2.setFont(font2);
+    textInfo2.setFont(font[4]);
     textInfo2.setPosition(400, 875);
     textInfo2.setCharacterSize(50); // in pixels, not points!
     textInfo2.setFillColor(sf::Color::White);
 
     sf::Text textOption1; //text for choices button
-    textOption1.setFont(font1);
+    textOption1.setFont(font[3]);
     textOption1.setPosition(400, 1000);
     textOption1.setCharacterSize(35); // in pixels, not points!
     textOption1.setFillColor(sf::Color::White);
@@ -40,8 +38,7 @@ EventState::EventState(Game* game, int type): eventType(type){
     }
 
     if(eventType == 1){
-        backgroundTexture.loadFromFile("resources/event1.png");
-        background.setTexture(&backgroundTexture);
+        background.setTexture(&backgroundTexture[3]);
 
         textInfo.setString("You crashed and the main hull is breached,");
         textInfo2.setString("someone is going to have to fix it, but its too risky...");
@@ -50,8 +47,7 @@ EventState::EventState(Game* game, int type): eventType(type){
         choiceButtons[1].setString("Option 2: Send out 3 people(60% chance they survive)");
     }
     else if(eventType == 2){
-        backgroundTexture.loadFromFile("resources/event2.png");
-        background.setTexture(&backgroundTexture);
+        background.setTexture(&backgroundTexture[4]);
 
         textInfo.setString("There isn't much of the crew left. There is no options left,");
         textInfo2.setString(" you must fix the ship, its a 50-50 chance you will live");
@@ -60,14 +56,13 @@ EventState::EventState(Game* game, int type): eventType(type){
         choiceButtons[1].setString("");
     }
     else if(eventType == 3){
-        backgroundTexture.loadFromFile("resources/event3.png");
-        background.setTexture(&backgroundTexture);
+        background.setTexture(&backgroundTexture[5]);
 
         textInfo.setString("Your ship has veered off course. You can use the");
         textInfo2.setString("findYourWayBack module by EngiAtom(EA) ");
 
         choiceButtons[0].setString("Option 1: Try to figure it out yourself(What's the worst that could happen)");
-        choiceButtons[1].setString("Option 2: Pay 3 gold to use the module (guarantee to get back)");
+        choiceButtons[1].setString("Option 2: Pay 40 gold to use the module (guarantee to get back)");
     }
 }
 

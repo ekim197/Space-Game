@@ -6,15 +6,11 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "GameState.h"
-#include "Entity.h"
-#include "Player.h"
-#include "Obstacle.h"
-#include "Coin.h"
-#include "Collision.h"
-#include "Sound_.h"
+#include "Resource.h"
 
 const float VIEW_WIDTH = 2048.0;
 const float VIEW_HEIGHT = 1152.0;
+const std::string RESOURCE_PATH = "resources/";
 
 class GameState;
 
@@ -26,23 +22,11 @@ private:
 
 public:
     // Public Variables
-    // Textures, Buffers, and Fonts
-    sf::SoundBuffer buffer;
-    sf::Texture playerTexture[9];
-    sf::Texture asteroidTexture;
-    sf::Texture planetTexture;
-    sf::Texture coinTexture;
-    sf::Font font[3];
-    //Window and View
     sf::RenderWindow window;
     sf::View view;
-    //Objects
     Player player1;
-    // Sound
-    sf::Sound sound;
-    sf::Music music[2];
-    // Time stuff
-    long long int rng;
+    Player tutorPlayer;
+    Player testPlayer;
 
     // Constructor and Destructor
     Game();
