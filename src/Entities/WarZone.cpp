@@ -9,3 +9,8 @@ WarZone::WarZone(sf::Texture* text, sf::Vector2f pos, float scl)
     // Scale Image
     body.scale(scl, scl);
 }
+
+void WarZone::update(float dt){
+    if(dt == 0)
+        body.move(0,0);
+}

@@ -20,6 +20,7 @@ namespace Resource{
     extern sf::Texture asteroidTexture;
     extern sf::Texture planetTexture;
     extern sf::Texture coinTexture;
+    extern sf::Texture warZoneTexture;
     extern sf::Texture backgroundTexture[6];
     extern sf::Font font[5];
     // Sound

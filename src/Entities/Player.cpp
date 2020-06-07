@@ -41,10 +41,7 @@ void Player::update(float dt){
     // Update Movement if Ship is not Exploded
     if(!isExplode){
         // Key Inputs
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-            velocity.y -= speed;
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-            velocity.y += speed;
+
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
             velocity.x -= speed - numRightHit * speed/600;
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
@@ -55,7 +52,7 @@ void Player::update(float dt){
         velocity.x -= numLeftHit * speed/300;
 
         // Guarentee Ship moves first
-       //velocity.y -= 1.25 * speed;
+       velocity.y -= 1.25 * speed;
     }
 
     move();
@@ -172,18 +169,42 @@ void Player::explode(){
     mainStatus.setColor(sf::Color::Red);
 }
 
-void Player::hitRight(){
-    numRightHit += 1;
-    float colorShift = numRightHit * 1.5;
-    if(colorShift > 255)
-        colorShift = 255;
-    rightStatus.setColor(sf::Color(255 , 255 - colorShift, 255 - colorShift));
+void Player::hitLeft() {
+    numLeftHit++;
+    colorStatus();
 }
 
-void Player::hitLeft(){
-    numLeftHit += 1;
+void Player::hitRight() {
+    numRightHit++;
+    colorStatus();
+}
+
+void Player::healLeft() {
+    if(numLeftHit > 0)
+        numLeftHit-= 0.1;
+    colorStatus();
+}
+
+void Player::healRight() {
+    if(numRightHit > 0)
+        numRightHit-= 0.1;
+    colorStatus();
+}
+
+void Player::colorStatus(){
+    // Left
     float colorShift = numLeftHit * 1.5;
     if(colorShift > 255)
         colorShift = 255;
+    else if(colorShift < 0)
+        colorShift = 0;
     leftStatus.setColor(sf::Color(255, 255 - colorShift, 255 - colorShift));
+
+    // Right
+    colorShift = numRightHit * 1.5;
+    if(colorShift > 255)
+        colorShift = 255;
+    else if(colorShift < 0)
+        colorShift = 0;
+    rightStatus.setColor(sf::Color(255 , 255 - colorShift, 255 - colorShift));
 }

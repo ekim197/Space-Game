@@ -12,6 +12,8 @@ Entity::Entity(sf::Texture* text, sf::Vector2f pos, float spd)
     setOrigin(originX, originY);
 }
 
+Entity::~Entity(){}
+
 std::string Entity::name() const{
     std::string className = typeid(*this).name();
     className = className.substr(className.find_first_not_of("0123456789"));

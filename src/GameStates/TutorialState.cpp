@@ -49,7 +49,7 @@ void TutorialState::update(const float dt, Player& player){
     // Collision detection & CheckPastYet
     auto i = entityList.begin();
     while(i != entityList.end()){
-        if(collide(*i, player) || checkPastYet(*i, player))
+        if(collide(*i, player, dt) || checkPastYet(*i, player))
             entityList.erase(i);
         else
             i++;

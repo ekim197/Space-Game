@@ -19,7 +19,7 @@ public:
     Entity(const Entity&) = default;
     Entity& operator =(const Entity&) = default;
     Entity(sf::Texture* text, sf::Vector2f pos, float spd);
-    virtual ~Entity() = default;
+    virtual ~Entity() = 0;
 
     // Window Action
     virtual void update(float dt) = 0;

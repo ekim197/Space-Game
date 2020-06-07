@@ -4,7 +4,8 @@
 using namespace Collision;
 using namespace Resource;
 
-PlayState::PlayState(Game* game) : timerInsertAsteroid(0), timerInsertCoin(0), timerInsertPlanet(0), timerCrash(0){
+PlayState::PlayState(Game* game)
+    : timerInsertAsteroid(0), timerInsertCoin(0), timerInsertPlanet(0), timerCrash(0), timerOffCourse(0), timerInWarZone(0){
     // Push Game
     this->game = game;
 
@@ -63,6 +64,7 @@ void PlayState::update(const float dt, Player& player){
         timerInsertAsteroid += dt;
         timerInsertCoin += dt;
         timerInsertPlanet += dt;
+        timerInsertWarZone += dt;
 
         // Insert Entities
         if(timerInsertAsteroid >= 0.5)
@@ -71,12 +73,14 @@ void PlayState::update(const float dt, Player& player){
             insertCoin(abs(rng) / 1234);
         if(timerInsertPlanet >= 10)
             insertPlanet(abs(rng) / 100);
+        if(timerInsertWarZone >= 20)
+            insertWarZone(abs(rng) / 100000);
     }
 
     // Collision detection & CheckPastYet
     auto i = entityList.begin();
     while(i != entityList.end()){
-        if(collide(*i, player) || checkPastYet(*i, player))
+        if(collide(*i, player, dt) || checkPastYet(*i, player))
             entityList.erase(i);
         else
             i++;
@@ -146,11 +150,12 @@ void PlayState::reset(Player& player){
     timerInsertPlanet = 0;
     timerCrash = 0;
     timerOffCourse = 0;
+    timerInWarZone = 0;
     player.reset();
     player.setPosition(VIEW_WIDTH / 2, player.getPosition().y);
 }
 
-bool PlayState::collide(Entity* obj, Player& player){
+bool PlayState::collide(Entity* obj, Player& player, float dt){
     sf::Vector2f objHalfSize(obj->getGlobalBounds().width / 2, obj->getGlobalBounds().height / 2);
     sf::Vector2f playerHalfSize(player.getGlobalBounds().width / 2, player.getGlobalBounds().height / 2);
     float dy = abs(obj->getPosition().y - player.getPosition().y);
@@ -162,30 +167,27 @@ bool PlayState::collide(Entity* obj, Player& player){
     else{
         if(obj->name() == "Coin")
             return collide(dynamic_cast<Coin*>(obj), player);
+        else if(obj->name() == "WarZone")
+            return collide(dynamic_cast<WarZone*>(obj), player, dt);
         else
             return collide(dynamic_cast<Obstacle*>(obj), player);
     }
 }
 
 bool PlayState::collide(Obstacle* obj, Player& player){
-    // Main body
-    if(PixelPerfectTest(player.getBody(), obj->getBody()) && !player.getIsExplode()){
+    if(PixelPerfectTest(player.getLeftWing(), obj->getBody()))
+        player.hitLeft();
+    else if(PixelPerfectTest(player.getRightWing(), obj->getBody()))
+        player.hitRight();
+    else if(PixelPerfectTest(player.getBody(), obj->getBody()) && !player.getIsExplode()){
         sound.play();
         player.explode();
-    }
-    // Right Wing Collision detection
-    if(PixelPerfectTest(player.getRightWing(), obj->getBody())){
-        player.hitRight();
-    }
-    // Left Wing Collision detection
-    if(PixelPerfectTest(player.getLeftWing(), obj->getBody())){
-        player.hitLeft();
     }
     return 0;
 }
 
 bool PlayState::collide(Coin* obj, Player& player){
-    if(PixelPerfectTest(player.getBody(), obj->getBody())){
+    if(PixelPerfectTest(player.getLeftWing(), obj->getBody())){
         player.gainGold();
         return 1;
     }
@@ -193,12 +195,25 @@ bool PlayState::collide(Coin* obj, Player& player){
         player.gainGold();
         return 1;
     }
-    else if(PixelPerfectTest(player.getLeftWing(), obj->getBody())){
+    else if(PixelPerfectTest(player.getBody(), obj->getBody())){
         player.gainGold();
         return 1;
     }
+
     return 0;
 }
+
+bool PlayState::collide(WarZone* obj, Player& player, float dt){
+    if(PixelPerfectTest(player.getLeftWing(), obj->getBody()) && PixelPerfectTest(player.getRightWing(), obj->getBody())){
+        player.healLeft();
+        player.healRight();
+        timerInWarZone += dt;
+    }
+    else
+        timerInWarZone = 0;
+    return 0;
+}
+
 
 bool PlayState::checkPastYet(Entity* obj, Player& player){
     float objHalfSize = obj->getGlobalBounds().height / 2;
@@ -210,6 +225,12 @@ bool PlayState::checkPastYet(Entity* obj, Player& player){
 }
 
 int PlayState::checkBadEvent(float dt, Player& player){
+    // Check if staying in WarZone too long
+    if(timerInWarZone > 2){
+        player.explode();
+        sound.play();
+    }
+
     // Check if exploded
     if(player.getIsExplode()){
         timerCrash += dt;
@@ -265,5 +286,17 @@ void PlayState::insertPlanet(int rngVal){
         /*Rotation*/                0,
         /*Scale*/                   3 ));
     timerInsertPlanet = 0;
+}
+
+void PlayState::insertWarZone(int rngVal){
+    float side;
+    if(rngVal % 2)
+        side = -1/2 * VIEW_WIDTH;
+    else
+        side = 3/2 * VIEW_WIDTH;
+    entityList.push_back(new WarZone(&warZoneTexture,
+        /*Position*/                sf::Vector2f(side, game->player1.getPosition().y - VIEW_HEIGHT * 3),
+        /*Scale*/                   3 ));
+    timerInsertWarZone = 0;
 }
 

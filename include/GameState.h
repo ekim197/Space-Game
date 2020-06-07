@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "Obstacle.h"
 #include "Coin.h"
+#include "WarZone.h"
 
 class Game;
 class GameState;
@@ -65,9 +66,8 @@ public:
 /*_____________Play_____________*/
 class PlayState : public GameState{
 protected:
-    float timerInsertAsteroid, timerInsertCoin, timerInsertPlanet;
-    float timerCrash, timerOffCourse;
-    int rng1, rng2, rng3;
+    float timerInsertAsteroid, timerInsertCoin, timerInsertPlanet, timerInsertWarZone;
+    float timerCrash, timerOffCourse, timerInWarZone;
     std::vector<Entity*> entityList;
     std::vector<sf::Text> gameText;
     sf::RectangleShape background;
@@ -89,18 +89,20 @@ public:
     void reset(Player& player);
 
     // Collision Detection
-    bool collide(Entity* obj, Player& player);
+    bool collide(Entity* obj, Player& player, float dt);
     bool collide(Obstacle* obj, Player& player);
     bool collide(Coin* obj, Player& player);
+    bool collide(WarZone* obj, Player& player, float dt);
 
     // Check if Past Yet
     bool checkPastYet(Entity* obj, Player& player);
     int checkBadEvent(float dt, Player& player);
 
     // Insert
-    void insertAsteroid(int rng);
-    void insertPlanet(int rng);
-    void insertCoin(int rng);
+    void insertAsteroid(int rngVal);
+    void insertPlanet(int rngVal);
+    void insertCoin(int rngVal);
+    void insertWarZone(int rngVal);
 };
 
 /*_____________Store_____________*/

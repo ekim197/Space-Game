@@ -15,8 +15,8 @@ protected:
     int crew;
     int gold;
     bool isExplode;
-    int numRightHit;
-    int numLeftHit;
+    float numRightHit;
+    float numLeftHit;
 
 public:
     // Constructors
@@ -32,15 +32,15 @@ public:
     void moveStatus();
 
     // Getters
-    sf::Sprite getRightWing() { return rightWing[0]; }
     sf::Sprite getLeftWing() { return leftWing[0]; }
+    sf::Sprite getRightWing() { return rightWing[0]; }
     sf::Sprite getExplosion() {return explosion; }
     Animation getAnimation() { return animation; }
     int getCrew() const { return crew; }
     int getGold() const { return gold; }
     bool getIsExplode(){ return isExplode; }
-    int getNumRightHit() { return numRightHit; }
     int getNumLeftHit() { return numLeftHit; }
+    int getNumRightHit() { return numRightHit; }
 
     // Setters
     void setCrew(int crw) { crew = crw; }
@@ -63,8 +63,11 @@ public:
     // Action
     void reset();
     void explode();
-    void hitRight();
     void hitLeft();
+    void hitRight();
+    void healLeft();
+    void healRight();
+    void colorStatus();
 };
 
 #endif // PLAYER_H

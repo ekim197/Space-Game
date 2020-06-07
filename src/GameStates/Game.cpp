@@ -96,6 +96,7 @@ void Game::setup(){
         makeCollisionTexture(asteroidTexture, "Entity_Sprite/Asteroids.png");
         makeCollisionTexture(planetTexture, "Entity_Sprite/Planets.png");
         makeCollisionTexture(coinTexture, "Entity_Sprite/Coin.png");
+        makeCollisionTexture(warZoneTexture, "Entity_Sprite/War_Zone.png");
 
         // Create Backround Textures
         makeTexture(backgroundTexture[0], "Background/Menu_Bg.png");
