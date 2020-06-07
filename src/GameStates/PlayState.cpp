@@ -1,8 +1,9 @@
 #include "GameState.h"
+#include <iostream>
 
 using namespace Collision;
 
-PlayState::PlayState(Game* game) : timerInsertAsteroid(0.5), timerInsertCoin(1), timerInsertPlanet(10), timerCrash(0){
+PlayState::PlayState(Game* game) : timerInsertAsteroid(0), timerInsertCoin(0), timerInsertPlanet(0), timerCrash(0){
     // Push Game
     this->game = game;
 
@@ -20,6 +21,12 @@ PlayState::PlayState(Game* game) : timerInsertAsteroid(0.5), timerInsertCoin(1),
         gameText.push_back(tempText);
         gameText[i].setPosition(100 , game->player1.getPosition().y - VIEW_HEIGHT * 8/10 + i * 50);
     }
+}
+
+PlayState::~PlayState(){
+    for(auto key: entityList)
+        delete key;
+    entityList.clear();
 }
 
 void PlayState::handle_input(){
@@ -42,30 +49,37 @@ void PlayState::handle_input(){
 }
 
 void PlayState::update(const float dt){
-    // Time
-    timerInsertAsteroid += dt;
-    timerInsertCoin += dt;
-    timerInsertPlanet += dt;
+    // Three second delay before things start spawning in
+    timer += dt;
+    fadeTimer += dt;
 
-    // Insert Entities
-    if(timerInsertAsteroid >= 0.5)
-        insertAsteroid(abs(game->rng));
-    if(timerInsertCoin >= 1)
-        insertCoin(abs(game->rng) / 1234);
-    if(timerInsertPlanet >= 10)
-        insertPlanet(abs(game->rng) / 100);
+    if(timer > 3){
+        // Time
+        timerInsertAsteroid += dt;
+        timerInsertCoin += dt;
+        timerInsertPlanet += dt;
+
+        // Insert Entities
+        if(timerInsertAsteroid >= 0.5)
+            insertAsteroid(abs(game->rng));
+        if(timerInsertCoin >= 1)
+            insertCoin(abs(game->rng) / 1234);
+        if(timerInsertPlanet >= 10)
+            insertPlanet(abs(game->rng) / 100);
+    }
 
     // Collision detection & CheckPastYet
-    auto i = obsList.begin();
-    while(i != obsList.end()){
+    auto i = entityList.begin();
+    while(i != entityList.end()){
         if(collide(*i) || checkPastYet(*i))
-            obsList.erase(i);
+            entityList.erase(i);
         else
             i++;
     }
+
     // Update Classes
     game->player1.update(dt);
-    for(auto const& i: obsList)
+    for(auto const& i: entityList)
         i->update(dt);
 
     // Update Text
@@ -86,23 +100,10 @@ void PlayState::update(const float dt){
     game->view.setCenter(sf::Vector2f(VIEW_WIDTH/2, game->player1.getPosition().y - VIEW_HEIGHT/3));
 
     // Check if exploded
-    if(game->player1.getIsExplode()){
-        timerCrash += dt;
-        if(timerCrash >= 3){
-            if(game->player1.getCrew() > 3)
-                game->push_state(new EventState(game, 1));
-            else
-                game->push_state(new EventState(game, 2));
-        }
+    if(checkBadEvent(dt) != 0){
+        game->push_state(new EventState(game, checkBadEvent(dt)));
+        reset();
     }
-
-    // Check if veered off course
-    if(game->player1.getPosition().x < 0 || game->player1.getPosition().x > VIEW_HEIGHT){
-        timerOffCourse += dt;
-        if(timerOffCourse >= 5)
-            game->push_state(new EventState(game, 3));
-    }
-
 }
 
 void PlayState::draw(){
@@ -111,7 +112,7 @@ void PlayState::draw(){
     game->window.setView(game->view);
 
     // Draw Entities
-    for(auto const& i: obsList)
+    for(auto const& i: entityList)
         i->draw(game->window);
 
     // Draw Player
@@ -120,6 +121,26 @@ void PlayState::draw(){
     // Draw Text
     for(auto i : gameText)
         game->window.draw(i);
+
+    // Fade
+    if(fadeTimer <= 3)
+        fadeIn();
+    if(timerCrash >= 2 || timerOffCourse >= 4)
+        fadeOut();
+}
+
+void PlayState::reset(){
+    for(auto key: entityList)
+        delete key;
+    entityList.clear();
+    fadeTimer = 0;
+    timerInsertAsteroid = 0;
+    timerInsertCoin = 0;
+    timerInsertPlanet = 0;
+    timerCrash = 0;
+    timerOffCourse = 0;
+    game->player1.reset();
+    game->player1.setPosition(VIEW_WIDTH / 2, game->player1.getPosition().y);
 }
 
 bool PlayState::collide(Entity* obj){
@@ -181,8 +202,32 @@ bool PlayState::checkPastYet(Entity* obj){
         return false;
 }
 
+int PlayState::checkBadEvent(float dt){
+    // Check if exploded
+    if(game->player1.getIsExplode()){
+        timerCrash += dt;
+        if(timerCrash >= 3){
+            if(game->player1.getCrew() > 3)
+                return 1;
+            else
+                return 2;
+        }
+    }
+
+    // Check if veered off course
+    if(game->player1.getPosition().x < 0 || game->player1.getPosition().x > VIEW_WIDTH){
+        timerOffCourse += dt;
+        if(timerOffCourse >= 5)
+            return 3;
+    }
+    else
+        timerOffCourse = 0;
+
+    return 0;
+}
+
 void PlayState::insertAsteroid(int rng){
-    obsList.push_back(new Asteroid( &game->asteroidTexture, sf::Vector2u(4,4),
+    entityList.push_back(new Asteroid( &game->asteroidTexture, sf::Vector2u(4,4),
         /*Position*/                sf::Vector2f(rng % 2048, game->player1.getPosition().y - 2 * VIEW_HEIGHT),
         /*Select Image*/            rng % 4, (rng / 100000) % 4,
         /*Rotation*/                0.3,
@@ -191,7 +236,7 @@ void PlayState::insertAsteroid(int rng){
 }
 
 void PlayState::insertCoin(int rng){
-    obsList.push_back(new Coin( &game->coinTexture, sf::Vector2u(10,1),
+    entityList.push_back(new Coin( &game->coinTexture, sf::Vector2u(10,1),
         /*Position*/            sf::Vector2f(rng % 2048, game->player1.getPosition().y - 2 * VIEW_HEIGHT)));
     timerInsertCoin = 0;
 }
@@ -202,7 +247,7 @@ void PlayState::insertPlanet(int rng){
         side = -1/2 * VIEW_WIDTH;
     else
         side = 3/2 * VIEW_WIDTH;
-    obsList.push_back(new Planet( &game->planetTexture, sf::Vector2u(4,1),
+    entityList.push_back(new Planet( &game->planetTexture, sf::Vector2u(4,1),
         /*Position*/                sf::Vector2f(side, game->player1.getPosition().y - VIEW_HEIGHT * 2),
         /*Select Image*/            rng % 4, 0,
         /*Rotation*/                0,
@@ -211,7 +256,6 @@ void PlayState::insertPlanet(int rng){
 }
 
 void PlayState::pause_game(){
-    //game->push_state(new MenuState(game));
-    game->pop_state();
+    game->push_state(new PauseState(game));
 }
 

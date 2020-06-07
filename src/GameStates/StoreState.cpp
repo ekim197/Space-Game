@@ -11,7 +11,20 @@ void StoreState::draw(){
     backgroundTexture.loadFromFile("resources/store_temp.png");
     background.setTexture(&backgroundTexture);
 
+    // Set View
+    sf::View view(sf::Vector2f(0.0f,0.0f), sf::Vector2f(VIEW_WIDTH,VIEW_HEIGHT));
+    view.setCenter(VIEW_WIDTH/2, VIEW_HEIGHT/2);
+    game->view.setCenter(view.getCenter());
+    game->window.setView(view);
+
+    // Backgrounds
     game->window.draw(background);
+
+    // Buttons
+
+    // Fade
+    if(fadeTimer < 3)
+        fadeIn(5);
 }
 
 void StoreState::handle_input(){
@@ -35,12 +48,9 @@ void StoreState::handle_input(){
             break;
         }
     }
-
 }
 
 void StoreState::update(const float dt){
-    // Feature not in yet
-    if(dt != 0){
-        std::cout << dt << '\n';
-    }
+    fadeTimer += dt;
+
 }

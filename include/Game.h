@@ -1,11 +1,11 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <GameState.h>
 #include <vector>
 #include <string>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include "GameState.h"
 #include "Entity.h"
 #include "Player.h"
 #include "Obstacle.h"
@@ -21,11 +21,11 @@ class GameState;
 class Game{
 private:
     std::vector<GameState*> states;
+
     void setup();
 
 public:
     // Public Variables
-    GameState* current_state();
     // Textures, Buffers, and Fonts
     sf::SoundBuffer buffer;
     sf::Texture playerTexture[9];
@@ -49,6 +49,7 @@ public:
     virtual ~Game();
 
     // Action
+    GameState* current_state();
     void push_state(GameState* state);
     void pop_state();
     void game_loop();

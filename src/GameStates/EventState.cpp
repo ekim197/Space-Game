@@ -1,5 +1,6 @@
 #include <SFML\Graphics.hpp>
 #include "Gamestate.h"
+#include <iostream>
 
 EventState::EventState(Game* game, int type): eventType(type){
     // Push Game
@@ -10,9 +11,7 @@ EventState::EventState(Game* game, int type): eventType(type){
     game->music[1].play();
 
     // Background
-    background.setSize(sf::Vector2f(VIEW_WIDTH * 2 / 3, VIEW_HEIGHT * 2 / 3));
-    background.setOrigin(background.getGlobalBounds().width / 2, 0);
-    background.setPosition(VIEW_WIDTH / 2, 50);
+    background.setSize(sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT * 2/3));
 
     // Text
     font1.loadFromFile("resources/Roboto-Italic.ttf"); //font for choices button
@@ -105,28 +104,34 @@ void EventState::draw(){
     // Set View
     sf::View view(sf::Vector2f(0.0f,0.0f), sf::Vector2f(VIEW_WIDTH,VIEW_HEIGHT));
     view.setCenter(VIEW_WIDTH/2, VIEW_HEIGHT/2);
+    game->view.setCenter(view.getCenter());
+    game->window.setView(view);
 
-    // Draws the Buttons
+    // Draws Buttons
     for (auto x : choiceButtons)
         game->window.draw(x);
 
-    game->window.setView(view);
+    // Draw Backround and Text
     game->window.draw(background);
     game->window.draw(textInfo);
     game->window.draw(textInfo2);
+
+    // Fade
+    if(fadeTimer <= 3)
+        fadeIn();
 }
 
 void EventState::update(const float dt){
+    fadeTimer += dt;
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && dt != 0){
         if (isTextClicked(choiceButtons[0])){
             game->player1.loseCrew();
-            game->push_state(new PlayState(game));
+            game->pop_state();
         }
         else if(isTextClicked(choiceButtons[1])){
             game->player1.loseCrew(3);
-            game->push_state(new PlayState(game));
+            game->pop_state();
         }
-
     }
 }
 

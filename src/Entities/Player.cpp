@@ -46,16 +46,16 @@ void Player::update(float dt){
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
             velocity.y += speed;
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-            velocity.x -= speed;
+            velocity.x -= speed - numRightHit * speed/600;
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-            velocity.x += speed;
+            velocity.x += speed - numLeftHit * speed/600;
 
         // Move if Wings are Hit
         velocity.x += numRightHit * speed/300;
         velocity.x -= numLeftHit * speed/300;
 
         // Guarentee Ship moves first
-        velocity.y -= 1.25 * speed;
+       //velocity.y -= 1.25 * speed;
     }
 
     move();
