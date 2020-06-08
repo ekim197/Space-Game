@@ -105,6 +105,8 @@ void EventState::draw(){
     game->view.setCenter(view.getCenter());
     game->window.setView(view);
 
+    game->window.clear();
+
     // Draws Buttons
     for (auto x : choiceButtons)
         game->window.draw(x);
@@ -123,11 +125,11 @@ void EventState::update(const float dt){
     fadeTimer += dt;
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && dt != 0){
         if (isTextClicked(choiceButtons[0])){
-            game->player1.loseCrew();
+            game->gamePlayer.loseCrew();
             game->pop_state();
         }
         else if(isTextClicked(choiceButtons[1])){
-            game->player1.loseCrew(3);
+            game->gamePlayer.loseCrew(3);
             game->pop_state();
         }
     }

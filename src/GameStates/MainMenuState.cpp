@@ -28,7 +28,7 @@ void MainMenuState::update(const float dt){
     if(timer >= 0.50){
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && dt != 0){
             if (isTextClicked(buttons[0]))
-                game->push_state(new PlayState(game, game->player1));
+                game->push_state(new PlayState(game, game->gamePlayer));
             else if(isTextClicked(buttons[1]))
                 game->push_state(new TutorialState(game));
             else if (isTextClicked(buttons[2]))

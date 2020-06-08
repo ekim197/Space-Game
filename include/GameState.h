@@ -66,7 +66,6 @@ public:
 /*_____________Play_____________*/
 class PlayState : public GameState{
 protected:
-    Player player;
     float timerInsertAsteroid, timerInsertCoin, timerInsertPlanet, timerInsertWarZone;
     float timerCrash, timerOffCourse, timerInWarZone;
     std::vector<Entity*> entityList;
@@ -75,6 +74,9 @@ protected:
 
 
 public:
+    // Public Variables
+    Player player;
+
     // Constructor and Destructor
     PlayState(Game* game, Player& player);
     ~PlayState();

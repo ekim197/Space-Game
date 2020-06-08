@@ -54,8 +54,6 @@ void PlayState::handle_input(){
     }
 }
 
-
-
 void PlayState::update(const float dt){
     // Three second delay before things start spawning in
     timer += dt;

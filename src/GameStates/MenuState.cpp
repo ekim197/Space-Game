@@ -37,7 +37,7 @@ void MenuState::handle_input(){
         // Key is Pressed
         case sf::Event::KeyPressed:
             if (event.key.code == sf::Keyboard::Return)
-                game->push_state(new PlayState(game, game->player1));
+                game->push_state(new PlayState(game, game->gamePlayer));
             break;
         // Hovered Over Text
         case sf::Event::MouseMoved:
