@@ -5,8 +5,8 @@
 using namespace Collision;
 using namespace Resource;
 
-PlayState::PlayState(Game* game, Player& player)
-    : timerInsertAsteroid(0), timerInsertCoin(0), timerInsertPlanet(0), timerCrash(0), timerOffCourse(0), timerInWarZone(0){
+PlayState::PlayState(Game* game, Player& playerObj)
+    : player(playerObj), timerInsertAsteroid(0), timerInsertCoin(0), timerInsertPlanet(0), timerCrash(0), timerOffCourse(0), timerInWarZone(0){
     // Push Game
     this->game = game;
 
@@ -54,11 +54,9 @@ void PlayState::handle_input(){
     }
 }
 
-void PlayState::update(const float dt){
-    update(dt, game->player1);
-}
 
-void PlayState::update(const float dt, Player& player){
+
+void PlayState::update(const float dt){
     // Three second delay before things start spawning in
     timer += dt;
     fadeTimer += dt;
@@ -72,19 +70,19 @@ void PlayState::update(const float dt, Player& player){
 
         // Insert Entities
         if(timerInsertAsteroid >= 0.5)
-            insertAsteroid(abs(rng), player);
+            insertAsteroid(abs(rng));
         if(timerInsertCoin >= 1)
-            insertCoin(abs(rng) / 1234, player);
+            insertCoin(abs(rng) / 1234);
         if(timerInsertPlanet >= 10)
-            insertPlanet(abs(rng) / 100, player);
+            insertPlanet(abs(rng) / 100);
         if(timerInsertWarZone >= 20)
-            insertWarZone(abs(rng) / 100000, player);
+            insertWarZone(abs(rng) / 100000);
     }
 
     // Collision detection & CheckPastYet
     auto i = entityList.begin();
     while(i != entityList.end()){
-        if(collide(*i, player, dt) || checkPastYet(*i, player))
+        if(collide(*i, dt) || checkPastYet(*i))
             entityList.erase(i);
         else
             i++;
@@ -108,23 +106,19 @@ void PlayState::update(const float dt, Player& player){
         i->update(dt);
 
     // Update Text
-    updateText(player);
+    updateText();
 
     // Update View
     game->view.setCenter(sf::Vector2f(VIEW_WIDTH/2, player.getPosition().y - VIEW_HEIGHT/3));
 
     // Check if exploded
-    if(checkBadEvent(dt, player) != 0){
-        game->push_state(new EventState(game, checkBadEvent(dt, player)));
-        reset(player);
+    if(checkBadEvent(dt) != 0){
+        game->push_state(new EventState(game, checkBadEvent(dt)));
+        reset();
     }
 }
 
 void PlayState::draw(){
-    draw(game->player1);
-}
-
-void PlayState::draw(Player& player){
     // Draw Background
     game->window.clear(sf::Color(8,29,49));
     game->window.setView(game->view);
@@ -147,7 +141,7 @@ void PlayState::draw(Player& player){
         fadeOut();
 }
 
-void PlayState::updateText(Player& player){
+void PlayState::updateText(){
     // Gold
     std::string goldString = "GOLD\t\t" + std::to_string(player.getGold());
     gameText[0].setString(goldString);
@@ -157,7 +151,7 @@ void PlayState::updateText(Player& player){
     gameText[1].setString(crewString);
 
     // Dist
-    int dist = abs(player.getPosition().y);
+    int dist = -player.getPosition().y;
     dist -= dist % 100;
     std::string distString = "DISTANCE\t" + std::to_string(dist) + " miles";
     gameText[2].setString(distString);
@@ -174,7 +168,7 @@ void PlayState::updateText(Player& player){
         gameText[i].move(0, player.getVelocity().y);
 }
 
-void PlayState::reset(Player& player){
+void PlayState::reset(){
     for(auto key: entityList)
         delete key;
     entityList.clear();
@@ -189,16 +183,16 @@ void PlayState::reset(Player& player){
     player.setPosition(VIEW_WIDTH / 2, player.getPosition().y);
 }
 
-bool PlayState::collide(Entity* obj, Player& player, float dt){
+bool PlayState::collide(Entity* obj, float dt){
     if(obj->name() == "Coin")
-        return collide(dynamic_cast<Coin*>(obj), player);
+        return collide(dynamic_cast<Coin*>(obj));
     else if(obj->name() == "WarZone")
-        return collide(dynamic_cast<WarZone*>(obj), player, dt);
+        return collide(dynamic_cast<WarZone*>(obj), dt);
     else
-        return collide(dynamic_cast<Obstacle*>(obj), player);
+        return collide(dynamic_cast<Obstacle*>(obj));
 }
 
-bool PlayState::collide(Obstacle* obj, Player& player){
+bool PlayState::collide(Obstacle* obj){
     if(PixelPerfectTest(player.getLeftWing(), obj->getBody()))
         player.hitLeft();
     else if(PixelPerfectTest(player.getRightWing(), obj->getBody()))
@@ -210,7 +204,7 @@ bool PlayState::collide(Obstacle* obj, Player& player){
     return 0;
 }
 
-bool PlayState::collide(Coin* obj, Player& player){
+bool PlayState::collide(Coin* obj){
     if(PixelPerfectTest(player.getLeftWing(), obj->getBody())){
         player.gainGold();
         return 1;
@@ -226,7 +220,7 @@ bool PlayState::collide(Coin* obj, Player& player){
     return 0;
 }
 
-bool PlayState::collide(WarZone* obj, Player& player, float dt){
+bool PlayState::collide(WarZone* obj, float dt){
     if(PixelPerfectTest(player.getLeftWing(), obj->getBody()) && PixelPerfectTest(player.getRightWing(), obj->getBody())){
         player.healLeft();
         player.healRight();
@@ -237,7 +231,7 @@ bool PlayState::collide(WarZone* obj, Player& player, float dt){
     return 0;
 }
 
-bool PlayState::checkPastYet(Entity* obj, Player& player){
+bool PlayState::checkPastYet(Entity* obj){
     float objHalfSize = obj->getGlobalBounds().height / 2;
     float dy = obj->getPosition().y - player.getPosition().y;
     if( dy - objHalfSize >= VIEW_HEIGHT / 6)
@@ -246,7 +240,7 @@ bool PlayState::checkPastYet(Entity* obj, Player& player){
         return false;
 }
 
-int PlayState::checkBadEvent(float dt, Player& player){
+int PlayState::checkBadEvent(float dt){
     // Check if staying in WarZone too long
     if(timerInWarZone > 2){
         player.explode();
@@ -282,7 +276,7 @@ int PlayState::checkBadEvent(float dt, Player& player){
     return 0;
 }
 
-void PlayState::insertAsteroid(int rngVal, Player& player){
+void PlayState::insertAsteroid(int rngVal){
     entityList.push_back(new Asteroid(&asteroidTexture, sf::Vector2u(4,4),
         /*Position*/                sf::Vector2f(rngVal % 2048, player.getPosition().y - 2 * VIEW_HEIGHT),
         /*Select Image*/            rngVal % 4, (rng / 100000) % 4,
@@ -291,13 +285,13 @@ void PlayState::insertAsteroid(int rngVal, Player& player){
     timerInsertAsteroid = 0;
 }
 
-void PlayState::insertCoin(int rngVal, Player& player){
+void PlayState::insertCoin(int rngVal){
     entityList.push_back(new Coin(&coinTexture, sf::Vector2u(10,1),
         /*Position*/            sf::Vector2f(rngVal % 2048, player.getPosition().y - 2 * VIEW_HEIGHT)));
     timerInsertCoin = 0;
 }
 
-void PlayState::insertPlanet(int rngVal, Player& player){
+void PlayState::insertPlanet(int rngVal){
     float side;
     if(rngVal % 2)
         side = -1/2 * VIEW_WIDTH;
@@ -311,7 +305,7 @@ void PlayState::insertPlanet(int rngVal, Player& player){
     timerInsertPlanet = 0;
 }
 
-void PlayState::insertWarZone(int rngVal, Player& player){
+void PlayState::insertWarZone(int rngVal){
     float side;
     if(rngVal % 2)
         side = -1/2 * VIEW_WIDTH;
