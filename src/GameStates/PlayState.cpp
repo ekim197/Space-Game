@@ -41,9 +41,12 @@ void PlayState::handle_input(){
             this->game->window.close();
             break;
         // Pause game
+        case sf::Event::LostFocus:
+            game->push_state(new PauseState(game, game->current_state()));
+            break;
         case sf::Event::KeyPressed:
             if (event.key.code == sf::Keyboard::Escape)
-                game->push_state(new PauseState(game));
+                game->push_state(new PauseState(game, game->current_state()));
             break;
         default:
             break;

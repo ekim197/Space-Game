@@ -2,27 +2,23 @@
 
 using namespace Resource;
 
-MenuState::MenuState(Game* game, int buttonNum): numButtons(buttonNum){
+MenuState::MenuState(Game* game, int buttonNum, sf::Vector2f pos): numButtons(buttonNum){
     // Music
     music[1].stop();
     music[0].play();
 
-    // Text
+    // Title
     title.setFont(font[2]);
-    title.setPosition( 800, 100);
-    title.setCharacterSize(200); // in pixels, not points!
-    title.setFillColor(sf::Color::White);   // set the color
-    title.setString("ENDLESS\n    VOID");
+    title.setFillColor(sf::Color::White);
 
+    //Buttons
     sf::Text text;
-
-    //Set positions of buttons
     for (int i = 0; i < numButtons; i++){
         buttons.push_back(text);
         buttons[i].setFont(font[0]);
-        buttons[i].setPosition(100, 550 + i * 150);
-        buttons[i].setCharacterSize(100); // in pixels, not points!
-        buttons[i].setFillColor(sf::Color::White);   // set the color
+        buttons[i].setPosition(pos.x, pos.y + i * 150);
+        buttons[i].setCharacterSize(100);
+        buttons[i].setFillColor(sf::Color::White);
     }
     // Set Game
     this->game = game;
@@ -85,7 +81,7 @@ void MenuState::draw(){
 }
 
 bool MenuState::isTextClicked(sf::Text text){
-    sf::IntRect rect(text.getPosition().x, text.getPosition().y, text.getGlobalBounds().width, text.getGlobalBounds().height);
+    sf::IntRect rect(text.getPosition().x, text.getPosition().y, text.getGlobalBounds().width, text.getGlobalBounds().height + 20);
 
     if (rect.contains(sf::Mouse::getPosition(game->window)))
         return true;

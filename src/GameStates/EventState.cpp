@@ -78,7 +78,10 @@ void EventState::handle_input(){
         //pause game
         case sf::Event::KeyPressed:
             if (event.key.code == sf::Keyboard::Escape)
-                game->push_state(new MainMenuState(game));
+                game->push_state(new PauseState(game, game->current_state()));
+            break;
+        case sf::Event::LostFocus:
+            game->push_state(new PauseState(game, game->current_state()));
             break;
         case sf::Event::MouseMoved:
             if (isTextClicked(choiceButtons[0]))
