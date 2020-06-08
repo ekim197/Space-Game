@@ -47,6 +47,8 @@ void PlayState::handle_input(){
         case sf::Event::KeyPressed:
             if (event.key.code == sf::Keyboard::Escape)
                 game->push_state(new PauseState(game, game->current_state()));
+
+
             break;
         default:
             break;
@@ -68,20 +70,20 @@ void PlayState::update(const float dt){
 
         // Insert Entities
         if(timerInsertAsteroid >= 0.5)
-            insertAsteroid(abs(rng));
+            insertAsteroid(abs(rng), VIEW_HEIGHT * 2);
         if(timerInsertCoin >= 1)
-            insertCoin(abs(rng) / 1234);
+            insertCoin(abs(rng) / 1234, VIEW_HEIGHT * 2);
         if(timerInsertPlanet >= 10)
-            insertPlanet(abs(rng) / 100);
+            insertPlanet(abs(rng) / 100, VIEW_HEIGHT * 2);
         if(timerInsertWarZone >= 20)
-            insertWarZone(abs(rng) / 100000);
+            insertWarZone(abs(rng) / 100000, VIEW_HEIGHT * 6);
     }
 
     // Collision detection & CheckPastYet
     auto i = entityList.begin();
     while(i != entityList.end()){
         if(collide(*i, dt) || checkPastYet(*i))
-            entityList.erase(i);
+            i = entityList.erase(i);
         else
             i++;
     }
@@ -94,7 +96,7 @@ void PlayState::update(const float dt){
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
             player.moveRight();
 
-        // Guarentee Ship moves up
+        // Guarantee Ship moves up
         player.setVelocity(player.getVelocity().x, player.getVelocity().y - 1.25 * player.getSpeed());
     }
     player.update(dt);
@@ -191,13 +193,15 @@ bool PlayState::collide(Entity* obj, float dt){
 }
 
 bool PlayState::collide(Obstacle* obj){
-    if(PixelPerfectTest(player.getLeftWing(), obj->getBody()))
-        player.hitLeft();
-    else if(PixelPerfectTest(player.getRightWing(), obj->getBody()))
-        player.hitRight();
-    if(PixelPerfectTest(player.getBody(), obj->getBody()) && !player.getIsExplode()){
-        sound.play();
-        player.explode();
+    if(obj){
+        if(PixelPerfectTest(player.getLeftWing(), obj->getBody()))
+            player.hitLeft();
+        else if(PixelPerfectTest(player.getRightWing(), obj->getBody()))
+            player.hitRight();
+        if(PixelPerfectTest(player.getBody(), obj->getBody()) && !player.getIsExplode()){
+            sound.play();
+            player.explode();
+        }
     }
     return 0;
 }
@@ -274,43 +278,43 @@ int PlayState::checkBadEvent(float dt){
     return 0;
 }
 
-void PlayState::insertAsteroid(int rngVal){
+void PlayState::insertAsteroid(int rngVal, float distY){
     entityList.push_back(new Asteroid(&asteroidTexture, sf::Vector2u(4,4),
-        /*Position*/                sf::Vector2f(rngVal % 2048, player.getPosition().y - 2 * VIEW_HEIGHT),
+        /*Position*/                sf::Vector2f(rngVal % 2048, player.getPosition().y - distY),
         /*Select Image*/            rngVal % 4, (rng / 100000) % 4,
         /*Rotation*/                0.3,
         /*Scale*/                   1 ));
     timerInsertAsteroid = 0;
 }
 
-void PlayState::insertCoin(int rngVal){
+void PlayState::insertCoin(int rngVal, float distY){
     entityList.push_back(new Coin(&coinTexture, sf::Vector2u(10,1),
-        /*Position*/            sf::Vector2f(rngVal % 2048, player.getPosition().y - 2 * VIEW_HEIGHT)));
+        /*Position*/            sf::Vector2f(rngVal % 2048, player.getPosition().y - distY)));
     timerInsertCoin = 0;
 }
 
-void PlayState::insertPlanet(int rngVal){
+void PlayState::insertPlanet(int rngVal, float distY){
     float side;
     if(rngVal % 2)
         side = -1/2 * VIEW_WIDTH;
     else
         side = 3/2 * VIEW_WIDTH;
     entityList.push_back(new Planet(&planetTexture, sf::Vector2u(4,1),
-        /*Position*/                sf::Vector2f(side, player.getPosition().y - VIEW_HEIGHT * 2),
+        /*Position*/                sf::Vector2f(side, player.getPosition().y - distY),
         /*Select Image*/            rng % 4, 0,
         /*Rotation*/                0,
         /*Scale*/                   3 ));
     timerInsertPlanet = 0;
 }
 
-void PlayState::insertWarZone(int rngVal){
+void PlayState::insertWarZone(int rngVal, float distY){
     float side;
     if(rngVal % 2)
         side = -1/2 * VIEW_WIDTH;
     else
         side = 3/2 * VIEW_WIDTH;
     entityList.push_back(new WarZone(&warZoneTexture,
-        /*Position*/                sf::Vector2f(side, player.getPosition().y - VIEW_HEIGHT * 6),
+        /*Position*/                sf::Vector2f(side, player.getPosition().y - distY),
         /*Scale*/                   3 ));
     timerInsertWarZone = 0;
 }

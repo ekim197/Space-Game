@@ -39,8 +39,8 @@ public:
     int getCrew() const { return crew; }
     int getGold() const { return gold; }
     bool getIsExplode(){ return isExplode; }
-    int getNumLeftHit() { return numLeftHit; }
-    int getNumRightHit() { return numRightHit; }
+    float getNumLeftHit() { return numLeftHit; }
+    float getNumRightHit() { return numRightHit; }
 
     // Setters
     void setCrew(int crw) { crew = crw; }

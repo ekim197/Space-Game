@@ -2,17 +2,24 @@
 
 using namespace Resource;
 
-MainMenuState::MainMenuState(Game* game) : MenuState(game, 5, sf::Vector2f(100,550)){
+MainMenuState::MainMenuState(Game* game) : MenuState(game, 5){
     // Title
     title.setPosition(800,100);
     title.setCharacterSize(200); // in pixels, not points!
     title.setString("ENDLESS\n    VOID");
 
     // Buttons
+    for(size_t i = 0; i < buttons.size(); i++){
+        buttons[i].setFont(font[0]);
+        buttons[i].setPosition(100, 550 + i * 150);
+        buttons[i].setCharacterSize(100);
+        buttons[i].setFillColor(sf::Color::White);
+    }
+
     buttons[4].setFont(font[0]);
-    buttons[4].setPosition(1500, 650 );
-    buttons[4].setCharacterSize(60); // in pixels, not points!
-    buttons[4].setFillColor(sf::Color::White);   // set the color
+    buttons[4].setPosition(2000, 1050);
+    buttons[4].setCharacterSize(20); // in pixels, not points!
+    buttons[4].setFillColor(sf::Color(229, 245, 249));   // set the color
 
     buttons[0].setString("PLAY GAME");
     buttons[1].setString("TUTORIAL");
@@ -25,18 +32,16 @@ void MainMenuState::update(const float dt){
     fadeTimer += dt;
     timer += dt;
 
-    if(timer >= 0.50){
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && dt != 0){
-            if (isTextClicked(buttons[0]))
-                game->push_state(new PlayState(game, game->gamePlayer));
-            else if(isTextClicked(buttons[1]))
-                game->push_state(new TutorialState(game));
-            else if (isTextClicked(buttons[2]))
-                game->push_state(new StoreState(game));
-            else if (isTextClicked(buttons[3]))
-                game->window.close();
-            else if (isTextClicked(buttons[4]))
-                game->push_state(new BackdoorState(game));
-        }
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && timer >= 0.50){
+        if (isTextClicked(buttons[0]))
+            game->push_state(new PlayState(game, game->gamePlayer));
+        else if(isTextClicked(buttons[1]))
+            game->push_state(new TutorialState(game));
+        else if (isTextClicked(buttons[2]))
+            game->push_state(new StoreState(game));
+        else if (isTextClicked(buttons[3]))
+            game->window.close();
+        else if (isTextClicked(buttons[4]))
+            game->push_state(new BackdoorState(game));
     }
 }

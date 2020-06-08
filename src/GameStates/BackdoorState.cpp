@@ -4,34 +4,46 @@ using namespace Resource;
 
 BackdoorState::BackdoorState(Game* game): PlayState(game, game->defaultPlayer){}
 
+void BackdoorState::handle_input(){
+    sf::Event event;
+    while (this->game->window.pollEvent(event)){
+        switch (event.type){
+        /* Close the window */
+        case sf::Event::Closed:
+            this->game->window.close();
+            break;
+        // Pause game
+        case sf::Event::LostFocus:
+            game->push_state(new PauseState(game, game->current_state()));
+            break;
+        case sf::Event::KeyPressed:
+            if (event.key.code == sf::Keyboard::Escape)
+                game->push_state(new PauseState(game, game->current_state()));
+            else if(event.key.code == sf::Keyboard::Num1)
+                insertAsteroid(rng, 600);
+            else if(event.key.code == sf::Keyboard::Num2)
+                insertPlanet(rng, 600);
+            else if(event.key.code == sf::Keyboard::Num3)
+                insertCoin(rng, 600);
+            else if(event.key.code == sf::Keyboard::Num4)
+                insertWarZone(rng, 600*6);
+            break;
+        default:
+            break;
+        }
+    }
+}
+
 void BackdoorState::update(const float dt){
     // Three second delay before things start spawning in
     timer += dt;
     fadeTimer += dt;
 
-    if(timer > 3){
-        // Time
-        timerInsertAsteroid += dt;
-        timerInsertCoin += dt;
-        timerInsertPlanet += dt;
-        timerInsertWarZone += dt;
-
-        // Insert Entities
-        if(timerInsertAsteroid >= 0.5)
-            insertAsteroid(abs(rng));
-        if(timerInsertCoin >= 1)
-            insertCoin(abs(rng) / 1234);
-        if(timerInsertPlanet >= 10)
-            insertPlanet(abs(rng) / 100);
-        if(timerInsertWarZone >= 20)
-            insertWarZone(abs(rng) / 100000);
-    }
-
     // Collision detection & CheckPastYet
     auto i = entityList.begin();
     while(i != entityList.end()){
         if(collide(*i,  dt) || checkPastYet(*i))
-            entityList.erase(i);
+            i = entityList.erase(i);
         else
             i++;
     }

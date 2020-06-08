@@ -56,7 +56,7 @@ protected:
 
 public:
     // Constructor
-    MenuState(Game* game, int buttonNum, sf::Vector2f pos);
+    MenuState(Game* game, int buttonNum);
 
     // Loop
     virtual void handle_input() override;
@@ -99,10 +99,10 @@ public:
     int checkBadEvent(float dt);
 
     // Insert
-    void insertAsteroid(int rngVal);
-    void insertPlanet(int rngVal);
-    void insertCoin(int rngVal);
-    void insertWarZone(int rngVal);
+    void insertAsteroid(int rngVal, float distY);
+    void insertPlanet(int rngVal, float distY);
+    void insertCoin(int rngVal, float distY);
+    void insertWarZone(int rngVal, float distY);
 
     // Other
     void pause_game();
@@ -116,8 +116,7 @@ public:
     BackdoorState(Game* game);
 
     // Loop
-    //virtual void handle_input() override;
-
+    virtual void handle_input() override;
     virtual void update(const float dt) override;
     virtual void draw() override;
 };
@@ -134,7 +133,12 @@ public:
 };
 
 /*_____________Store_____________*/
-class StoreState : public GameState{
+class StoreState : public MenuState{
+private:
+    std::vector<sf::Text> prices;
+
+    sf::Text goldAmount;
+
 public:
     // Constructor and Destructor
     StoreState(Game* game);

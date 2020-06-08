@@ -21,20 +21,20 @@ void TutorialState::update(const float dt){
 
         // Insert Entities
         if(timerInsertAsteroid >= 0.5)
-            insertAsteroid(abs(rng));
+            insertAsteroid(abs(rng), VIEW_HEIGHT * 2);
         if(timerInsertCoin >= 1)
-            insertCoin(abs(rng) / 1234);
+            insertCoin(abs(rng) / 1234, VIEW_HEIGHT * 2);
         if(timerInsertPlanet >= 10)
-            insertPlanet(abs(rng) / 100);
+            insertPlanet(abs(rng) / 100, VIEW_HEIGHT * 2);
         if(timerInsertWarZone >= 20)
-            insertWarZone(abs(rng) / 100000);
+            insertWarZone(abs(rng) / 100000, VIEW_HEIGHT * 6);
     }
 
     // Collision detection & CheckPastYet
     auto i = entityList.begin();
     while(i != entityList.end()){
         if(collide(*i, dt) || checkPastYet(*i))
-            entityList.erase(i);
+            i = entityList.erase(i);
         else
             i++;
     }

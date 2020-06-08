@@ -2,7 +2,7 @@
 
 using namespace Resource;
 
-MenuState::MenuState(Game* game, int buttonNum, sf::Vector2f pos): numButtons(buttonNum){
+MenuState::MenuState(Game* game, int buttonNum): numButtons(buttonNum){
     // Music
     music[1].stop();
     music[0].play();
@@ -12,14 +12,9 @@ MenuState::MenuState(Game* game, int buttonNum, sf::Vector2f pos): numButtons(bu
     title.setFillColor(sf::Color::White);
 
     //Buttons
-    sf::Text text;
-    for (int i = 0; i < numButtons; i++){
-        buttons.push_back(text);
-        buttons[i].setFont(font[0]);
-        buttons[i].setPosition(pos.x, pos.y + i * 150);
-        buttons[i].setCharacterSize(100);
-        buttons[i].setFillColor(sf::Color::White);
-    }
+    for (int i = 0; i < numButtons; i++)
+        buttons.push_back(sf::Text());
+
     // Set Game
     this->game = game;
 }
