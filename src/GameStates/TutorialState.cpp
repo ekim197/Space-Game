@@ -5,14 +5,19 @@ using namespace Resource;
 TutorialState::TutorialState(Game* game): PlayState(game, game->defaultPlayer){
     for(auto& key: gameText)
         key.setFillColor(sf::Color::Red);
+
+    instructions.setFont(font[0]);
+    instructions.setCharacterSize(30);
+    instructions.setFillColor(sf::Color::Red);
+    instructions.setPosition(100, player.getPosition().y - 800);
+    instructions.setString("Welcome to the tutorial");
 }
 
 void TutorialState::update(const float dt){
     // Three second delay before things start spawning in
-    timer += dt;
-    fadeTimer += dt;
+    timeIncrement(dt);
 
-    if(timer > 3){
+    if(timer > 1){
         // Time
         timerInsertAsteroid += dt;
         timerInsertCoin += dt;
@@ -20,7 +25,7 @@ void TutorialState::update(const float dt){
         timerInsertWarZone += dt;
 
         // Insert Entities
-        if(timerInsertAsteroid >= 0.5)
+        if(timerInsertAsteroid >= 1)
             insertAsteroid(abs(rng), VIEW_HEIGHT * 2);
         if(timerInsertCoin >= 1)
             insertCoin(abs(rng) / 1234, VIEW_HEIGHT * 2);
@@ -49,6 +54,9 @@ void TutorialState::update(const float dt){
             player.moveLeft();
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
             player.moveRight();
+
+        // Guarantee Ship moves up
+        player.setVelocity(player.getVelocity().x, player.getVelocity().y - .75 * player.getSpeed());
     }
     player.update(dt);
 
@@ -58,6 +66,7 @@ void TutorialState::update(const float dt){
 
     // Update Text
     updateText();
+    instructions.move(0, player.getVelocity().y);
 
     // Update View
     game->view.setCenter(sf::Vector2f(VIEW_WIDTH/2, player.getPosition().y - VIEW_HEIGHT/3));
@@ -84,6 +93,8 @@ void TutorialState::draw(){
     // Draw Text
     for(auto i : gameText)
         game->window.draw(i);
+
+    game->window.draw(instructions);
 
     // Fade
     if(fadeTimer <= 3)

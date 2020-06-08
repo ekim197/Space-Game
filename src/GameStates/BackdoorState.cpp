@@ -36,8 +36,7 @@ void BackdoorState::handle_input(){
 
 void BackdoorState::update(const float dt){
     // Three second delay before things start spawning in
-    timer += dt;
-    fadeTimer += dt;
+    timeIncrement(dt);
 
     // Collision detection & CheckPastYet
     auto i = entityList.begin();

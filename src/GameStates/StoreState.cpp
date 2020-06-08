@@ -1,5 +1,7 @@
 #include "GameState.h"
 #include <string>
+#include <iomanip>
+#include <sstream>
 
 using namespace Resource;
 
@@ -40,13 +42,16 @@ StoreState::StoreState(Game* game): MenuState(game, 5){
     prices[2].setString("Spend 10 gold");
     prices[3].setString("Sell for 5 gold");
 
-    // Gold Amount
-    goldAmount.setFont(font[0]);
-    goldAmount.setPosition(VIEW_WIDTH - 400, 300);
-    goldAmount.setCharacterSize(75);
-    goldAmount.setFillColor(sf::Color::Yellow);
-    goldAmount.setOutlineColor(sf::Color::Black);
-    goldAmount.setOutlineThickness(4);
+    // Player Info
+    for(int i = 0; i < 3; i++){
+        playerInfo.push_back(sf::Text());
+        playerInfo[i].setFont(font[0]);
+        playerInfo[i].setPosition(VIEW_WIDTH - 500, 300 + i * 80);
+        playerInfo[i].setCharacterSize(75);
+        playerInfo[i].setFillColor(sf::Color::Yellow);
+        playerInfo[i].setOutlineColor(sf::Color::Black);
+        playerInfo[i].setOutlineThickness(4);
+    }
 }
 
 void StoreState::handle_input(){
@@ -80,10 +85,9 @@ void StoreState::handle_input(){
 }
 
 void StoreState::update(const float dt){
-    fadeTimer += dt;
-    timer += dt;
+    timeIncrement(dt);
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && timer >= 0.50){
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickTimer >= 0.50){
         if (isTextClicked(buttons[0]) && game->gamePlayer.getGold() >= 10){
             game->gamePlayer.setSpeed(game->gamePlayer.getSpeed() + 0.002);
             game->gamePlayer.loseGold(10);
@@ -102,9 +106,16 @@ void StoreState::update(const float dt){
         }
         else if (isTextClicked(buttons[4]))
             game->push_state(new MainMenuState(game));
+        clickTimer = 0;
     }
 
-    goldAmount.setString("Gold: " + std::to_string(game->gamePlayer.getGold()));
+    playerInfo[0].setString("Gold: " + std::to_string(game->gamePlayer.getGold()));
+    playerInfo[1].setString("Crew: " + std::to_string(game->gamePlayer.getCrew()));
+
+    std::stringstream sout;
+    sout << std::fixed << std::setprecision(0) << game->gamePlayer.getSpeed() * 1000;
+
+    playerInfo[2].setString("Speed: " + sout.str());
 
 }
 
@@ -124,16 +135,17 @@ void StoreState::draw(){
     game->window.draw(background);
 
     // Draw Buttons
-    for (auto x : buttons)
+    for(auto x : buttons)
         game->window.draw(x);
     game->window.draw(title);
 
     // Draw Prices
-    for (auto key : prices)
+    for(auto key : prices)
         game->window.draw(key);
 
-    // Draw Gold
-    game->window.draw(goldAmount);
+    // Draw Player Info
+    for(auto key : playerInfo)
+        game->window.draw(key);
 
     // Fade
     if(fadeTimer < 6)

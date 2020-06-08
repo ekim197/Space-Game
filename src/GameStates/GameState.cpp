@@ -3,9 +3,9 @@
 
 bool GameState::isTextClicked(sf::Text text){
     sf::IntRect rect(text.getPosition().x, text.getPosition().y, text.getGlobalBounds().width, text.getGlobalBounds().height + 20);
-
-    if (rect.contains(sf::Mouse::getPosition(game->window)))
+    if (rect.contains(sf::Mouse::getPosition(game->window))){
         return true;
+    }
     return false;
 }
 
@@ -33,4 +33,10 @@ void GameState::fadeOut(float factor){
     else
         fadeTransparency = 0;
     game->window.draw(fade);
+}
+
+void GameState::timeIncrement(const float dt){
+    timer += dt;
+    fadeTimer += dt;
+    clickTimer += dt;
 }

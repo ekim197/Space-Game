@@ -29,10 +29,9 @@ MainMenuState::MainMenuState(Game* game) : MenuState(game, 5){
 }
 
 void MainMenuState::update(const float dt){
-    fadeTimer += dt;
-    timer += dt;
+    timeIncrement(dt);
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && timer >= 0.50){
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickTimer >= 0.50){
         if (isTextClicked(buttons[0]))
             game->push_state(new PlayState(game, game->gamePlayer));
         else if(isTextClicked(buttons[1]))
@@ -43,5 +42,6 @@ void MainMenuState::update(const float dt){
             game->window.close();
         else if (isTextClicked(buttons[4]))
             game->push_state(new BackdoorState(game));
+        //clickTimer = 0;
     }
 }

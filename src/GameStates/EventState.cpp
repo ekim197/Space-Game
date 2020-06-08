@@ -122,7 +122,8 @@ void EventState::draw(){
 }
 
 void EventState::update(const float dt){
-    fadeTimer += dt;
+    timeIncrement(dt);
+
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && dt != 0){
         if (isTextClicked(choiceButtons[0])){
             prevState->player.loseCrew();

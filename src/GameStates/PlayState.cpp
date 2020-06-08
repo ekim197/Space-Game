@@ -58,8 +58,7 @@ void PlayState::handle_input(){
 
 void PlayState::update(const float dt){
     // Three second delay before things start spawning in
-    timer += dt;
-    fadeTimer += dt;
+    timeIncrement(dt);
 
     if(timer > 3){
         // Time
@@ -80,12 +79,18 @@ void PlayState::update(const float dt){
     }
 
     // Collision detection & CheckPastYet
-    auto i = entityList.begin();
-    while(i != entityList.end()){
-        if(collide(*i, dt) || checkPastYet(*i))
-            i = entityList.erase(i);
-        else
-            i++;
+    try{
+        auto i = entityList.begin();
+        while(i != entityList.end()){
+            if(collide(*i, dt) || checkPastYet(*i))
+                i = entityList.erase(i);
+            else
+                i++;
+        }
+    }
+    catch(const std::string& error){
+        std::cerr << "\n\n" << error << "\n\n";
+        exit(2);
     }
 
     // Update Player
@@ -158,9 +163,9 @@ void PlayState::updateText(){
 
     // Velocity
     float vel = - player.getVelocity().y * 1000;
-    std::stringstream stream;
-    stream << std::fixed << std::setprecision(2) << vel;
-    std::string velocityString = "VELOCITY\t" + stream.str() + " mph";
+    std::stringstream sout;
+    sout << std::fixed << std::setprecision(2) << vel;
+    std::string velocityString = "VELOCITY\t" + sout.str() + " mph";
     gameText[3].setString(velocityString);
 
     // Move strings
@@ -192,6 +197,8 @@ bool PlayState::collide(Entity* obj, float dt){
         else
             return collide(dynamic_cast<Obstacle*>(obj));
     }
+    else
+        throw "Problem with collide()";
 }
 
 bool PlayState::collide(Obstacle* obj){

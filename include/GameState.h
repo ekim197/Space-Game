@@ -26,6 +26,7 @@ class GameState{
 protected:
     float timer;
     float fadeTimer;
+    float clickTimer;
     int fadeTransparency;
 
 public:
@@ -33,7 +34,7 @@ public:
     Game* game;
 
     // Constructor and Destructor
-    GameState(): timer(0), fadeTimer(0), fadeTransparency(0) {}
+    GameState(): timer(0), fadeTimer(0), clickTimer(0), fadeTransparency(0) {}
     virtual ~GameState() = default;
 
     // Loop
@@ -45,6 +46,7 @@ public:
     virtual bool isTextClicked(sf::Text text);
     virtual void fadeIn(float factor = 1);
     virtual void fadeOut(float factor = 1);
+    virtual void timeIncrement(const float dt);
 };
 
 /*_____________Menu_____________*/
@@ -123,6 +125,9 @@ public:
 
 /*_____________Tutorial_____________*/
 class TutorialState : public PlayState{
+private:
+    sf::Text instructions;
+
 public:
     // Constructor and Destructor
     TutorialState(Game* game);
@@ -136,8 +141,7 @@ public:
 class StoreState : public MenuState{
 private:
     std::vector<sf::Text> prices;
-
-    sf::Text goldAmount;
+    std::vector<sf::Text> playerInfo;
 
 public:
     // Constructor and Destructor
