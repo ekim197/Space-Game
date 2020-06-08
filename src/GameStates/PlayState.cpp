@@ -184,12 +184,14 @@ void PlayState::reset(){
 }
 
 bool PlayState::collide(Entity* obj, float dt){
-    if(obj->name() == "Coin")
-        return collide(dynamic_cast<Coin*>(obj));
-    else if(obj->name() == "WarZone")
-        return collide(dynamic_cast<WarZone*>(obj), dt);
-    else
-        return collide(dynamic_cast<Obstacle*>(obj));
+    if(obj){
+        if(obj->name() == "Coin")
+            return collide(dynamic_cast<Coin*>(obj));
+        else if(obj->name() == "WarZone")
+            return collide(dynamic_cast<WarZone*>(obj), dt);
+        else
+            return collide(dynamic_cast<Obstacle*>(obj));
+    }
 }
 
 bool PlayState::collide(Obstacle* obj){
@@ -207,39 +209,45 @@ bool PlayState::collide(Obstacle* obj){
 }
 
 bool PlayState::collide(Coin* obj){
-    if(PixelPerfectTest(player.getLeftWing(), obj->getBody())){
-        player.gainGold();
-        return 1;
-    }
-    else if(PixelPerfectTest(player.getRightWing(), obj->getBody())){
-        player.gainGold();
-        return 1;
-    }
-    else if(PixelPerfectTest(player.getBody(), obj->getBody())){
-        player.gainGold();
-        return 1;
+    if(obj){
+        if(PixelPerfectTest(player.getLeftWing(), obj->getBody())){
+            player.gainGold();
+            return 1;
+        }
+        else if(PixelPerfectTest(player.getRightWing(), obj->getBody())){
+            player.gainGold();
+            return 1;
+        }
+        else if(PixelPerfectTest(player.getBody(), obj->getBody())){
+            player.gainGold();
+            return 1;
+        }
     }
     return 0;
 }
 
 bool PlayState::collide(WarZone* obj, float dt){
-    if(PixelPerfectTest(player.getLeftWing(), obj->getBody()) && PixelPerfectTest(player.getRightWing(), obj->getBody())){
-        player.healLeft();
-        player.healRight();
-        timerInWarZone += dt;
+    if(obj){
+        if(PixelPerfectTest(player.getLeftWing(), obj->getBody()) && PixelPerfectTest(player.getRightWing(), obj->getBody())){
+            player.healLeft();
+            player.healRight();
+            timerInWarZone += dt;
+        }
+        else
+            timerInWarZone = 0;
     }
-    else
-        timerInWarZone = 0;
     return 0;
 }
 
 bool PlayState::checkPastYet(Entity* obj){
-    float objHalfSize = obj->getGlobalBounds().height / 2;
-    float dy = obj->getPosition().y - player.getPosition().y;
-    if( dy - objHalfSize >= VIEW_HEIGHT / 6)
-        return true;
-    else
-        return false;
+    if(obj){
+        float objHalfSize = obj->getGlobalBounds().height / 2;
+        float dy = obj->getPosition().y - player.getPosition().y;
+        if( dy - objHalfSize >= VIEW_HEIGHT / 6)
+            return true;
+        else
+            return false;
+    }
 }
 
 int PlayState::checkBadEvent(float dt){
