@@ -2,10 +2,20 @@
 
 using namespace Resource;
 
-PauseState::PauseState(Game* game): MenuState(game, 3){
+PauseState::PauseState(Game* game, GameState* prev)
+    : MenuState(game, 2, sf::Vector2f(sf::Vector2f(100,750))), prevState(prev){
+    // Title
+    title.setPosition(100, game->view.getCenter().y - VIEW_HEIGHT/2 + 100);
+    title.setCharacterSize(200); // in pixels, not points!
+    title.setString("ENDLESS\n    PAUSE");
+
+    // Buttons
+    int i = 0;
+    for(auto& key: buttons)
+        key.setPosition(100, game->view.getCenter().y - VIEW_HEIGHT/2 + 750 + i++ * 100);
+
     buttons[0].setString("CONTINUE");
     buttons[1].setString("MENU");
-    buttons[2].setString("MENU");
 }
 
 void PauseState::handle_input(){
@@ -21,7 +31,7 @@ void PauseState::handle_input(){
         /* Change Between game states */
         case sf::Event::KeyPressed:
             if (event.key.code == sf::Keyboard::Escape)
-                game->push_state(new MainMenuState(game));
+                game->pop_state();
             else if (event.key.code == sf::Keyboard::Return)
                 game->pop_state();
             break;
@@ -41,26 +51,28 @@ void PauseState::handle_input(){
 }
 
 void PauseState::update(const float dt){
+    // Fade
     fadeTimer += dt;
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && dt != 0){
-        if (isTextClicked(buttons[0]))
+
+    // Click
+    if(sf::Mouse::isButtonPressed(sf::Mouse::Left) && dt != 0){
+        if(isTextClicked(buttons[0]))
             game->pop_state();
-        else if (isTextClicked(buttons[1]))
-            game->push_state(new MainMenuState(game));
-        else if (isTextClicked(buttons[2]))
+        else if(isTextClicked(buttons[1]))
             game->push_state(new MainMenuState(game));
     }
 }
 
 void PauseState::draw(){
-    // Set View
-    sf::View view(sf::Vector2f(0.0f,0.0f), sf::Vector2f(VIEW_WIDTH,VIEW_HEIGHT));
-    view.setCenter(VIEW_WIDTH/2, VIEW_HEIGHT/2);
-    game->view.setCenter(view.getCenter());
-    game->window.setView(view);
+    // Set rect
+    sf::RectangleShape rect(sf::Vector2f(VIEW_WIDTH,VIEW_HEIGHT));
+    rect.setFillColor(sf::Color(30,30,30,150));
+    rect.setPosition(0, game->view.getCenter().y - VIEW_HEIGHT/2);
 
     // Draw Background
-    game->window.clear(sf::Color(30,30,30, 0));
+    game->window.clear();
+    prevState->draw();
+    game->window.draw(rect);
 
     // Draw Buttons
     for (auto x : buttons)
@@ -70,4 +82,12 @@ void PauseState::draw(){
     // Fade
     if(fadeTimer < 6)
         fadeIn(5);
+}
+
+bool PauseState::isTextClicked(sf::Text text){
+    sf::IntRect rect(text.getPosition().x, text.getPosition().y - (game->view.getCenter().y - VIEW_HEIGHT/2), text.getGlobalBounds().width, text.getGlobalBounds().height + 20);
+
+    if (rect.contains(sf::Mouse::getPosition(game->window)))
+        return true;
+    return false;
 }

@@ -21,6 +21,7 @@ class StoreState;
 class BackdoorState;
 class TutorialState;
 
+/*_____________Game_____________*/
 class GameState{
 protected:
     float timer;
@@ -52,15 +53,17 @@ protected:
     std::vector<sf::Text> buttons;
     sf::Text title;
 
-    bool isTextClicked(sf::Text text);
-
 public:
     // Constructor
-    MenuState(Game* game, int buttonNum);
+    MenuState(Game* game, int buttonNum, sf::Vector2f pos);
 
     // Loop
     virtual void handle_input() override;
     virtual void draw() override;
+
+    // Action
+    virtual bool isTextClicked(sf::Text text);
+
 };
 
 /*_____________Play_____________*/
@@ -179,14 +182,20 @@ public:
 
 /*_____________Pause_____________*/
 class PauseState : public MenuState{
+private:
+    GameState* prevState;
+
 public:
     // Constructor and Destructor
-    PauseState(Game* game);
+    PauseState(Game* game, GameState* prev);
 
     // Loop
     virtual void handle_input() override;
     virtual void update(const float dt) override;
     virtual void draw() override;
+
+    // Action
+    virtual bool isTextClicked(sf::Text text) override;
 };
 
 /*_____________End_____________*/
