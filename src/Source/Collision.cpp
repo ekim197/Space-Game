@@ -8,8 +8,7 @@
 
 namespace Collision
 {
-	class BitmaskManager
-	{
+	class BitmaskManager{
 	public:
 		~BitmaskManager() {
 			std::map<const sf::Texture*, sf::Uint8*>::const_iterator end = Bitmasks.end();
@@ -89,8 +88,7 @@ namespace Collision
 		return false;
 	}
 
-	bool CreateTextureAndBitmask(sf::Texture &LoadInto, const std::string& Filename)
-	{
+	bool CreateTextureAndBitmask(sf::Texture &LoadInto, const std::string& Filename){
 		sf::Image img;
 		if (!img.loadFromFile(Filename))
 			return false;
@@ -101,14 +99,12 @@ namespace Collision
 		return true;
 	}
 
-	sf::Vector2f GetSpriteCenter (const sf::Sprite& Object)
-	{
+	sf::Vector2f GetSpriteCenter (const sf::Sprite& Object){
 		sf::FloatRect AABB = Object.getGlobalBounds();
 		return sf::Vector2f (AABB.left+AABB.width/2.f, AABB.top+AABB.height/2.f);
 	}
 
-	sf::Vector2f GetSpriteSize (const sf::Sprite& Object)
-	{
+	sf::Vector2f GetSpriteSize (const sf::Sprite& Object){
 		sf::IntRect OriginalSize = Object.getTextureRect();
 		sf::Vector2f Scale = Object.getScale();
 		return sf::Vector2f (OriginalSize.width*Scale.x, OriginalSize.height*Scale.y);
@@ -125,11 +121,9 @@ namespace Collision
 		return (Distance.x * Distance.x + Distance.y * Distance.y <= (Radius1 + Radius2) * (Radius1 + Radius2));
 	}
 
-	class OrientedBoundingBox // Used in the BoundingBoxTest
-	{
+	class OrientedBoundingBox{ // Used in the BoundingBoxTest
 	public:
-		OrientedBoundingBox (const sf::Sprite& Object) // Calculate the four points of the OBB from a transformed (scaled, rotated...) sprite
-		{
+		OrientedBoundingBox (const sf::Sprite& Object){ // Calculate the four points of the OBB from a transformed (scaled, rotated...) sprite
 			sf::Transform trans = Object.getTransform();
 			sf::IntRect local = Object.getTextureRect();
 			Points[0] = trans.transformPoint(0.f, 0.f);
@@ -140,8 +134,7 @@ namespace Collision
 
 		sf::Vector2f Points[4];
 
-		void ProjectOntoAxis (const sf::Vector2f& Axis, float& Min, float& Max) // Project all four points of the OBB onto the given axis and return the dotproducts of the two outermost points
-		{
+		void ProjectOntoAxis (const sf::Vector2f& Axis, float& Min, float& Max){ // Project all four points of the OBB onto the given axis and return the dotproducts of the two outermost points
 			Min = (Points[0].x*Axis.x+Points[0].y*Axis.y);
 			Max = Min;
 			for (int j = 1; j<4; j++)

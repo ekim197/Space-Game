@@ -30,18 +30,16 @@ void MenuState::handle_input(){
 
     while (game->window.pollEvent(event)){
         switch (event.type){
-        /* Close the window */
+        // Close the window
         case sf::Event::Closed:
             game->window.close();
             break;
-        /* Change Between game states */
+        // Key is Pressed
         case sf::Event::KeyPressed:
-            if (event.key.code == sf::Keyboard::Escape)
-                game->window.close();
-            else if (event.key.code == sf::Keyboard::Return)
+            if (event.key.code == sf::Keyboard::Return)
                 game->push_state(new PlayState(game, game->player1));
             break;
-        //check if text is hovered over
+        // Hovered Over Text
         case sf::Event::MouseMoved:
             for(auto& i : buttons){
                 if(isTextClicked(i))
@@ -50,6 +48,7 @@ void MenuState::handle_input(){
                     i.setFont(font[0]);
             }
         break;
+        // Default
         default:
             break;
         }
@@ -80,10 +79,3 @@ void MenuState::draw(){
         fadeIn(5);
 }
 
-bool MenuState::isTextClicked(sf::Text text){
-    sf::IntRect rect(text.getPosition().x, text.getPosition().y, text.getGlobalBounds().width, text.getGlobalBounds().height + 20);
-
-    if (rect.contains(sf::Mouse::getPosition(game->window)))
-        return true;
-    return false;
-}

@@ -88,9 +88,8 @@ void Game::setup(){
         makeTexture(playerTexture[7], "Ship_Sprite/Status_Right_Wing.png");
         makeTexture(playerTexture[8], "Ship_Sprite/explosion.png");
 
-        player1 = Player(playerTexture, sf::Vector2u(9,9), sf::Vector2f(VIEW_WIDTH/2, 0.0f), 0.02f, 15, 0);
-        tutorPlayer = player1;
-        testPlayer = player1;
+        defaultPlayer = Player(playerTexture, sf::Vector2u(9,9), sf::Vector2f(VIEW_WIDTH/2, 0.0f), 0.02f, 15, 0);
+        gamePlayer = defaultPlayer;
 
         // Create Entity Textures
         makeCollisionTexture(asteroidTexture, "Entity_Sprite/Asteroids.png");

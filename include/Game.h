@@ -24,9 +24,8 @@ public:
     // Public Variables
     sf::RenderWindow window;
     sf::View view;
-    Player player1;
-    Player tutorPlayer;
-    Player testPlayer;
+    Player defaultPlayer;
+    Player gamePlayer;
 
     // Constructor and Destructor
     Game();

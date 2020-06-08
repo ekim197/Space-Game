@@ -42,6 +42,7 @@ public:
     virtual void handle_input() = 0;
 
     // Other
+    virtual bool isTextClicked(sf::Text text);
     virtual void fadeIn(float factor = 1);
     virtual void fadeOut(float factor = 1);
 };
@@ -60,23 +61,18 @@ public:
     // Loop
     virtual void handle_input() override;
     virtual void draw() override;
-
-    // Action
-    virtual bool isTextClicked(sf::Text text);
-
 };
 
 /*_____________Play_____________*/
 class PlayState : public GameState{
 protected:
+    Player player;
     float timerInsertAsteroid, timerInsertCoin, timerInsertPlanet, timerInsertWarZone;
     float timerCrash, timerOffCourse, timerInWarZone;
     std::vector<Entity*> entityList;
     std::vector<sf::Text> gameText;
     sf::RectangleShape background;
 
-    void pause_game();
-    void setup();
 
 public:
     // Constructor and Destructor
@@ -86,28 +82,30 @@ public:
     // Loop
     virtual void handle_input() override;
     virtual void update(const float dt) override;
-    virtual void update(const float dt, Player& player);
     virtual void draw() override;
-    virtual void draw(Player& player);
 
-    void updateText(Player& player);
-    void reset(Player& player);
+    void updateText();
+    void reset();
 
     // Collision Detection
-    bool collide(Entity* obj, Player& player, float dt);
-    bool collide(Obstacle* obj, Player& player);
-    bool collide(Coin* obj, Player& player);
-    bool collide(WarZone* obj, Player& player, float dt);
+    bool collide(Entity* obj, float dt);
+    bool collide(Obstacle* obj);
+    bool collide(Coin* obj);
+    bool collide(WarZone* obj, float dt);
 
     // Check if Past Yet
-    bool checkPastYet(Entity* obj, Player& player);
-    int checkBadEvent(float dt, Player& player);
+    bool checkPastYet(Entity* obj);
+    int checkBadEvent(float dt);
 
     // Insert
-    void insertAsteroid(int rngVal, Player& player);
-    void insertPlanet(int rngVal, Player& player);
-    void insertCoin(int rngVal, Player& player);
-    void insertWarZone(int rngVal, Player& player);
+    void insertAsteroid(int rngVal);
+    void insertPlanet(int rngVal);
+    void insertCoin(int rngVal);
+    void insertWarZone(int rngVal);
+
+    // Other
+    void pause_game();
+    void setup();
 };
 
 /*_____________Store_____________*/
@@ -152,9 +150,7 @@ public:
     //virtual void handle_input() override;
 
     virtual void update(const float dt) override;
-    virtual void update(const float dt, Player& player) override;
     virtual void draw() override;
-    virtual void draw(Player& player) override;
 };
 
 /*_____________Tutorial_____________*/
@@ -165,9 +161,7 @@ public:
 
     // Loop
     virtual void update(const float dt) override;
-    virtual void update(const float dt, Player& player) override;
     virtual void draw() override;
-    virtual void draw(Player& player) override;
 };
 
 /*_____________MainMenu_____________*/
@@ -203,7 +197,7 @@ class EndState{
 
 public:
     // Constructor and Destructor
-    EndState(Game* game){}
+    EndState(){}
 
     // Loop
 
