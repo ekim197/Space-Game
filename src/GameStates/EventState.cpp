@@ -4,7 +4,7 @@
 
 using namespace Resource;
 
-EventState::EventState(Game* game, int type): eventType(type){
+EventState::EventState(Game* game, PlayState* prev, int type): prevState(prev), eventType(type){
     // Push Game
     this->game = game;
 
@@ -125,11 +125,11 @@ void EventState::update(const float dt){
     fadeTimer += dt;
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && dt != 0){
         if (isTextClicked(choiceButtons[0])){
-            game->gamePlayer.loseCrew();
+            prevState->player.loseCrew();
             game->pop_state();
         }
         else if(isTextClicked(choiceButtons[1])){
-            game->gamePlayer.loseCrew(3);
+            prevState->player.loseCrew(3);
             game->pop_state();
         }
     }

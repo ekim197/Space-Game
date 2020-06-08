@@ -64,7 +64,7 @@ void TutorialState::update(const float dt){
 
     // Check if exploded
     if(checkBadEvent(dt) != 0){
-        game->push_state(new EventState(game, checkBadEvent(dt)));
+        game->push_state(new EventState(game, dynamic_cast<PlayState*>(game->current_state()), checkBadEvent(dt)));
         reset();
     }
 }

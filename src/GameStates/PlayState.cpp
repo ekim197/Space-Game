@@ -6,7 +6,7 @@ using namespace Collision;
 using namespace Resource;
 
 PlayState::PlayState(Game* game, Player& playerObj)
-    : player(playerObj), timerInsertAsteroid(0), timerInsertCoin(0), timerInsertPlanet(0), timerCrash(0), timerOffCourse(0), timerInWarZone(0){
+    : timerInsertAsteroid(0), timerInsertCoin(0), timerInsertPlanet(0), timerCrash(0), timerOffCourse(0), timerInWarZone(0), player(playerObj){
     // Push Game
     this->game = game;
 
@@ -111,7 +111,7 @@ void PlayState::update(const float dt){
 
     // Check if exploded
     if(checkBadEvent(dt) != 0){
-        game->push_state(new EventState(game, checkBadEvent(dt)));
+        game->push_state(new EventState(game, dynamic_cast<PlayState*>(game->current_state()), checkBadEvent(dt)));
         reset();
     }
 }

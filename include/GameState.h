@@ -72,7 +72,6 @@ protected:
     std::vector<sf::Text> gameText;
     sf::RectangleShape background;
 
-
 public:
     // Public Variables
     Player player;
@@ -110,38 +109,6 @@ public:
     void setup();
 };
 
-/*_____________Store_____________*/
-class StoreState : public GameState{
-public:
-    // Constructor and Destructor
-    StoreState(Game* game);
-    ~StoreState() = default;
-
-    // Loop
-    void handle_input() override;
-    void update(const float dt) override;
-    void draw() override;
-};
-
-/*_____________Event_____________*/
-class EventState : public GameState{
-private:
-    sf::RectangleShape background;
-    sf::Text textInfo, textInfo2;
-    int eventType;
-    std::vector<sf::Text> choiceButtons;
-    bool isTextClicked(sf::Text text);
-
-public:
-    // Constructor and Destructor
-    EventState(Game* game, int type);
-
-    // Loop
-    virtual void handle_input() override;
-    virtual void update(const float dt) override;
-    virtual void draw() override;
-};
-
 /*_____________Backdoor_____________*/
 class BackdoorState : public PlayState{
 public:
@@ -162,6 +129,39 @@ public:
     TutorialState(Game* game);
 
     // Loop
+    virtual void update(const float dt) override;
+    virtual void draw() override;
+};
+
+/*_____________Store_____________*/
+class StoreState : public GameState{
+public:
+    // Constructor and Destructor
+    StoreState(Game* game);
+    ~StoreState() = default;
+
+    // Loop
+    void handle_input() override;
+    void update(const float dt) override;
+    void draw() override;
+};
+
+/*_____________Event_____________*/
+class EventState : public GameState{
+private:
+    PlayState* prevState;
+    sf::RectangleShape background;
+    sf::Text textInfo, textInfo2;
+    int eventType;
+    std::vector<sf::Text> choiceButtons;
+    bool isTextClicked(sf::Text text);
+
+public:
+    // Constructor and Destructor
+    EventState(Game* game, PlayState* prev, int type);
+
+    // Loop
+    virtual void handle_input() override;
     virtual void update(const float dt) override;
     virtual void draw() override;
 };
