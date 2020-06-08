@@ -2,24 +2,8 @@
 
 using namespace Resource;
 
-TutorialState::TutorialState(Game* game){
-    // Push Game
-    this->game = game;
+TutorialState::TutorialState(Game* game): PlayState(game, game->tutorPlayer){
 
-    // Reset Player1
-    game->tutorPlayer.setPosition(VIEW_WIDTH/2, game->player1.getPosition().y);
-    game->tutorPlayer.reset();
-
-    // Text Stuff
-    sf::Text tempText;
-    tempText.setFont(font[0]);
-    tempText.setCharacterSize(30);
-    tempText.setFillColor(sf::Color::White);
-
-    for(auto i = 0; i < 4; i++){
-        gameText.push_back(tempText);
-        gameText[i].setPosition(VIEW_WIDTH - 500 , game->player1.getPosition().y - VIEW_HEIGHT * 8/10 + i * 50);
-    }
 }
 
 void TutorialState::update(const float dt){
@@ -36,14 +20,17 @@ void TutorialState::update(const float dt, Player& player){
         timerInsertAsteroid += dt;
         timerInsertCoin += dt;
         timerInsertPlanet += dt;
+        timerInsertWarZone += dt;
 
         // Insert Entities
         if(timerInsertAsteroid >= 0.5)
-            insertAsteroid(abs(rng));
+            insertAsteroid(abs(rng), player);
         if(timerInsertCoin >= 1)
-            insertCoin(abs(rng) / 1234);
+            insertCoin(abs(rng) / 1234, player);
         if(timerInsertPlanet >= 10)
-            insertPlanet(abs(rng) / 100);
+            insertPlanet(abs(rng) / 100, player);
+        if(timerInsertWarZone >= 20)
+            insertWarZone(abs(rng) / 100000, player);
     }
 
     // Collision detection & CheckPastYet
@@ -55,26 +42,25 @@ void TutorialState::update(const float dt, Player& player){
             i++;
     }
 
-    // Update Classes
+    // Update Player
+    if(!player.getIsExplode()){
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+            player.moveUp();
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+            player.moveDown();
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+            player.moveLeft();
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+            player.moveRight();
+    }
     player.update(dt);
+
+    // Update Entities
     for(auto const& i: entityList)
         i->update(dt);
 
     // Update Text
-    std::string goldString = "GOLD\t\t" + std::to_string(player.getGold());
-    std::string crewString = "CREW\t\t" + std::to_string(player.getCrew());
-    int dist = abs(player.getPosition().y);
-    dist -= dist % 100;
-    std::string distString = "DISTANCE\t" + std::to_string(dist) + " miles";
-    std::string velocityString = "VELOCITY\t" + std::to_string(abs(player.getVelocity().y * 1000)) + " mph";
-
-    gameText[0].setString(goldString);
-    gameText[1].setString(crewString);
-    gameText[2].setString(distString);
-    gameText[3].setString(velocityString);
-
-    for(int i = 0; i < 4; i++)
-        gameText[i].move(0, player.getVelocity().y);
+    updateText(player);
 
     // Update View
     game->view.setCenter(sf::Vector2f(VIEW_WIDTH/2, player.getPosition().y - VIEW_HEIGHT/3));
@@ -87,6 +73,10 @@ void TutorialState::update(const float dt, Player& player){
 }
 
 void TutorialState::draw(){
+    draw(game->tutorPlayer);
+}
+
+void TutorialState::draw(Player& player){
     // Draw Background
     game->window.clear(sf::Color(230,230,230));
     game->window.setView(game->view);
@@ -96,9 +86,15 @@ void TutorialState::draw(){
         i->draw(game->window);
 
     // Draw Player
-    game->tutorPlayer.draw(game->window);
+    player.draw(game->window);
 
     // Draw Text
     for(auto i : gameText)
         game->window.draw(i);
+
+    // Fade
+    if(fadeTimer <= 3)
+        fadeIn();
+    if(timerCrash >= 2 || timerOffCourse >= 4)
+        fadeOut();
 }

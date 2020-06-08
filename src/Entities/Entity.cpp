@@ -20,8 +20,14 @@ std::string Entity::name() const{
     return className;
 }
 
+void Entity::setVelocity(sf::Vector2f objVel){
+    velocity.x = objVel.x;
+    velocity.y = objVel.y;
+}
 
-
-
+void Entity::setVelocity(float x, float y){
+    velocity.x = x;
+    velocity.y = y;
+}
 
 

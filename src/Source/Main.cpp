@@ -9,7 +9,7 @@
 int main(){
     // Start Game
     Game game;
-    game.push_state(new MenuState(&game));
+    game.push_state(new MainMenuState(&game));
     game.game_loop();
 
     return 0;

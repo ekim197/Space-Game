@@ -2,25 +2,7 @@
 
 using namespace Resource;
 
-BackdoorState::BackdoorState(Game* game){
-    // Push Game
-    this->game = game;
-
-    // Reset Player1
-    game->testPlayer.setPosition(VIEW_WIDTH/2, game->player1.getPosition().y);
-    game->testPlayer.reset();
-
-    // Text Stuff
-    sf::Text tempText;
-    tempText.setFont(font[0]);
-    tempText.setCharacterSize(30);
-    tempText.setFillColor(sf::Color::White);
-
-    for(auto i = 0; i < 4; i++){
-        gameText.push_back(tempText);
-        gameText[i].setPosition(VIEW_WIDTH - 500 , game->player1.getPosition().y - VIEW_HEIGHT * 8/10 + i * 50);
-    }
-}
+BackdoorState::BackdoorState(Game* game): PlayState(game, game->testPlayer){}
 
 void BackdoorState::update(const float dt){
     update(dt, game->testPlayer);
@@ -36,14 +18,17 @@ void BackdoorState::update(const float dt, Player& player){
         timerInsertAsteroid += dt;
         timerInsertCoin += dt;
         timerInsertPlanet += dt;
+        timerInsertWarZone += dt;
 
         // Insert Entities
         if(timerInsertAsteroid >= 0.5)
-            insertAsteroid(abs(rng));
+            insertAsteroid(abs(rng), player);
         if(timerInsertCoin >= 1)
-            insertCoin(abs(rng) / 1234);
+            insertCoin(abs(rng) / 1234, player);
         if(timerInsertPlanet >= 10)
-            insertPlanet(abs(rng) / 100);
+            insertPlanet(abs(rng) / 100, player);
+        if(timerInsertWarZone >= 20)
+            insertWarZone(abs(rng) / 100000, player);
     }
 
     // Collision detection & CheckPastYet
@@ -55,27 +40,25 @@ void BackdoorState::update(const float dt, Player& player){
             i++;
     }
 
-    // Update Classes
+    // Update Player
+    if(!player.getIsExplode()){
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+            player.moveUp();
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+            player.moveDown();
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+            player.moveLeft();
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+            player.moveRight();
+    }
     player.update(dt);
+
+    // Update Entities
     for(auto const& i: entityList)
         i->update(dt);
 
     // Update Text
-    std::string goldString = "GOLD\t\t" + std::to_string(player.getGold());
-    std::string crewString = "CREW\t\t" + std::to_string(player.getCrew());
-    int dist = abs(player.getPosition().y);
-    dist -= dist % 100;
-    std::string distString = "DISTANCE\t" + std::to_string(dist) + " miles";
-    std::string velocityString = "VELOCITY\t" + std::to_string(abs(player.getVelocity().y * 1000)) + " mph";
-
-    gameText[0].setString(goldString);
-    gameText[1].setString(crewString);
-    gameText[2].setString(distString);
-    gameText[3].setString(velocityString);
-
-    for(int i = 0; i < 4; i++)
-        gameText[i].move(0, player.getVelocity().y);
-
+    updateText(player);
     // Update View
     game->view.setCenter(sf::Vector2f(VIEW_WIDTH/2, player.getPosition().y - VIEW_HEIGHT/3));
 
@@ -87,8 +70,12 @@ void BackdoorState::update(const float dt, Player& player){
 }
 
 void BackdoorState::draw(){
+    draw(game->testPlayer);
+}
+
+void BackdoorState::draw(Player& player){
     // Draw Background
-    game->window.clear(sf::Color(0,0,0));
+    game->window.clear(sf::Color(30,30,30));
     game->window.setView(game->view);
 
     // Draw Entities
@@ -96,7 +83,7 @@ void BackdoorState::draw(){
         i->draw(game->window);
 
     // Draw Player
-    game->testPlayer.draw(game->window);
+    player.draw(game->window);
 
     // Draw Text
     for(auto i : gameText)

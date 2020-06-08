@@ -40,6 +40,8 @@ public:
     virtual void setPosition(float x, float y) { body.setPosition(x,y); }
     virtual void setOrigin(sf::Vector2f objPos){ body.setOrigin(objPos); }
     virtual void setOrigin(float x, float y){ body.setOrigin(x,y); }
+    virtual void setVelocity(sf::Vector2f objVel);
+    virtual void setVelocity(float x, float y);
 };
 
 #endif // ENTITY_H

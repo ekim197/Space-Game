@@ -2,7 +2,7 @@
 
 using namespace Resource;
 
-MenuState::MenuState(Game* game){
+MenuState::MenuState(Game* game, int buttonNum): numButtons(buttonNum){
     // Music
     music[1].stop();
     music[0].play();
@@ -15,21 +15,15 @@ MenuState::MenuState(Game* game){
     title.setString("ENDLESS\n    VOID");
 
     sf::Text text;
-    text.setFont(font[0]);
-    text.setPosition(100, 550);
-    text.setCharacterSize(100); // in pixels, not points!
-    text.setFillColor(sf::Color::White);   // set the color
 
     //Set positions of buttons
-    for (int i = 0; i < NUM_BUTTONS; i++){
+    for (int i = 0; i < numButtons; i++){
         buttons.push_back(text);
-        buttons[i].setPosition(text.getPosition().x, text.getPosition().y + i * 150);
+        buttons[i].setFont(font[0]);
+        buttons[i].setPosition(100, 550 + i * 150);
+        buttons[i].setCharacterSize(100); // in pixels, not points!
+        buttons[i].setFillColor(sf::Color::White);   // set the color
     }
-    buttons[0].setString("PLAY GAME");
-    buttons[1].setString("TUTORIAL");
-    buttons[2].setString("STORE");
-    buttons[3].setString("QUIT");
-
     // Set Game
     this->game = game;
 }
@@ -49,7 +43,7 @@ void MenuState::handle_input(){
             if (event.key.code == sf::Keyboard::Escape)
                 game->window.close();
             else if (event.key.code == sf::Keyboard::Return)
-                game->push_state(new PlayState(game));
+                game->push_state(new PlayState(game, game->player1));
             break;
         //check if text is hovered over
         case sf::Event::MouseMoved:
@@ -63,21 +57,6 @@ void MenuState::handle_input(){
         default:
             break;
         }
-    }
-}
-
-void MenuState::update(const float dt){
-    fadeTimer += dt;
-
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && dt != 0){
-        if (isTextClicked(buttons[0]))
-            game->push_state(new PlayState(game));
-        else if(isTextClicked(buttons[1]))
-            game->push_state(new TutorialState(game));
-        else if (isTextClicked(buttons[2]))
-            game->push_state(new StoreState(game));
-        else if (isTextClicked(buttons[3]))
-            game->window.close();
     }
 }
 

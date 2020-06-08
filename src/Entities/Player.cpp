@@ -40,21 +40,12 @@ void Player::update(float dt){
 
     // Update Movement if Ship is not Exploded
     if(!isExplode){
-        // Key Inputs
-
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-            velocity.x -= speed - numRightHit * speed/600;
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-            velocity.x += speed - numLeftHit * speed/600;
-
         // Move if Wings are Hit
         velocity.x += numRightHit * speed/300;
         velocity.x -= numLeftHit * speed/300;
-
-        // Guarentee Ship moves first
-       velocity.y -= 1.25 * speed;
     }
 
+    // Moves the Ship
     move();
 
     // Check for explosion animation

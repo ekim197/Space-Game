@@ -59,6 +59,10 @@ public:
     void loseCrew(int crw = 1) { crew -= crw; }
     void gainGold(int gld = 1) { gold += gld; }
     void loseGold(int gld = 1) { gold -= gld; }
+    void moveLeft(){ velocity.x -= speed - numRightHit * speed/600; } // numRightHit makes it harder to move left
+    void moveRight(){ velocity.x += speed - numLeftHit * speed/600; } // numLeftHit makes it harder to move right
+    void moveUp(){ velocity.y -= speed; }
+    void moveDown(){ velocity.y += speed; }
 
     // Action
     void reset();
