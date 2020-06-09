@@ -161,7 +161,7 @@ private:
     bool isTextClicked(sf::Text text);
 
 public:
-	
+
     // Constructor and Destructor
     EventState(Game* game, PlayState* prev, int type);
 	enum evTypes {blank, asteroid, lastMember, veer };

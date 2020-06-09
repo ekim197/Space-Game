@@ -80,7 +80,6 @@ void PlayState::update(const float dt){
         if(timerInsertAsteroid >= 0.5){
             for(int i = 0; i < asteroidPerTime; i++)
                 insertAsteroid(abs(rng / (i + 1)), VIEW_HEIGHT * 2);
-            timerInsertAsteroid = 0;
         }
         if(timerInsertCoin >= 1)
             insertCoin(abs(rng) / 1234, VIEW_HEIGHT * 2);
@@ -195,6 +194,8 @@ void PlayState::reset(){
     timerCrash = 0;
     timerOffCourse = 0;
     timerInWarZone = 0;
+    timerAddAsteroid = 0;
+    asteroidPerTime = 1;
     player.reset();
     player.setPosition(VIEW_WIDTH / 2, player.getPosition().y);
 }
@@ -309,9 +310,10 @@ int PlayState::checkBadEvent(float dt){
 void PlayState::insertAsteroid(int rngVal, float distY){
     entityList.push_back(new Asteroid(&asteroidTexture, sf::Vector2u(4,4),
         /*Position*/                sf::Vector2f(rngVal % 2048, player.getPosition().y - distY),
-        /*Select Image*/            rngVal % 4, (rng / 100000) % 4,
+        /*Select Image*/            rngVal % 4, (rng / 10000) % 4,
         /*Rotation*/                0.3,
         /*Scale*/                   1 ));
+    timerInsertAsteroid = 0;
 }
 
 void PlayState::insertCoin(int rngVal, float distY){

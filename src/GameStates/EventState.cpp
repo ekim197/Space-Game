@@ -163,7 +163,7 @@ void EventState::update(const float dt){
 				else {
 					prevState->player.loseGold(3);
 					game->push_state(new OutcomeState(game, prevState, OutcomeState::veerSuccess2));
-				}	
+				}
 			}
 			else if (isTextClicked(choiceButtons[1])) {
 				if (prevState->player.getGold() < 3) {
@@ -181,7 +181,7 @@ void EventState::update(const float dt){
 
 
 			}
-		} 
+		}
 		//game->pop_state();
     }
 }

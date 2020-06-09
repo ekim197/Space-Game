@@ -42,12 +42,14 @@ void Game::game_loop(){
         rng = elapsed.asMicroseconds();
         rng *= rng;
         rng *= (rng / 100); // about 17 digits
-		rng = abs(rng);
+        rng = abs(rng);
+
         // Exception handling
         if (current_state() == nullptr)
             continue;
         current_state()->handle_input();
         current_state()->update(dt);
+
         current_state()->draw();
         window.display();
     }
