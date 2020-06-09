@@ -16,7 +16,11 @@ Entity::~Entity(){}
 
 std::string Entity::name() const{
     std::string className = typeid(*this).name();
+#ifdef _MSC_VER       // for MS Visual Studio
+    className = className.substr(6);
+#else                 // other compilers
     className = className.substr(className.find_first_not_of("0123456789"));
+#endif
     return className;
 }
 
