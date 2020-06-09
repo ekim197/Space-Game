@@ -20,6 +20,7 @@ class GameState{
 protected:
     float timer;
     float fadeTimer;
+    float clickTimer;
     int fadeTransparency;
 
 public:
@@ -27,7 +28,7 @@ public:
     Game* game;
 
     // Constructor and Destructor
-    GameState(): timer(0), fadeTimer(0), fadeTransparency(0) {}
+    GameState(): timer(0), fadeTimer(0), clickTimer(0), fadeTransparency(0) {}
     virtual ~GameState() = default;
 
     // Loop
@@ -188,6 +189,7 @@ public:
 	virtual void update(const float dt) override;
 	virtual void draw() override;
 };
+
 
 /*_____________MainMenu_____________*/
 class MainMenuState : public MenuState{

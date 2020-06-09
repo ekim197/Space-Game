@@ -91,7 +91,7 @@ void StoreState::handle_input(){
 void StoreState::update(const float dt){
     timeIncrement(dt);
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && game->clickTimer >= 0.25){
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickTimer >= 0.50){
         if (isTextClicked(buttons[0]) && game->gamePlayer.getGold() >= 10){
             game->gamePlayer.setSpeed(game->gamePlayer.getSpeed() + 1);
             game->gamePlayer.loseGold(10);
@@ -109,9 +109,11 @@ void StoreState::update(const float dt){
             game->gamePlayer.loseCrew(2);
         }
         else if (isTextClicked(buttons[4]))
-            game->backToMainState();
-        game->clickTimer = 0;
+            game->push_state(new MainMenuState(game));
     }
+
+    if(clickTimer >= 10)
+        game->pop_state();
 
     playerInfo[0].setString("Gold: " + std::to_string(game->gamePlayer.getGold()));
     playerInfo[1].setString("Crew: " + std::to_string(game->gamePlayer.getCrew()));

@@ -4,7 +4,7 @@
 
 using namespace Resource;
 
-Game::Game(): clickTimer(0){
+Game::Game(){
     window.create(sf::VideoMode(VIEW_WIDTH, VIEW_HEIGHT), "Endless Void", sf::Style::Close | sf::Style::Titlebar);
     setup();
 }
@@ -26,15 +26,9 @@ void Game::push_state(GameState* state){
     states.push_back(state);
 }
 
-void Game::pop_state(unsigned numStates){
-    for(unsigned i = 0; i < numStates; i++){
-        delete states.back();
-        states.pop_back();
-    }
-}
-
-void Game::backToMainState(){
-        pop_state(states.size() - 1);
+void Game::pop_state(){
+    delete states.back();
+    states.pop_back();
 }
 
 void Game::game_loop(){
@@ -56,13 +50,11 @@ void Game::game_loop(){
         if (!current_state()){
             continue;
         }
-        else{
-            current_state()->handle_input();
-            current_state()->update(dt);
+        current_state()->handle_input();
+        current_state()->update(dt);
 
-            current_state()->draw();
-            window.display();
-        }
+        current_state()->draw();
+        window.display();
     }
 }
 

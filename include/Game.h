@@ -26,7 +26,6 @@ public:
     sf::View view;
     Player defaultPlayer;
     Player gamePlayer;
-    float clickTimer;
 
     // Constructor and Destructor
     Game();
@@ -35,8 +34,7 @@ public:
     // Action
     GameState* current_state();
     void push_state(GameState* state);
-    void pop_state(unsigned numStates = 1);
-    void backToMainState();
+    void pop_state();
     void game_loop();
     void makeCollisionTexture(sf::Texture& text, std::string file);
     void makeTexture(sf::Texture& text, std::string file);

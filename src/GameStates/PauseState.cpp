@@ -62,12 +62,12 @@ void PauseState::update(const float dt){
     timeIncrement(dt);
 
     // Click
-    if(sf::Mouse::isButtonPressed(sf::Mouse::Left) && game->clickTimer >= 0.25){
+    if(sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickTimer >= 0.5){
         if(isTextClicked(buttons[0]))
             game->pop_state();
         else if(isTextClicked(buttons[1]))
-            game->backToMainState();
-        game->clickTimer = 0;
+            game->push_state(new MainMenuState(game));
+        clickTimer = 0;
     }
 }
 
