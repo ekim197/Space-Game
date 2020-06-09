@@ -3,10 +3,6 @@
 using namespace Resource;
 
 MenuState::MenuState(Game* game, int buttonNum): numButtons(buttonNum){
-    // Music
-    music[1].stop();
-    music[0].play();
-
     // Title
     title.setFont(font[2]);
     title.setFillColor(sf::Color::White);

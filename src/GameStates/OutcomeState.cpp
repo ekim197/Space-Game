@@ -13,10 +13,6 @@ OutcomeState::OutcomeState(Game* game, PlayState* prev, int type) : prevState(pr
 	// Push Game
 	this->game = game;
 
-	// Music
-	music[0].stop();
-	music[1].play();
-
 	// Background
 	background.setSize(sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT * 2 / 3));
 
@@ -36,7 +32,6 @@ OutcomeState::OutcomeState(Game* game, PlayState* prev, int type) : prevState(pr
 	textOption1.setPosition(400, 1000);
 	textOption1.setCharacterSize(35); // in pixels, not points!
 	textOption1.setFillColor(sf::Color::White);
-
 
 	for (int i = 0; i < 2; i++) {
 		choiceButtons.push_back(textOption1);
@@ -143,7 +138,8 @@ void OutcomeState::draw() {
 
 void OutcomeState::update(const float dt) {
 	timeIncrement(dt);
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && dt != 0) game->pop_state();
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickTimer >= 0.5)
+        game->pop_state();
 }
 
 bool OutcomeState::isTextClicked(sf::Text text) {

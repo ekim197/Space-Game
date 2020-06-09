@@ -9,6 +9,10 @@ using namespace Resource;
 PlayState::PlayState(Game* game, Player& playerObj)
     : timerInsertAsteroid(0), timerInsertCoin(0), timerInsertPlanet(0), timerCrash(0),
       timerOffCourse(0), timerInWarZone(0), timerAddAsteroid(0), asteroidPerTime(1), player(playerObj){
+    //Sound Stuff
+	soundList.stopAllSounds();
+	soundList.playSound(RESOURCE_PATH + "Audio/PlayState.ogg");
+
     // Push Game
     this->game = game;
 
@@ -220,7 +224,7 @@ bool PlayState::collide(Obstacle* obj){
         else if(PixelPerfectTest(player.getRightWing(), obj->getBody()))
             player.hitRight();
         if(PixelPerfectTest(player.getBody(), obj->getBody()) && !player.getIsExplode()){
-            sound.play();
+            soundList.playSound(RESOURCE_PATH + "Audio/Ship_Explosion.wav", 10);
             player.explode();
         }
     }
@@ -230,14 +234,17 @@ bool PlayState::collide(Obstacle* obj){
 bool PlayState::collide(Coin* obj){
     if(obj){
         if(PixelPerfectTest(player.getLeftWing(), obj->getBody())){
+            soundList.playSound(RESOURCE_PATH + "Audio/Coin_Collect.wav", 15, 0.4);
             player.gainGold();
             return 1;
         }
         else if(PixelPerfectTest(player.getRightWing(), obj->getBody())){
+            soundList.playSound(RESOURCE_PATH + "Audio/Coin_Collect.wav", 15, 0.4);
             player.gainGold();
             return 1;
         }
         else if(PixelPerfectTest(player.getBody(), obj->getBody())){
+            soundList.playSound(RESOURCE_PATH + "Audio/Coin_Collect.wav", 15, 0.4);
             player.gainGold();
             return 1;
         }
@@ -276,7 +283,7 @@ int PlayState::checkBadEvent(float dt){
     if(timerInWarZone > 2){
         player.explode();
         if(!player.getIsExplode())
-            sound.play();
+            soundList.playSound(RESOURCE_PATH + "Audio/Ship_Explosion.wav", 10);
     }
 
     // Check if exploded

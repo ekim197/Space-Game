@@ -6,6 +6,10 @@
 using namespace Resource;
 
 StoreState::StoreState(Game* game): MenuState(game, 5){
+    //Sound
+	soundList.stopAllSounds();
+	soundList.playSound(RESOURCE_PATH + "Audio/Store.ogg");
+
     // Title
     title.setPosition(100,100);
     title.setCharacterSize(150); // in pixels, not points!
@@ -89,11 +93,11 @@ void StoreState::update(const float dt){
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickTimer >= 0.50){
         if (isTextClicked(buttons[0]) && game->gamePlayer.getGold() >= 10){
-            game->gamePlayer.setSpeed(game->gamePlayer.getSpeed() + 0.002);
+            game->gamePlayer.setSpeed(game->gamePlayer.getSpeed() + 1);
             game->gamePlayer.loseGold(10);
         }
         else if(isTextClicked(buttons[1]) && game->gamePlayer.getGold() >= 10){
-            game->gamePlayer.setSpeed(game->gamePlayer.getSpeed() - 0.002);
+            game->gamePlayer.setSpeed(game->gamePlayer.getSpeed() - 1);
             game->gamePlayer.loseGold(10);
         }
         else if (isTextClicked(buttons[2]) && game->gamePlayer.getGold() >= 10){
@@ -106,8 +110,10 @@ void StoreState::update(const float dt){
         }
         else if (isTextClicked(buttons[4]))
             game->push_state(new MainMenuState(game));
-        clickTimer = 0;
     }
+
+    if(clickTimer >= 10)
+        game->pop_state();
 
     playerInfo[0].setString("Gold: " + std::to_string(game->gamePlayer.getGold()));
     playerInfo[1].setString("Crew: " + std::to_string(game->gamePlayer.getCrew()));

@@ -10,8 +10,8 @@ EventState::EventState(Game* game, PlayState* prev, int type): prevState(prev), 
     this->game = game;
 
     // Music
-    music[0].stop();
-    music[1].play();
+	soundList.stopAllSounds();
+    soundList.playSound(RESOURCE_PATH + "Audio/EventStates.ogg");
 
     // Background
     background.setSize(sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT * 2/3));
@@ -125,13 +125,15 @@ void EventState::draw(){
 void EventState::update(const float dt){
     timeIncrement(dt);
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && dt != 0){
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickTimer >= 0.5){
 		if (eventType == asteroid) {
 			if (isTextClicked(choiceButtons[0])) {
+				soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
 				prevState->player.loseCrew();
 				game->push_state(new OutcomeState(game, prevState, OutcomeState::astSuccess));
 			}
 			else if (isTextClicked(choiceButtons[1])) {
+				soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
 				if (rng % 100 > 60) {
 					prevState->player.loseCrew(3);
 					game->push_state(new OutcomeState(game, prevState, OutcomeState::astFail));
@@ -140,18 +142,20 @@ void EventState::update(const float dt){
 			}
 		}
 		else if (eventType == lastMember) {
-			int chance = rng % 100;
 			if (isTextClicked(choiceButtons[0])) {
+                soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
 				if (rng % 100 > 50) game->push_state(new OutcomeState(game, prevState, OutcomeState::lastFail));
 				else game->push_state(new OutcomeState(game, prevState, OutcomeState::lastSuccess));
 			}
 			else if (isTextClicked(choiceButtons[1])) {
+                soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
 				if (rng % 100 > 50) game->push_state(new OutcomeState(game, prevState, OutcomeState::lastFail));
 				else game->push_state(new OutcomeState(game, prevState, OutcomeState::lastSuccess));
 			}
 		}
 		else if (eventType == veer) {
 			if (isTextClicked(choiceButtons[0])) {
+			    soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
 				if (rng % 100 > 50) {
 					if (prevState->player.getGold() < 3) {
 						game->push_state(new OutcomeState(game, prevState, OutcomeState::veerFail));
@@ -166,6 +170,7 @@ void EventState::update(const float dt){
 				}
 			}
 			else if (isTextClicked(choiceButtons[1])) {
+			    soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
 				if (prevState->player.getGold() < 3) {
 					if (rng % 100 > 50) {
 						game->push_state(new OutcomeState(game, prevState, OutcomeState::veerFail));
@@ -178,8 +183,7 @@ void EventState::update(const float dt){
 					prevState->player.loseGold(3);
 					game->push_state(new OutcomeState(game, prevState, OutcomeState::veerSuccess2));
 				}
-
-
+            clickTimer = 0;
 			}
 		}
 		//game->pop_state();

@@ -3,6 +3,10 @@
 using namespace Resource;
 
 MainMenuState::MainMenuState(Game* game) : MenuState(game, 5){
+	//Sound
+	soundList.stopAllSounds();
+	soundList.playSound(RESOURCE_PATH + "Audio/MainMenu.ogg");
+
     // Title
     title.setPosition(800,100);
     title.setCharacterSize(200); // in pixels, not points!
