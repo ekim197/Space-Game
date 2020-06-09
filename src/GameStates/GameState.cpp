@@ -38,6 +38,6 @@ void GameState::fadeOut(float factor){
 void GameState::timeIncrement(const float dt){
     timer += dt;
     fadeTimer += dt;
-    clickTimer += dt;
+    game->clickTimer += dt;
 }
 
