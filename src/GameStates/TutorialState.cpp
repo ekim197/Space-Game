@@ -65,7 +65,7 @@ void TutorialState::update(const float dt){
         i->update(dt);
 
     // Update Text
-    updateText();
+    updateText(dt);
     instructions.move(0, player.getVelocity().y);
 
     // Update View

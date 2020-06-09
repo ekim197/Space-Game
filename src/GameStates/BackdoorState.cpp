@@ -65,7 +65,7 @@ void BackdoorState::update(const float dt){
         i->update(dt);
 
     // Update Text
-    updateText();
+    updateText(dt);
     // Update View
     game->view.setCenter(sf::Vector2f(VIEW_WIDTH/2, player.getPosition().y - VIEW_HEIGHT/3));
 

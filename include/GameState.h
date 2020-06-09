@@ -14,12 +14,6 @@
 #include "WarZone.h"
 
 class Game;
-class GameState;
-class MenuState;
-class PlayState;
-class StoreState;
-class BackdoorState;
-class TutorialState;
 
 /*_____________Game_____________*/
 class GameState{
@@ -70,9 +64,11 @@ class PlayState : public GameState{
 protected:
     float timerInsertAsteroid, timerInsertCoin, timerInsertPlanet, timerInsertWarZone;
     float timerCrash, timerOffCourse, timerInWarZone;
+    float timerAddAsteroid;
+    int asteroidPerTime;
     std::vector<Entity*> entityList;
     std::vector<sf::Text> gameText;
-    sf::RectangleShape background;
+    sf::RectangleShape background[2];
 
 public:
     // Public Variables
@@ -87,7 +83,7 @@ public:
     virtual void update(const float dt) override;
     virtual void draw() override;
 
-    void updateText();
+    void updateText(const float dt);
     void reset();
 
     // Collision Detection

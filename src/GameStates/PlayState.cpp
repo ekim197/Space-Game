@@ -1,12 +1,14 @@
 #include "GameState.h"
 #include <sstream>
 #include <iomanip>
+#include <cmath>
 
 using namespace Collision;
 using namespace Resource;
 
 PlayState::PlayState(Game* game, Player& playerObj)
-    : timerInsertAsteroid(0), timerInsertCoin(0), timerInsertPlanet(0), timerCrash(0), timerOffCourse(0), timerInWarZone(0), player(playerObj){
+    : timerInsertAsteroid(0), timerInsertCoin(0), timerInsertPlanet(0), timerCrash(0),
+      timerOffCourse(0), timerInWarZone(0), timerAddAsteroid(0), asteroidPerTime(1), player(playerObj){
     // Push Game
     this->game = game;
 
@@ -66,10 +68,20 @@ void PlayState::update(const float dt){
         timerInsertCoin += dt;
         timerInsertPlanet += dt;
         timerInsertWarZone += dt;
+        timerAddAsteroid += dt;
+
+        // Makes Game Harder
+        if(timerAddAsteroid >= 20){
+            asteroidPerTime++;
+            timerAddAsteroid = 0;
+        }
 
         // Insert Entities
-        if(timerInsertAsteroid >= 0.5)
-            insertAsteroid(abs(rng), VIEW_HEIGHT * 2);
+        if(timerInsertAsteroid >= 0.5){
+            for(int i = 0; i < asteroidPerTime; i++)
+                insertAsteroid(abs(rng / (i + 1)), VIEW_HEIGHT * 2);
+            timerInsertAsteroid = 0;
+        }
         if(timerInsertCoin >= 1)
             insertCoin(abs(rng) / 1234, VIEW_HEIGHT * 2);
         if(timerInsertPlanet >= 10)
@@ -111,7 +123,7 @@ void PlayState::update(const float dt){
         i->update(dt);
 
     // Update Text
-    updateText();
+    updateText(dt);
 
     // Update View
     game->view.setCenter(sf::Vector2f(VIEW_WIDTH/2, player.getPosition().y - VIEW_HEIGHT/3));
@@ -146,7 +158,7 @@ void PlayState::draw(){
         fadeOut();
 }
 
-void PlayState::updateText(){
+void PlayState::updateText(const float dt){
     // Gold
     std::string goldString = "GOLD\t\t" + std::to_string(player.getGold());
     gameText[0].setString(goldString);
@@ -156,21 +168,20 @@ void PlayState::updateText(){
     gameText[1].setString(crewString);
 
     // Dist
-    int dist = -player.getPosition().y;
-    dist -= dist % 100;
+    int dist = round(-player.getPosition().y);
     std::string distString = "DISTANCE\t" + std::to_string(dist) + " miles";
     gameText[2].setString(distString);
 
     // Velocity
-    float vel = - player.getVelocity().y * 1000;
+    float vel = round(- player.getVelocity().y);
     std::stringstream sout;
-    sout << std::fixed << std::setprecision(2) << vel;
+    sout << std::fixed << std::setprecision(0) << vel;
     std::string velocityString = "VELOCITY\t" + sout.str() + " mph";
     gameText[3].setString(velocityString);
 
     // Move strings
     for(int i = 0; i < 4; i++)
-        gameText[i].move(0, player.getVelocity().y);
+        gameText[i].move(0, player.getVelocity().y * dt);
 }
 
 void PlayState::reset(){
@@ -255,6 +266,8 @@ bool PlayState::checkPastYet(Entity* obj){
         else
             return false;
     }
+    else
+        return false;
 }
 
 int PlayState::checkBadEvent(float dt){
@@ -299,7 +312,6 @@ void PlayState::insertAsteroid(int rngVal, float distY){
         /*Select Image*/            rngVal % 4, (rng / 100000) % 4,
         /*Rotation*/                0.3,
         /*Scale*/                   1 ));
-    timerInsertAsteroid = 0;
 }
 
 void PlayState::insertCoin(int rngVal, float distY){

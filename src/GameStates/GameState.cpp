@@ -40,3 +40,4 @@ void GameState::timeIncrement(const float dt){
     fadeTimer += dt;
     clickTimer += dt;
 }
+

@@ -88,7 +88,7 @@ void Game::setup(){
         makeTexture(playerTexture[7], "Ship_Sprite/Status_Right_Wing.png");
         makeTexture(playerTexture[8], "Ship_Sprite/explosion.png");
 
-        defaultPlayer = Player(playerTexture, sf::Vector2u(9,9), sf::Vector2f(VIEW_WIDTH/2, 0.0f), 0.02f, 15, 0);
+        defaultPlayer = Player(playerTexture, sf::Vector2u(9,9), sf::Vector2f(VIEW_WIDTH/2, 0.0), 8, 15, 0);
         gamePlayer = defaultPlayer;
 
         // Create Entity Textures
@@ -133,3 +133,8 @@ void Game::makeFont(sf::Font& font, std::string file){
     if(!font.loadFromFile(RESOURCE_PATH + file))
         throw file;
 }
+
+
+
+
+

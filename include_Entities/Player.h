@@ -28,7 +28,7 @@ public:
     // Window Action
     void update(float dt) override;
     void draw(sf::RenderWindow& window) override;
-    void move() override;
+    void move(const float dt);
     void moveStatus();
 
     // Getters

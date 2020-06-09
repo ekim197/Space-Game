@@ -46,7 +46,7 @@ void Player::update(float dt){
     }
 
     // Moves the Ship
-    move();
+    move(dt);
 
     // Check for explosion animation
     if(isExplode)
@@ -79,17 +79,17 @@ void Player::draw(sf::RenderWindow& window){
         window.draw(explosion);
 }
 
-void Player::move(){
-    body.move(velocity);
-    leftWing[0].move(velocity);
-    rightWing[0].move(velocity);
-    leftWing[1].move(velocity);
-    rightWing[1].move(velocity);
-    explosion.move(velocity);
+void Player::move(const float dt){
+    body.move(velocity * dt);
+    leftWing[0].move(velocity * dt);
+    rightWing[0].move(velocity * dt);
+    leftWing[1].move(velocity * dt);
+    rightWing[1].move(velocity * dt);
+    explosion.move(velocity * dt);
 
-    mainStatus.move(0, velocity.y);
-    leftStatus.move(0, velocity.y);
-    rightStatus.move(0, velocity.y);
+    mainStatus.move(0, velocity.y * dt);
+    leftStatus.move(0, velocity.y * dt);
+    rightStatus.move(0, velocity.y * dt);
 }
 
 void Player::setPosition(sf::Vector2f objPos) {
