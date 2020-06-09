@@ -125,7 +125,7 @@ void EventState::draw(){
 void EventState::update(const float dt){
     timeIncrement(dt);
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickTimer >= 0.5){
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && game->clickTimer >= 0.25){
 		if (eventType == asteroid) {
 			if (isTextClicked(choiceButtons[0])) {
 				soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
@@ -183,7 +183,7 @@ void EventState::update(const float dt){
 					prevState->player.loseGold(3);
 					game->push_state(new OutcomeState(game, prevState, OutcomeState::veerSuccess2));
 				}
-            clickTimer = 0;
+            game->clickTimer = 0;
 			}
 		}
 		//game->pop_state();
