@@ -24,8 +24,7 @@ namespace Resource{
     extern sf::Texture backgroundTexture[6];
     extern sf::Font font[5];
     // Sound
-    extern sf::Sound sound;
-    extern sf::Music music[2];
+	extern Sound_ soundList;
     // Time stuff
     extern long long int rng;
 }

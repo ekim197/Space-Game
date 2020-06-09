@@ -11,8 +11,7 @@ namespace Resource{
     sf::Texture backgroundTexture[6];
     sf::Font font[5];
     // Sound
-    sf::Sound sound;
-    sf::Music music[2];
+	Sound_ soundList;
     // Time stuff
     long long int rng = 0;
 }

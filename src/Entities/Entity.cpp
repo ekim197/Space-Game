@@ -14,16 +14,15 @@ Entity::Entity(sf::Texture* text, sf::Vector2f pos, float spd)
 
 Entity::~Entity(){}
 
-std::string Entity::name() const{
-    std::string className = typeid(*this).name();
+std::string Entity::name() const {
+	std::string className = typeid(*this).name();
 #ifdef _MSC_VER       // for MS Visual Studio
-    className = className.substr(6);
+	className = className.substr(6);
 #else                 // other compilers
-    className = className.substr(className.find_first_not_of("0123456789"));
+	className = className.substr(className.find_first_not_of("0123456789"));
 #endif
-    return className;
+	return className;
 }
-
 void Entity::setVelocity(sf::Vector2f objVel){
     velocity.x = objVel.x;
     velocity.y = objVel.y;

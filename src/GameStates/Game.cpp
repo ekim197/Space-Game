@@ -1,5 +1,6 @@
 #include "Game.h"
 #include <iostream>
+#include <string>
 
 using namespace Resource;
 
@@ -59,25 +60,21 @@ void Game::setup(){
     // Create a View
     view = sf::View(sf::Vector2f(0.0f,0.0f), sf::Vector2f(VIEW_WIDTH,VIEW_HEIGHT));
 
-    // Sound Stuff
-    if(!bufferTEMP.loadFromFile(RESOURCE_PATH + "Audio/Ship_Explosion.wav")){
-        std::cerr << "Ship_Explosion.wav failed to load\n";
-        exit(1);
-    }
-    sound.setBuffer(bufferTEMP);
+	//Setting up Sound
 
-    // Music
-    if(!music[0].openFromFile(RESOURCE_PATH + "Audio/Cosmic-Switchboard.ogg")){
-        std::cerr << "Cosmic-Switchboard.ogg failed to load\n";
-        exit(1);
-    }
-    if(!music[1].openFromFile(RESOURCE_PATH + "Audio/Theyre-Here.ogg")){
-        std::cerr << "Theyre-Here.ogg failed to load\n";
-        exit(1);
-    }
-    music[0].setLoop(true);
-    music[1].setLoop(true);
-    try{
+	std::vector<std::string> soundFiles{ RESOURCE_PATH + "Audio/PlayState.ogg", RESOURCE_PATH + "Audio/Bells_Cut.wav",
+										  RESOURCE_PATH + "Audio/Coin_Collect.wav", RESOURCE_PATH + "Audio/EventStates.ogg",
+										  RESOURCE_PATH + "Audio/GameOver.ogg", RESOURCE_PATH + "Audio/	MainMenu.ogg",
+										  RESOURCE_PATH + "Audio/Ship_Explosion.wav" , RESOURCE_PATH + "Audio/Store.ogg" };
+
+	soundList = Sound_(soundFiles);
+
+	soundList.setLoop(RESOURCE_PATH + "Audio/GameOver.ogg");
+	soundList.setLoop(RESOURCE_PATH + "Audio/PlayState.ogg");
+	soundList.setLoop(RESOURCE_PATH + "Audio/EventStates.ogg");
+	soundList.setLoop(RESOURCE_PATH + "Audio/Store.ogg");
+
+;    try{
         // Create Player
         makeCollisionTexture(playerTexture[0], "Ship_Sprite/Main_Body.png");
         makeCollisionTexture(playerTexture[1], "Ship_Sprite/Main_Left_Wing.png");

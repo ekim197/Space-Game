@@ -2,7 +2,6 @@
 #include "Gamestate.h"
 #include <iostream>
 
-
 using namespace Resource;
 
 EventState::EventState(Game* game, PlayState* prev, int type): prevState(prev), eventType(type){
@@ -10,8 +9,8 @@ EventState::EventState(Game* game, PlayState* prev, int type): prevState(prev), 
     this->game = game;
 
     // Music
-    music[0].stop();
-    music[1].play();
+	soundList.stopAllSounds();
+	soundList.playSound(RESOURCE_PATH + "Audio/EventStates.ogg");
 
     // Background
     background.setSize(sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT * 2/3));
@@ -38,7 +37,7 @@ EventState::EventState(Game* game, PlayState* prev, int type): prevState(prev), 
         choiceButtons[i].setPosition(textOption1.getPosition().x, textOption1.getPosition().y + i * 50);
     }
 
-    if(eventType == asteroid){
+    if(eventType == 1){
         background.setTexture(&backgroundTexture[3]);
 
         textInfo.setString("You crashed and the main hull is breached,");
@@ -47,7 +46,7 @@ EventState::EventState(Game* game, PlayState* prev, int type): prevState(prev), 
         choiceButtons[0].setString("Option 1: Sacrifice 1 person(guarantee to lose on passenger)");
         choiceButtons[1].setString("Option 2: Send out 3 people(60% chance they survive)");
     }
-    else if(eventType == lastMember){
+    else if(eventType == 2){
         background.setTexture(&backgroundTexture[4]);
 
         textInfo.setString("There isn't much of the crew left. There is no options left,");
@@ -56,14 +55,14 @@ EventState::EventState(Game* game, PlayState* prev, int type): prevState(prev), 
         choiceButtons[0].setString("");
         choiceButtons[1].setString("");
     }
-    else if(eventType == veer){
+    else if(eventType == 3){
         background.setTexture(&backgroundTexture[5]);
 
         textInfo.setString("Your ship has veered off course. You can use the");
         textInfo2.setString("findYourWayBack module by EngiAtom(EA) ");
 
         choiceButtons[0].setString("Option 1: Try to figure it out yourself(What's the worst that could happen)");
-        choiceButtons[1].setString("Option 2: Pay 3 gold to use the module (guarantee to get back)");
+        choiceButtons[1].setString("Option 2: Pay 40 gold to use the module (guarantee to get back)");
     }
 }
 
@@ -85,12 +84,16 @@ void EventState::handle_input(){
             game->push_state(new PauseState(game, game->current_state()));
             break;
         case sf::Event::MouseMoved:
-            if (isTextClicked(choiceButtons[0]))
-                choiceButtons[0].setFillColor(sf::Color::Red);
+			if (isTextClicked(choiceButtons[0])) {
+				choiceButtons[0].setFillColor(sf::Color::Red);
+				soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
+			}
             else
                 choiceButtons[0].setFillColor(sf::Color::White);
-            if (isTextClicked(choiceButtons[1]))
-                choiceButtons[1].setFillColor(sf::Color::Red);
+			if (isTextClicked(choiceButtons[1])) {
+				choiceButtons[1].setFillColor(sf::Color::Red);
+				soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
+			}
             else
                 choiceButtons[1].setFillColor(sf::Color::White);
         default:
@@ -126,63 +129,14 @@ void EventState::update(const float dt){
     timeIncrement(dt);
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && dt != 0){
-		if (eventType == asteroid) {
-			if (isTextClicked(choiceButtons[0])) {
-				prevState->player.loseCrew();
-				game->push_state(new OutcomeState(game, prevState, OutcomeState::astSuccess));
-			}
-			else if (isTextClicked(choiceButtons[1])) {
-				if (rng % 100 > 60) {
-					prevState->player.loseCrew(3);
-					game->push_state(new OutcomeState(game, prevState, OutcomeState::astFail));
-				}
-				game->push_state(new OutcomeState(game, prevState, OutcomeState::astSuccess2));
-			}
-		}
-		else if (eventType == lastMember) {
-			int chance = rng % 100;
-			if (isTextClicked(choiceButtons[0])) {
-				if (rng % 100 > 50) game->push_state(new OutcomeState(game, prevState, OutcomeState::lastFail));
-				else game->push_state(new OutcomeState(game, prevState, OutcomeState::lastSuccess));
-			}
-			else if (isTextClicked(choiceButtons[1])) {
-				if (rng % 100 > 50) game->push_state(new OutcomeState(game, prevState, OutcomeState::lastFail));
-				else game->push_state(new OutcomeState(game, prevState, OutcomeState::lastSuccess));
-			}
-		}
-		else if (eventType == veer) {
-			if (isTextClicked(choiceButtons[0])) {
-				if (rng % 100 > 50) {
-					if (prevState->player.getGold() < 3) {
-						game->push_state(new OutcomeState(game, prevState, OutcomeState::veerFail));
-					}
-					else {
-						game->push_state(new OutcomeState(game, prevState, OutcomeState::veerSuccess));
-					}
-				}
-				else {
-					prevState->player.loseGold(3);
-					game->push_state(new OutcomeState(game, prevState, OutcomeState::veerSuccess2));
-				}
-			}
-			else if (isTextClicked(choiceButtons[1])) {
-				if (prevState->player.getGold() < 3) {
-					if (rng % 100 > 50) {
-						game->push_state(new OutcomeState(game, prevState, OutcomeState::veerFail));
-					}
-					else {
-						game->push_state(new OutcomeState(game, prevState, OutcomeState::veerSuccess));
-					}
-				}
-				else {
-					prevState->player.loseGold(3);
-					game->push_state(new OutcomeState(game, prevState, OutcomeState::veerSuccess2));
-				}
-
-
-			}
-		}
-		//game->pop_state();
+        if (isTextClicked(choiceButtons[0])){
+            prevState->player.loseCrew();
+            game->pop_state();
+        }
+        else if(isTextClicked(choiceButtons[1])){
+            prevState->player.loseCrew(3);
+            game->pop_state();
+        }
     }
 }
 

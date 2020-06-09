@@ -53,15 +53,13 @@ void Sound_::addSound(std::string s) {
 
 void Sound_::playSound(std::string s) {
 	if (isFileTypeWav(s)) {
+		resetPitchVolume();
 		sound_player.setBuffer(soundBuffers[s]);
 		sound_player.play();
 	}
 	else {
-		if (music_player.openFromFile(s)) {
-			//Throw error
-			std::cout << "Can't play music";
-		}
-
+		resetPitchVolume();
+		music_player.openFromFile(s);
 		music_player.play();
 	}
 }
@@ -69,16 +67,14 @@ void Sound_::playSound(std::string s) {
 //Max volume is 100
 void Sound_::playSound(std::string s, float volume) {
 	if (isFileTypeWav(s)) {
+		resetPitchVolume();
 		sound_player.setBuffer(soundBuffers[s]);
 		sound_player.setVolume(volume);
 		sound_player.play();
 	}
 	else {
-		if (music_player.openFromFile(s)) {
-			//Throw error
-			std::cout << "Can't play music";
-		}
-
+		resetPitchVolume();
+		music_player.openFromFile(s);
 		music_player.setVolume(volume);
 		music_player.play();
 	}
@@ -87,16 +83,15 @@ void Sound_::playSound(std::string s, float volume) {
 //Pitch at 1 is unchanged, greater means higher pitch
 void Sound_::playSound(std::string s, float volume, float pitch) {
 	if (isFileTypeWav(s)) {
+		resetPitchVolume();
 		sound_player.setBuffer(soundBuffers[s]);
 		sound_player.setVolume(volume);
 		sound_player.setPitch(pitch);
 		sound_player.play();
 	}
 	else {
-		if (music_player.openFromFile(s)) {
-			//Throw error
-			std::cout << "Can't play music";
-		}
+		resetPitchVolume();
+		music_player.openFromFile(s);
 		music_player.setVolume(volume);
 		music_player.setPitch(pitch);
 		music_player.play();
@@ -144,11 +139,21 @@ std::string Sound_::getFileType(std::string s) {
 }
 
 bool Sound_::isFileTypeWav(std::string s) {
-	if (getFileType(s).compare("wav") == 0)
+	std::size_t found = s.find(".wav");
+	if (found != std::string::npos)
 		return true;
 	else
 		return false;
 }
 
+void Sound_::stopAllSounds() {
+	sound_player.stop();
+	music_player.stop();
+}
 
-
+void Sound_::resetPitchVolume() {
+	sound_player.setVolume(100);
+	sound_player.setPitch(1);
+	music_player.setVolume(100);
+	music_player.setPitch(1);
+}

@@ -11,6 +11,10 @@ StoreState::StoreState(Game* game): MenuState(game, 5){
     title.setCharacterSize(150); // in pixels, not points!
     title.setString("SPACE MECHANIC");
 
+	//Sound 
+	soundList.stopAllSounds();
+	soundList.playSound(RESOURCE_PATH + "Audio/Store.ogg");
+
     // Buttons
     for (int i = 0; i < numButtons; i++){
         buttons[i].setFont(font[0]);

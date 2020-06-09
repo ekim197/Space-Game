@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <string>
 #include <vector>
+#include <cstring>
 
 class Sound_{
 private:
@@ -36,6 +37,8 @@ public:
 	static void pauseSound(std::string s);
 	static void stopSound(std::string s);
 	static void playOffset(std::string s, float seconds);
+	static void stopAllSounds();
+	static void resetPitchVolume();
 };
 
 #endif // SOUND__H

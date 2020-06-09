@@ -8,6 +8,10 @@ MainMenuState::MainMenuState(Game* game) : MenuState(game, 5){
     title.setCharacterSize(200); // in pixels, not points!
     title.setString("ENDLESS\n    VOID");
 
+	//Sound
+	soundList.stopAllSounds();
+	soundList.playSound(RESOURCE_PATH + "Audio/MainMenu.ogg");
+
     // Buttons
     for(size_t i = 0; i < buttons.size(); i++){
         buttons[i].setFont(font[0]);
