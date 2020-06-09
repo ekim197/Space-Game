@@ -3,8 +3,9 @@
 
 #include <SFML\Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <iostream>
 #include <vector>
-#include <list>
+#include <fstream>
 #include "Game.h"
 #include "Collision.h"
 #include "Entity.h"
@@ -157,7 +158,6 @@ private:
     sf::Text textInfo, textInfo2;
 	int eventType;
     std::vector<sf::Text> choiceButtons;
-    bool isTextClicked(sf::Text text);
 
 public:
     // Constructor and Destructor
@@ -176,13 +176,15 @@ private:
 	sf::RectangleShape background;
 	sf::Text textInfo, textInfo2;
 	std::vector<sf::Text> choiceButtons;
-	bool isTextClicked(sf::Text text);
 	int outcomeType;
+
 public:
 	int eventType;
+	enum ocTypes { astSuccess, astSuccess2, astFail, lastSuccess, lastFail, veerSuccess, veerSuccess2, veerFail };
+
 	// Constructor and Destructor
 	OutcomeState(Game* game, PlayState* prev, int type);
-	enum ocTypes { astSuccess, astSuccess2, astFail, lastSuccess, lastFail, veerSuccess, veerSuccess2, veerFail };
+
 	// Loop
 	virtual void handle_input() override;
 	virtual void update(const float dt) override;

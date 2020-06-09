@@ -44,7 +44,7 @@ void Sound_::addSound(std::string s) {
 
 	if (!buffer.loadFromFile(s)) {
 		//Have a catch/throw
-		std::cout << "Error in loading sound";
+		std::cerr << "Error in loading sound";
 	}
 
 	//Add to sound buffers

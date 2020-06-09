@@ -1,9 +1,12 @@
 #include "GameState.h"
-#include <iostream>
 
 bool GameState::isTextClicked(sf::Text text){
-    sf::IntRect rect(text.getPosition().x, text.getPosition().y, text.getGlobalBounds().width, text.getGlobalBounds().height + 20);
-    if (rect.contains(sf::Mouse::getPosition(game->window))){
+    float x = text.getPosition().x;
+	float y = text.getPosition().y;
+	float width = text.getGlobalBounds().width;
+	float height = text.getGlobalBounds().height;
+	sf::IntRect rect(x, y, width, height);
+	if (rect.contains(sf::Mouse::getPosition(game->window))){
         return true;
     }
     return false;

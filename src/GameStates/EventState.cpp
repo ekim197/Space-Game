@@ -1,6 +1,5 @@
 #include <SFML\Graphics.hpp>
 #include "Gamestate.h"
-#include <iostream>
 
 
 using namespace Resource;
@@ -134,11 +133,13 @@ void EventState::update(const float dt){
 			}
 			else if (isTextClicked(choiceButtons[1])) {
 				soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
+				std::cout << rng % 100 <<'\n';
 				if (rng % 100 > 60) {
 					prevState->player.loseCrew(3);
 					game->push_state(new OutcomeState(game, prevState, OutcomeState::astFail));
 				}
-				game->push_state(new OutcomeState(game, prevState, OutcomeState::astSuccess2));
+				else
+                    game->push_state(new OutcomeState(game, prevState, OutcomeState::astSuccess2));
 			}
 		}
 		else if (eventType == lastMember) {
@@ -183,22 +184,9 @@ void EventState::update(const float dt){
 					prevState->player.loseGold(3);
 					game->push_state(new OutcomeState(game, prevState, OutcomeState::veerSuccess2));
 				}
-            game->clickTimer = 0;
 			}
 		}
-		//game->pop_state();
+        game->clickTimer = 0;
     }
 }
 
-bool EventState::isTextClicked(sf::Text text){
-    float x = text.getPosition().x;
-    float y = text.getPosition().y;
-    float width = text.getGlobalBounds().width;
-    float height = text.getGlobalBounds().height;
-    sf::IntRect rect(x, y, width, height);
-    //If mouse position is in the rectangle do whatever
-    if (rect.contains(sf::Mouse::getPosition(game->window)))
-        return true;
-    //Otherwise, don't do anything
-    return false;
-}

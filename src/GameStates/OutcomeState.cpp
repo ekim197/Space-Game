@@ -1,6 +1,5 @@
 #include <SFML\Graphics.hpp>
 #include "Gamestate.h"
-#include <iostream>
 #ifdef __unix__
 # include <unistd.h>
 #elif defined _WIN32
@@ -41,18 +40,18 @@ OutcomeState::OutcomeState(Game* game, PlayState* prev, int type) : prevState(pr
 	choiceButtons[1].setString("");
 	if (outcomeType == astSuccess) {
 		background.setTexture(&backgroundTexture[3]);
-		textInfo.setString("Your draw sticks, the person who drew the shortest stick was miserable, but he knew what must be done. The ship restarts, and we watched his lifeless body as we continue onward.");
-		textInfo2.setString("Hopefully his sacrifice won't be in vain");
+		textInfo.setString("Your crew draw sticks, the person who drew the shortest stick looked miserable.");
+		textInfo2.setString("The ship restarts, and we watched his lifeless body as we continue onward.\nHopefully his sacrifice won't be in vain");
 	}
 	else if (outcomeType == astSuccess2) {
 		background.setTexture(&backgroundTexture[4]);
-		textInfo.setString("They were able to fix the ship and all get back in one piece. Lets hope our luck continues");
-		textInfo2.setString("");
+		textInfo.setString("They were able to fix the ship and all get back in one piece.");
+		textInfo2.setString("Lets hope our luck continues");
 	}
 	else if (outcomeType == astFail) {
 		background.setTexture(&backgroundTexture[5]);
-		textInfo.setString("They were able to fix the ship, but suddenly, an accident occurred, killing all three of the crew members");
-		textInfo2.setString("What a disaster, we can't afford to lose a big portion of our crew.");
+		textInfo.setString("They were able to fix the ship, but suddenly, an accident occurred,\nkilling all three of the crew members");
+		textInfo2.setString("\nWhat a disaster, we can't afford to lose a big portion of our crew.");
 	}
 	else if (outcomeType == lastFail) {
 		background.setTexture(&backgroundTexture[5]);
@@ -76,8 +75,8 @@ OutcomeState::OutcomeState(Game* game, PlayState* prev, int type) : prevState(pr
 	}
 	else if (outcomeType == veerSuccess2) {
 		background.setTexture(&backgroundTexture[5]);
-		textInfo.setString("You hand over your wallet, disgusted by the shady practices brought from intergalactical capitalism ");
-		textInfo2.setString("(lose 3 gold)");
+		textInfo.setString("You hand over your wallet, disgusted by the shady practices ");
+		textInfo2.setString("brought from intergalactical capitalism (lose 3 gold)");
 	}
 }
 
@@ -138,19 +137,9 @@ void OutcomeState::draw() {
 
 void OutcomeState::update(const float dt) {
 	timeIncrement(dt);
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && game->clickTimer > 0.25)
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && game->clickTimer > 0.25){
         game->pop_state(2);
+        game->clickTimer = 0;
+	}
 }
 
-bool OutcomeState::isTextClicked(sf::Text text) {
-	float x = text.getPosition().x;
-	float y = text.getPosition().y;
-	float width = text.getGlobalBounds().width;
-	float height = text.getGlobalBounds().height;
-	sf::IntRect rect(x, y, width, height);
-	//If mouse position is in the rectangle do whatever
-	if (rect.contains(sf::Mouse::getPosition(game->window)))
-		return true;
-	//Otherwise, don't do anything
-	return false;
-}
