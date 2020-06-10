@@ -20,6 +20,7 @@ public:
 	static sf::Sound sound_player;
 	static sf::Music music_player;
 	static std::string currentMusicPlaying;
+	static sf::Sound sound_player2;
 
 	// Constructors and Destructors
 	Sound_() = default;
@@ -41,6 +42,7 @@ public:
     static void stopAllSounds();
 	static void resetPitchVolume();
 	static bool getStatusOfMusic(std::string soundName);
+	static void playSoundConcurrently(std::string soundName, float volume);
 };
 
 #endif // SOUND__H
