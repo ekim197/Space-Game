@@ -15,6 +15,7 @@ protected:
     int crew;
     int gold;
     bool isExplode;
+	bool isInWarZone;
     float numRightHit;
     float numLeftHit;
 
@@ -39,6 +40,7 @@ public:
     int getCrew() const { return crew; }
     int getGold() const { return gold; }
     bool getIsExplode(){ return isExplode; }
+	bool getIsInWarZone() { return isInWarZone;  }
     float getNumLeftHit() { return numLeftHit; }
     float getNumRightHit() { return numRightHit; }
 
@@ -67,6 +69,7 @@ public:
     // Action
     void reset();
     void explode();
+	void warZone();
     void hitLeft();
     void hitRight();
     void healLeft();

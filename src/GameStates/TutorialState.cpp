@@ -14,6 +14,12 @@ TutorialState::TutorialState(Game* game): PlayState(game, game->defaultPlayer){
 }
 
 void TutorialState::update(const float dt){
+	//Sound
+	if (!soundList.getStatusOfMusic(RESOURCE_PATH + "Audio/Tutorial.ogg")) {
+		soundList.stopAllSounds();
+		soundList.playSound(RESOURCE_PATH + "Audio/Tutorial.ogg");
+	}
+
     // Three second delay before things start spawning in
     timeIncrement(dt);
 
