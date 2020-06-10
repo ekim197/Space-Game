@@ -3,3 +3,11 @@
 *.filters
 *.user
 Debug/
+bin/
+lib/
+libs/
+obj/
+*.cbp
+*.depend
+*.layout
+*.uxf
