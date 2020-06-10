@@ -6,10 +6,6 @@
 using namespace Resource;
 
 StoreState::StoreState(Game* game): MenuState(game, 5){
-    //Sound
-	soundList.stopAllSounds();
-	soundList.playSound(RESOURCE_PATH + "Audio/Store.ogg");
-
     // Title
     title.setPosition(100,100);
     title.setCharacterSize(150); // in pixels, not points!
@@ -89,6 +85,11 @@ void StoreState::handle_input(){
 }
 
 void StoreState::update(const float dt){
+	//Sound
+	if (!soundList.getStatusOfMusic(RESOURCE_PATH + "Audio/Store.ogg")) {
+		soundList.stopAllSounds();
+		soundList.playSound(RESOURCE_PATH + "Audio/Store.ogg");
+	}
     timeIncrement(dt);
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickTimer >= 0.25){

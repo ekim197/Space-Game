@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iomanip>
 #include <cstring>
 #include "Score.h"
@@ -23,6 +24,7 @@ Score::Score(char* objName, int objScore, char* objDate){
 }
 
 Score::Score(char* objName, int objScore, time_t objDate){
+	#define _CRT_SECURE_NO_WARNINGS
     strcpy(name, objName);
     score = objScore;
     date = Date(objDate);

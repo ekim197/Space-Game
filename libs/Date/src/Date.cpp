@@ -1,6 +1,8 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "Date.h"
 #include <cstring>
 #include <cstdlib>
+
 
 // Constructors and Destructor
 Date::Date(){

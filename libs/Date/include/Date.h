@@ -1,6 +1,6 @@
 #ifndef DATE_H
 #define DATE_H
-
+#define _CRT_SECURE_NO_WARNINGS
 #include <ctime>
 #include <iostream>
 

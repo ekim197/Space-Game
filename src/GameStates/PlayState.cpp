@@ -66,6 +66,7 @@ void PlayState::update(const float dt){
 	soundList.playSound(RESOURCE_PATH + "Audio/PlayState.ogg");
     }
 
+
     // Three second delay before things start spawning in
     timeIncrement(dt);
 
@@ -260,13 +261,17 @@ bool PlayState::collide(Coin* obj){
 
 bool PlayState::collide(WarZone* obj, float dt){
     if(obj){
-        if(PixelPerfectTest(player.getLeftWing(), obj->getBody()) && PixelPerfectTest(player.getRightWing(), obj->getBody())){
+        if(PixelPerfectTest(player.getLeftWing(), obj->getBody()) && PixelPerfectTest(player.getRightWing(), obj->getBody()) && !player.getIsInWarZone()){
+			soundList.playSound(RESOURCE_PATH + "Audio/WarZone2.wav", 50);
             player.healLeft();
             player.healRight();
             timerInWarZone += dt;
+			player.warZone();
         }
-        else
-            timerInWarZone = 0;
+		else {
+			timerInWarZone = 0;
+		}
+         
     }
     return 0;
 }
@@ -286,11 +291,10 @@ bool PlayState::checkPastYet(Entity* obj){
 
 int PlayState::checkBadEvent(float dt){
     // Check if staying in WarZone too long
-    if(timerInWarZone > 2){
-        player.explode();
-        if(!player.getIsExplode())
-            soundList.playSound(RESOURCE_PATH + "Audio/Ship_Explosion.wav", 10);
-    }
+	if (timerInWarZone > 2) {
+		soundList.playSound(RESOURCE_PATH + "Audio/Ship_Explosion.wav", 10);
+		player.explode();
+	}
 
     // Check if exploded
     if(player.getIsExplode()){

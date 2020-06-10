@@ -72,12 +72,12 @@ void Game::setup(){
 	//Setting up Sound
 	std::vector<std::string> soundFiles{ RESOURCE_PATH + "Audio/PlayState.ogg", RESOURCE_PATH + "Audio/Bells_Cut.wav",
 										  RESOURCE_PATH + "Audio/Coin_Collect.wav", RESOURCE_PATH + "Audio/EventStates.ogg",
-										  RESOURCE_PATH + "Audio/GameOver.ogg", RESOURCE_PATH + "Audio/	MainMenu.ogg",
-										  RESOURCE_PATH + "Audio/Ship_Explosion.wav" , RESOURCE_PATH + "Audio/Store.ogg" };
+										  RESOURCE_PATH + "Audio/GameOver.wav", RESOURCE_PATH + "Audio/	MainMenu.ogg",
+										  RESOURCE_PATH + "Audio/Ship_Explosion.wav" , RESOURCE_PATH + "Audio/Store.ogg", 
+								          RESOURCE_PATH + "Audio/Tutorial.ogg",
+										  RESOURCE_PATH + "Audio/WarZone2.wav" };
 
 	soundList = Sound_(soundFiles);
-
-	soundList.setLoop(RESOURCE_PATH + "Audio/GameOver.ogg");
 	soundList.setLoop(RESOURCE_PATH + "Audio/PlayState.ogg");
 	soundList.setLoop(RESOURCE_PATH + "Audio/EventStates.ogg");
 	soundList.setLoop(RESOURCE_PATH + "Audio/Store.ogg");
@@ -110,6 +110,12 @@ void Game::setup(){
         makeTexture(backgroundTexture[3], "Background/Event1_Bg.png");
         makeTexture(backgroundTexture[4], "Background/Event2_Bg.png");
         makeTexture(backgroundTexture[5], "Background/Event3_Bg.png");
+		makeTexture(backgroundTexture[6], "Background/astsuccess2.png");
+		makeTexture(backgroundTexture[7], "Background/lastsuccess.jpg");
+		makeTexture(backgroundTexture[8], "Background/veersuccess.jpg");
+		makeTexture(backgroundTexture[9], "Background/veerfail.jpg");
+		makeTexture(backgroundTexture[10], "Background/veersuccess2.jpg");
+		makeTexture(backgroundTexture[11], "Background/astfail.jpg");
 
         // Create Fonts
         makeFont(font[0], "Font/Mont-Heavy.otf");

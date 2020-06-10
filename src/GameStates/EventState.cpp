@@ -7,10 +7,6 @@ EventState::EventState(Game* game, PlayState* prev, int type): prevState(prev), 
     // Push Game
     this->game = game;
 
-    // Music
-	soundList.stopAllSounds();
-    soundList.playSound(RESOURCE_PATH + "Audio/EventStates.ogg");
-
     // Background
     background.setSize(sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT * 2/3));
 
@@ -121,6 +117,12 @@ void EventState::draw(){
 }
 
 void EventState::update(const float dt){
+	//Sound
+	if (!soundList.getStatusOfMusic(RESOURCE_PATH + "Audio/EventStates.ogg")) {
+		soundList.stopAllSounds();
+		soundList.playSound(RESOURCE_PATH + "Audio/EventStates.ogg");
+	}
+
     timeIncrement(dt);
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickTimer >= 0.25){

@@ -7,6 +7,12 @@ EndState::EndState(Game* game, PlayState* prev): MenuState(game, 1), prevState(p
     title.setPosition(50, game->view.getCenter().y - VIEW_HEIGHT/2 + 100);
     title.setString("GAME\n    OVER");
 
+	//Sound
+	if (!soundList.getStatusOfMusic(RESOURCE_PATH + "Audio/GameOver.wav")) {
+		soundList.stopAllSounds();
+		soundList.playSound(RESOURCE_PATH + "Audio/GameOver.wav");
+	}
+
     // Buttons
     buttons[0].setFont(font[0]);
     buttons[0].setCharacterSize(100);
