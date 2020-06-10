@@ -53,8 +53,6 @@ void PlayState::handle_input(){
         case sf::Event::KeyPressed:
             if (event.key.code == sf::Keyboard::Escape)
                 game->push_state(new PauseState(game, game->current_state()));
-
-
             break;
         default:
             break;

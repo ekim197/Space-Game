@@ -5,7 +5,7 @@
 #include "GameState.h"
 //#include "Score.h"
 //#include "Date.h"
-//Test comment
+
 int main(){
     // Start Game
     Game game;
