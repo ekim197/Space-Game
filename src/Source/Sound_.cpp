@@ -4,6 +4,7 @@
 std::unordered_map<std::string, sf::SoundBuffer> Sound_::soundBuffers{};
 std::vector<std::string> Sound_::listOfSoundFiles{};
 sf::Sound Sound_::sound_player{};
+sf::Sound Sound_::sound_player2{};
 sf::Music Sound_::music_player{};
 std::string Sound_::currentMusicPlaying{};
 
@@ -160,6 +161,8 @@ void Sound_::stopAllSounds() {
 void Sound_::resetPitchVolume() {
 	sound_player.setVolume(100);
 	sound_player.setPitch(1);
+	sound_player2.setVolume(100);
+	sound_player2.setPitch(1);
 	music_player.setVolume(100);
 	music_player.setPitch(1);
 }
@@ -170,5 +173,14 @@ bool Sound_::getStatusOfMusic(std::string soundName) {
 	}
 	else {
 		return false;
+	}
+}
+
+void Sound_::playSoundConcurrently(std::string soundName, float volume) {
+	if (isFileTypeWav(soundName)) {
+		resetPitchVolume();
+		sound_player2.setBuffer(soundBuffers[soundName]);
+		sound_player2.setVolume(volume);
+		sound_player2.play();
 	}
 }
