@@ -8,7 +8,7 @@ namespace Resource{
     sf::Texture planetTexture;
     sf::Texture coinTexture;
     sf::Texture warZoneTexture;
-    sf::Texture backgroundTexture[6];
+    sf::Texture backgroundTexture[12];
     sf::Font font[5];
     // Sound
 	Sound_ soundList;

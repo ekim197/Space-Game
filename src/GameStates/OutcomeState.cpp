@@ -39,17 +39,17 @@ OutcomeState::OutcomeState(Game* game, PlayState* prev, int type) : prevState(pr
 	choiceButtons[0].setString("Click here to continue");
 	choiceButtons[1].setString("");
 	if (outcomeType == astSuccess) {
-		background.setTexture(&backgroundTexture[3]);
+		background.setTexture(&backgroundTexture[4]);
 		textInfo.setString("Your crew draw sticks, the person who drew the shortest stick looked miserable.");
 		textInfo2.setString("The ship restarts, and we watched his lifeless body as we continue onward.\nHopefully his sacrifice won't be in vain");
 	}
 	else if (outcomeType == astSuccess2) {
-		background.setTexture(&backgroundTexture[4]);
+		background.setTexture(&backgroundTexture[6]);
 		textInfo.setString("They were able to fix the ship and all get back in one piece.");
 		textInfo2.setString("Lets hope our luck continues");
 	}
 	else if (outcomeType == astFail) {
-		background.setTexture(&backgroundTexture[5]);
+		background.setTexture(&backgroundTexture[11]);
 		textInfo.setString("They were able to fix the ship, but suddenly, an accident occurred,\nkilling all three of the crew members");
 		textInfo2.setString("\nWhat a disaster, we can't afford to lose a big portion of our crew.");
 	}
@@ -59,24 +59,24 @@ OutcomeState::OutcomeState(Game* game, PlayState* prev, int type) : prevState(pr
 		textInfo2.setString("\"This is it huh...\", you usher out before joining the endless void.");
 	}
 	else if (outcomeType == lastSuccess) {
-		background.setTexture(&backgroundTexture[5]);
+		background.setTexture(&backgroundTexture[7]);
 		textInfo.setString("You were able to repair the ship and barely get back in.");
 		textInfo2.setString("How much longer will you be able to last");
 	}
 	else if (outcomeType == veerFail) {
-		background.setTexture(&backgroundTexture[5]);
+		background.setTexture(&backgroundTexture[9]);
 		textInfo.setString("You storage is already been sucked dry ");
 		textInfo2.setString("We won't be able to continue the journey, this is the end ");
 	}
 	else if (outcomeType == veerSuccess) {
-		background.setTexture(&backgroundTexture[5]);
+		background.setTexture(&backgroundTexture[8]);
 		textInfo.setString("You used the asteroids as a guide and made it back to the main course. ");
 		textInfo2.setString("Well done captain.");
 	}
 	else if (outcomeType == veerSuccess2) {
 		background.setTexture(&backgroundTexture[5]);
 		textInfo.setString("You hand over your wallet, disgusted by the shady practices ");
-		textInfo2.setString("brought from intergalactical capitalism (lose 3 gold)");
+		textInfo2.setString("brought from intergalactic capitalism (lose 3 gold)");
 	}
 }
 

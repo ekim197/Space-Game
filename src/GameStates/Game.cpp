@@ -110,6 +110,12 @@ void Game::setup(){
         makeTexture(backgroundTexture[3], "Background/Event1_Bg.png");
         makeTexture(backgroundTexture[4], "Background/Event2_Bg.png");
         makeTexture(backgroundTexture[5], "Background/Event3_Bg.png");
+		makeTexture(backgroundTexture[6], "Background/astsuccess2.png");
+		makeTexture(backgroundTexture[7], "Background/lastsuccess.jpg");
+		makeTexture(backgroundTexture[8], "Background/veersuccess.jpg");
+		makeTexture(backgroundTexture[9], "Background/veerfail.jpg");
+		makeTexture(backgroundTexture[10], "Background/veersuccess2.jpg");
+		makeTexture(backgroundTexture[11], "Background/astfail.jpg");
 
         // Create Fonts
         makeFont(font[0], "Font/Mont-Heavy.otf");
