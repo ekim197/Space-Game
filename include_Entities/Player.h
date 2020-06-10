@@ -69,7 +69,8 @@ public:
     // Action
     void reset();
     void explode();
-	void warZone();
+	void warZone(){	isInWarZone = true; }
+	void unWarZone(){	isInWarZone = false; }
     void hitLeft();
     void hitRight();
     void healLeft();

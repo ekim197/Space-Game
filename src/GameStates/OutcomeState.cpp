@@ -54,7 +54,7 @@ OutcomeState::OutcomeState(Game* game, PlayState* prev, int type) : prevState(pr
 		textInfo2.setString("\nWhat a disaster, we can't afford to lose a big portion of our crew.");
 	}
 	else if (outcomeType == lastFail) {
-		background.setTexture(&backgroundTexture[4]);
+		background.setTexture(&backgroundTexture[5]);
 		textInfo.setString("You watch the ship floating, and slowly fade into black.");
 		textInfo2.setString("\"This is it huh...\", you usher out before joining the endless void.");
 	}
