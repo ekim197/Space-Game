@@ -139,11 +139,3 @@ void BackdoorState::draw(){
     for(auto key : buttons)
         game->window.draw(key);
 }
-
-bool BackdoorState::isTextClicked(sf::Text text){
-    sf::IntRect rect(text.getPosition().x, text.getPosition().y - (game->view.getCenter().y - VIEW_HEIGHT/2), text.getGlobalBounds().width, text.getGlobalBounds().height + 20);
-
-    if (rect.contains(sf::Mouse::getPosition(game->window)))
-        return true;
-    return false;
-}

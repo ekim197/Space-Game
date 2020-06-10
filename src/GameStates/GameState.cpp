@@ -2,9 +2,9 @@
 
 bool GameState::isTextClicked(sf::Text text){
     float x = text.getPosition().x;
-	float y = text.getPosition().y;
+	float y = text.getPosition().y - (game->view.getCenter().y - VIEW_HEIGHT/2) + 20;
 	float width = text.getGlobalBounds().width;
-	float height = text.getGlobalBounds().height;
+	float height = text.getGlobalBounds().height + 20;
 	sf::IntRect rect(x, y, width, height);
 	if (rect.contains(sf::Mouse::getPosition(game->window))){
         return true;

@@ -2,7 +2,7 @@
 
 using namespace Resource;
 
-PauseState::PauseState(Game* game, GameState* prev): MenuState(game, 2), prevState(prev){
+PauseState::PauseState(Game* game, GameState* prev): MenuState(game, 3), prevState(prev){
     // Title
     title.setPosition(100, game->view.getCenter().y - VIEW_HEIGHT/2 + 100);
     title.setString("ENDLESS\n    PAUSE");
@@ -20,7 +20,8 @@ PauseState::PauseState(Game* game, GameState* prev): MenuState(game, 2), prevSta
         key.setPosition(100, game->view.getCenter().y - VIEW_HEIGHT/2 + 750 + i++ * 100);
 
     buttons[0].setString("CONTINUE");
-    buttons[1].setString("MENU");
+    buttons[1].setString("OPTIONS");
+    buttons[2].setString("MENU");
 }
 
 void PauseState::handle_input(){
@@ -62,13 +63,14 @@ void PauseState::update(const float dt){
         if(isTextClicked(buttons[0]))
             game->pop_state();
         else if(isTextClicked(buttons[1]))
+            game->push_state(new OptionState(game, game->current_state()));
+        else if(isTextClicked(buttons[2]))
             game->backToMainState();
-        clickTimer = 0;
     }
 }
 
 void PauseState::draw(){
-    // Set rect
+    // Set Rect
     sf::RectangleShape rect(sf::Vector2f(VIEW_WIDTH,VIEW_HEIGHT));
     rect.setFillColor(sf::Color(30,30,30,150));
     rect.setPosition(0, game->view.getCenter().y - VIEW_HEIGHT/2);
@@ -88,10 +90,3 @@ void PauseState::draw(){
         fadeIn(5);
 }
 
-bool PauseState::isTextClicked(sf::Text text){
-    sf::IntRect rect(text.getPosition().x, text.getPosition().y - (game->view.getCenter().y - VIEW_HEIGHT/2), text.getGlobalBounds().width, text.getGlobalBounds().height + 20);
-
-    if (rect.contains(sf::Mouse::getPosition(game->window)))
-        return true;
-    return false;
-}

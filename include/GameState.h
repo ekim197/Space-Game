@@ -108,7 +108,6 @@ public:
     void insertWarZone(int rngVal, float distY);
 
     // Other
-    void pause_game();
     void setup();
 };
 
@@ -122,9 +121,6 @@ public:
     virtual void handle_input() override;
     virtual void update(const float dt) override;
     virtual void draw() override;
-
-    // Other
-    bool isTextClicked(sf::Text text) override;
 };
 
 /*_____________Tutorial_____________*/
@@ -183,9 +179,6 @@ public:
     virtual void handle_input() override;
     virtual void update(const float dt) override;
     virtual void draw() override;
-
-    // Action
-    virtual bool isTextClicked(sf::Text text);
 };
 
 /*_____________End_____________*/
@@ -208,6 +201,21 @@ public:
     // Action
     virtual bool isTextClicked(sf::Text text);
     void scoreManage(Score newScore);
+};
+
+/*_____________Option_____________*/
+class OptionState : public MenuState{
+private:
+    GameState* prevState;
+
+public:
+    // Constructor
+    OptionState(Game* game, GameState* prev);
+
+    // Loop
+    virtual void handle_input() override;
+    virtual void update(const float dt) override;
+    virtual void draw() override;
 };
 
 /*_____________Event_____________*/

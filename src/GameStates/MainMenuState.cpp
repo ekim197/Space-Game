@@ -27,7 +27,7 @@ MainMenuState::MainMenuState(Game* game) : MenuState(game, 6){
     buttons[0].setString("PLAY GAME");
     buttons[1].setString("TUTORIAL");
     buttons[2].setString("STORE");
-    buttons[3].setString("Options");
+    buttons[3].setString("OPTIONS");
     buttons[4].setString("QUIT");
     buttons[5].setString(".");
 }
@@ -48,11 +48,8 @@ void MainMenuState::update(const float dt){
             game->push_state(new TutorialState(game));
         else if (isTextClicked(buttons[2]))
             game->push_state(new StoreState(game));
-/*
         else if (isTextClicked(buttons[3]))
-            game->push_state(new OptionState(game));
-
-*/
+            game->push_state(new OptionState(game, game->current_state()));
         else if (isTextClicked(buttons[4]))
             game->window.close();
         else if (isTextClicked(buttons[5]))

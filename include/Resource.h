@@ -29,7 +29,6 @@ namespace Resource{
     extern float clickTimer;
     // File names
     extern std::string highScoreFile;
-
 }
 
 

@@ -30,6 +30,7 @@ void Game::pop_state(unsigned numStates){
         delete states.back();
         states.pop_back();
     }
+    clickTimer = 0;
 }
 
 void Game::backToMainState(){
@@ -73,7 +74,7 @@ void Game::setup(){
 	std::vector<std::string> soundFiles{ RESOURCE_PATH + "Audio/PlayState.ogg", RESOURCE_PATH + "Audio/Bells_Cut.wav",
 										  RESOURCE_PATH + "Audio/Coin_Collect.wav", RESOURCE_PATH + "Audio/EventStates.ogg",
 										  RESOURCE_PATH + "Audio/GameOver.wav", RESOURCE_PATH + "Audio/	MainMenu.ogg",
-										  RESOURCE_PATH + "Audio/Ship_Explosion.wav" , RESOURCE_PATH + "Audio/Store.ogg", 
+										  RESOURCE_PATH + "Audio/Ship_Explosion.wav" , RESOURCE_PATH + "Audio/Store.ogg",
 								          RESOURCE_PATH + "Audio/Tutorial.ogg",
 										  RESOURCE_PATH + "Audio/WarZone2.wav" };
 
