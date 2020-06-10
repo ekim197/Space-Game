@@ -26,21 +26,13 @@ PauseState::PauseState(Game* game, GameState* prev): MenuState(game, 2), prevSta
 void PauseState::handle_input(){
     // Create Event
     sf::Event event;
-	// Check Key is Pressed
-	
-    while (game->window.pollEvent(event)){
+
+    while(game->window.pollEvent(event)){
         switch (event.type){
         /* Close the window */
         case sf::Event::Closed:
             game->window.close();
             break;
-        /* Change Between game states */
-       /* case sf::Event::KeyPressed:
-            if (event.key.code == sf::Keyboard::Escape)
-                game->pop_state();
-            else if (event.key.code == sf::Keyboard::Return)
-                game->pop_state();
-            break;*/
         //check if text is hovered over
         case sf::Event::MouseMoved:
             for(auto& i : buttons){
@@ -54,10 +46,11 @@ void PauseState::handle_input(){
             break;
         }
     }
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && clickTimer >= 0.2)
-		game->pop_state();
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && clickTimer >= 0.2)
-		game->pop_state();
+    // Key input
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)&& clickTimer >= 0.2)
+        game->pop_state();
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)&& clickTimer >= 0.2)
+        game->pop_state();
 }
 
 void PauseState::update(const float dt){
@@ -95,10 +88,10 @@ void PauseState::draw(){
         fadeIn(5);
 }
 
-bool PauseState::isTextClicked(sf::Text text) {
-	sf::IntRect rect(text.getPosition().x, text.getPosition().y - (game->view.getCenter().y - VIEW_HEIGHT / 2), text.getGlobalBounds().width, text.getGlobalBounds().height + 20);
+bool PauseState::isTextClicked(sf::Text text){
+    sf::IntRect rect(text.getPosition().x, text.getPosition().y - (game->view.getCenter().y - VIEW_HEIGHT/2), text.getGlobalBounds().width, text.getGlobalBounds().height + 20);
 
-	if (rect.contains(sf::Mouse::getPosition(game->window)))
-		return true;
-	return false;
+    if (rect.contains(sf::Mouse::getPosition(game->window)))
+        return true;
+    return false;
 }

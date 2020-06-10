@@ -21,7 +21,7 @@ MainMenuState::MainMenuState(Game* game) : MenuState(game, 5){
 
     buttons[4].setFont(font[0]);
     buttons[4].setPosition(2000, 1050);
-    buttons[4].setCharacterSize(20); // in pixels, not points!
+    buttons[4].setCharacterSize(40); // in pixels, not points!
     buttons[4].setFillColor(sf::Color(229, 245, 249));   // set the color
 
     buttons[0].setString("PLAY GAME");
