@@ -4,8 +4,6 @@
 *.user
 Debug/
 bin/
-lib/
-libs/
 obj/
 *.cbp
 *.depend
