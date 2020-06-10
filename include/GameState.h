@@ -53,7 +53,6 @@ protected:
 
 public:
     // Constructor
-    MenuState() = default;
     MenuState(Game* game, int buttonNum);
 
     // Loop
@@ -169,7 +168,6 @@ private:
 
 public:
     // Constructor
-    PauseState(GameState* prev): prevState(prev){}
     PauseState(Game* game, GameState* prev);
 
     // Loop
@@ -182,15 +180,24 @@ public:
 };
 
 /*_____________End_____________*/
-class EndState: public PauseState{
+class EndState: public MenuState{
+private:
+    GameState* prevState;
+    std::ifstream fin;
+    std::ofstream fout;
+
+
 public:
     // Constructor and Destructor
     EndState(Game* game, PlayState* prev);
 
     // Loop
-//    virtual void handle_input() override;
-//    virtual void update(const float dt) override;
-//    virtual void draw() override;
+    virtual void handle_input() override;
+    virtual void update(const float dt) override;
+    virtual void draw() override;
+
+    // Action
+    virtual bool isTextClicked(sf::Text text);
 };
 
 /*_____________Event_____________*/
