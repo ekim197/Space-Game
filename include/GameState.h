@@ -13,6 +13,7 @@
 #include "Obstacle.h"
 #include "Coin.h"
 #include "WarZone.h"
+#include "Resource.h"
 
 class Game;
 
@@ -28,7 +29,7 @@ public:
     Game* game;
 
     // Constructor and Destructor
-    GameState(): timer(0), fadeTimer(0), fadeTransparency(0) {}
+    GameState(): timer(0), fadeTimer(0), fadeTransparency(0) { Resource::clickTimer = 0; }
     virtual ~GameState() = default;
 
     // Loop
@@ -52,6 +53,7 @@ protected:
 
 public:
     // Constructor
+    MenuState() = default;
     MenuState(Game* game, int buttonNum);
 
     // Loop
@@ -150,6 +152,44 @@ public:
     void draw() override;
 };
 
+/*_____________MainMenu_____________*/
+class MainMenuState : public MenuState{
+public:
+    // Constructor
+    MainMenuState(Game* game);
+
+    // Loop
+    virtual void update(const float dt) override;
+};
+
+/*_____________Pause_____________*/
+class PauseState : public MenuState{
+private:
+    GameState* prevState;
+
+public:
+    // Constructor
+    PauseState(GameState* prev): prevState(prev){}
+    PauseState(Game* game, GameState* prev);
+
+    // Loop
+    virtual void handle_input() override;
+    virtual void update(const float dt) override;
+    virtual void draw() override;
+};
+
+/*_____________End_____________*/
+class EndState: public PauseState{
+public:
+    // Constructor and Destructor
+    EndState(Game* game, GameState* prev);
+
+    // Loop
+//    virtual void handle_input() override;
+//    virtual void update(const float dt) override;
+//    virtual void draw() override;
+};
+
 /*_____________Event_____________*/
 class EventState : public GameState{
 private:
@@ -189,45 +229,6 @@ public:
 	virtual void handle_input() override;
 	virtual void update(const float dt) override;
 	virtual void draw() override;
-};
-
-/*_____________MainMenu_____________*/
-class MainMenuState : public MenuState{
-public:
-    // Constructor
-    MainMenuState(Game* game);
-
-    // Loop
-    virtual void update(const float dt) override;
-};
-
-/*_____________Pause_____________*/
-class PauseState : public MenuState{
-private:
-    GameState* prevState;
-
-public:
-    // Constructor and Destructor
-    PauseState(Game* game, GameState* prev);
-
-    // Loop
-    virtual void handle_input() override;
-    virtual void update(const float dt) override;
-    virtual void draw() override;
-
-    // Action
-    virtual bool isTextClicked(sf::Text text) override;
-};
-
-/*_____________End_____________*/
-class EndState{
-
-public:
-    // Constructor and Destructor
-    EndState(){}
-
-    // Loop
-
 };
 
 #endif // GameState_H

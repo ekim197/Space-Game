@@ -26,6 +26,7 @@ namespace Resource{
     extern Sound_ soundList;
     // Time stuff
     extern long long int rng;
+    extern float clickTimer;
 }
 
 

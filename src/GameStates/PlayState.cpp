@@ -136,6 +136,10 @@ void PlayState::update(const float dt){
         game->push_state(new EventState(game, dynamic_cast<PlayState*>(game->current_state()), checkBadEvent(dt)));
         reset();
     }
+
+    // Check if Crew Dead
+    if(player.getCrew() <= 0)
+        game->push_state(new EndState(game, dynamic_cast<PlayState*>(game->current_state())));
 }
 
 void PlayState::draw(){

@@ -137,9 +137,9 @@ void OutcomeState::draw() {
 
 void OutcomeState::update(const float dt) {
 	timeIncrement(dt);
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && game->clickTimer > 0.25){
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickTimer > 0.25){
         game->pop_state(2);
-        game->clickTimer = 0;
+        clickTimer = 0;
 	}
 }
 

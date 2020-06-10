@@ -27,7 +27,6 @@ public:
     sf::View view;
     Player defaultPlayer;
     Player gamePlayer;
-    float clickTimer;
 
     // Constructor and Destructor
     Game();

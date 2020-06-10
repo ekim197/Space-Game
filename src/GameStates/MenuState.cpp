@@ -5,6 +5,7 @@ using namespace Resource;
 MenuState::MenuState(Game* game, int buttonNum): numButtons(buttonNum){
     // Title
     title.setFont(font[2]);
+    title.setCharacterSize(200);
     title.setFillColor(sf::Color::White);
 
     //Buttons

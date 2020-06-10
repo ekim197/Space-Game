@@ -2,7 +2,7 @@
 
 using namespace Resource;
 
-Game::Game(): clickTimer(0){
+Game::Game(){
     window.create(sf::VideoMode(VIEW_WIDTH, VIEW_HEIGHT), "Endless Void", sf::Style::Close | sf::Style::Titlebar);
     setup();
 }

@@ -124,7 +124,7 @@ void EventState::draw(){
 void EventState::update(const float dt){
     timeIncrement(dt);
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && game->clickTimer >= 0.25){
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickTimer >= 0.25){
 		if (eventType == asteroid) {
 			if (isTextClicked(choiceButtons[0])) {
 				soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
@@ -133,7 +133,6 @@ void EventState::update(const float dt){
 			}
 			else if (isTextClicked(choiceButtons[1])) {
 				soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
-				std::cout << rng % 100 <<'\n';
 				if (rng % 100 > 60) {
 					prevState->player.loseCrew(3);
 					game->push_state(new OutcomeState(game, prevState, OutcomeState::astFail));
@@ -186,7 +185,7 @@ void EventState::update(const float dt){
 				}
 			}
 		}
-        game->clickTimer = 0;
+        clickTimer = 0;
     }
 }
 

@@ -9,7 +9,6 @@ MainMenuState::MainMenuState(Game* game) : MenuState(game, 5){
 
     // Title
     title.setPosition(800,100);
-    title.setCharacterSize(200); // in pixels, not points!
     title.setString("ENDLESS\n    VOID");
 
     // Buttons
@@ -35,7 +34,7 @@ MainMenuState::MainMenuState(Game* game) : MenuState(game, 5){
 void MainMenuState::update(const float dt){
     timeIncrement(dt);
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && game->clickTimer >= 0.25){
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickTimer >= 0.25){
         if (isTextClicked(buttons[0]))
             game->push_state(new PlayState(game, game->gamePlayer));
         else if(isTextClicked(buttons[1]))
@@ -46,6 +45,6 @@ void MainMenuState::update(const float dt){
             game->window.close();
         else if (isTextClicked(buttons[4]))
             game->push_state(new BackdoorState(game));
-        game->clickTimer = 0;
+        clickTimer = 0;
     }
 }

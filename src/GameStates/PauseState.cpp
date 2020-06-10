@@ -2,11 +2,9 @@
 
 using namespace Resource;
 
-PauseState::PauseState(Game* game, GameState* prev)
-    : MenuState(game, 2), prevState(prev){
+PauseState::PauseState(Game* game, GameState* prev): MenuState(game, 2), prevState(prev){
     // Title
     title.setPosition(100, game->view.getCenter().y - VIEW_HEIGHT/2 + 100);
-    title.setCharacterSize(200); // in pixels, not points!
     title.setString("ENDLESS\n    PAUSE");
 
     // Buttons
@@ -62,12 +60,12 @@ void PauseState::update(const float dt){
     timeIncrement(dt);
 
     // Click
-    if(sf::Mouse::isButtonPressed(sf::Mouse::Left) && game->clickTimer >= 0.25){
+    if(sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickTimer >= 0.25){
         if(isTextClicked(buttons[0]))
             game->pop_state();
         else if(isTextClicked(buttons[1]))
             game->backToMainState();
-        game->clickTimer = 0;
+        clickTimer = 0;
     }
 }
 
@@ -92,10 +90,3 @@ void PauseState::draw(){
         fadeIn(5);
 }
 
-bool PauseState::isTextClicked(sf::Text text){
-    sf::IntRect rect(text.getPosition().x, text.getPosition().y - (game->view.getCenter().y - VIEW_HEIGHT/2), text.getGlobalBounds().width, text.getGlobalBounds().height + 20);
-
-    if (rect.contains(sf::Mouse::getPosition(game->window)))
-        return true;
-    return false;
-}

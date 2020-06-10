@@ -14,4 +14,5 @@ namespace Resource{
 	Sound_ soundList;
     // Time stuff
     long long int rng = 0;
+    float clickTimer = 0;
 }
