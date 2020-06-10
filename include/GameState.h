@@ -114,7 +114,6 @@ public:
 
 /*_____________Backdoor_____________*/
 class BackdoorState : public PlayState, public MenuState{
-
 public:
     // Constructor and Destructor
     BackdoorState(Game* game);
@@ -131,7 +130,9 @@ public:
 /*_____________Tutorial_____________*/
 class TutorialState : public PlayState{
 private:
-    sf::Text instructions;
+    sf::Text instruction;
+    bool isInstrPass[5];
+    float instrTimer[5];
 
 public:
     // Constructor and Destructor

@@ -18,10 +18,10 @@ BackdoorState::BackdoorState(Game* game): PlayState(game, game->defaultPlayer), 
         buttons[i].setFillColor(sf::Color::White);
     }
 
-    buttons[0].setString("Insert Asteroid");
-    buttons[1].setString("Insert Planet");
-    buttons[2].setString("Insert Coin");
-    buttons[3].setString("Insert WarZone");
+    buttons[0].setString("Key 1: Insert Asteroid");
+    buttons[1].setString("Key 2: Insert Planet");
+    buttons[2].setString("Key 3: Insert Coin");
+    buttons[3].setString("Key 4: Insert WarZone");
 }
 
 void BackdoorState::handle_input(){
@@ -63,9 +63,6 @@ void BackdoorState::handle_input(){
 }
 
 void BackdoorState::update(const float dt){
-
-	soundList.stopAllSounds();
-
     // Three second delay before things start spawning in
     timeIncrement(dt);
 
