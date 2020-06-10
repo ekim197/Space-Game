@@ -49,7 +49,7 @@ public:
 };
 
 /*_____________Menu_____________*/
-class MenuState : public GameState{
+class MenuState : virtual public GameState{
 protected:
     int numButtons;
     std::vector<sf::Text> buttons;
@@ -65,7 +65,7 @@ public:
 };
 
 /*_____________Play_____________*/
-class PlayState : public GameState{
+class PlayState : virtual public GameState{
 protected:
     float timerInsertAsteroid, timerInsertCoin, timerInsertPlanet, timerInsertWarZone;
     float timerCrash, timerOffCourse, timerInWarZone;
@@ -113,7 +113,8 @@ public:
 };
 
 /*_____________Backdoor_____________*/
-class BackdoorState : public PlayState{
+class BackdoorState : public PlayState, public MenuState{
+
 public:
     // Constructor and Destructor
     BackdoorState(Game* game);
@@ -122,6 +123,9 @@ public:
     virtual void handle_input() override;
     virtual void update(const float dt) override;
     virtual void draw() override;
+
+    // Other
+    bool isTextClicked(sf::Text text) override;
 };
 
 /*_____________Tutorial_____________*/
