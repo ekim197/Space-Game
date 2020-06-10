@@ -11,7 +11,7 @@ int main(){
     Game game;
     game.push_state(new MainMenuState(&game));
     game.game_loop();
-    // test
+
     return 0;
 }
 

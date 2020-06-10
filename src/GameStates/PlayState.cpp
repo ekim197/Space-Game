@@ -215,8 +215,7 @@ bool PlayState::collide(Entity* obj, float dt){
         else
             return collide(dynamic_cast<Obstacle*>(obj));
     }
-    else
-        throw "Problem with collide()";
+    return 0;
 }
 
 bool PlayState::collide(Obstacle* obj){

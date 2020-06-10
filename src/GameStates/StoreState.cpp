@@ -50,7 +50,7 @@ StoreState::StoreState(Game* game): MenuState(game, 5){
     for(int i = 0; i < 3; i++){
         playerInfo.push_back(sf::Text());
         playerInfo[i].setFont(font[0]);
-        playerInfo[i].setPosition(VIEW_WIDTH - 500, 300 + i * 80);
+        playerInfo[i].setPosition(VIEW_WIDTH - 600, 300 + i * 80);
         playerInfo[i].setCharacterSize(75);
         playerInfo[i].setFillColor(sf::Color::Yellow);
         playerInfo[i].setOutlineColor(sf::Color::Black);
@@ -93,11 +93,11 @@ void StoreState::update(const float dt){
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickTimer >= 0.25){
         if (isTextClicked(buttons[0]) && game->gamePlayer.getGold() >= 10){
-            game->gamePlayer.setSpeed(game->gamePlayer.getSpeed() + 1);
+            game->gamePlayer.setSpeed(game->gamePlayer.getSpeed() + 0.2);
             game->gamePlayer.loseGold(10);
         }
         else if(isTextClicked(buttons[1]) && game->gamePlayer.getGold() >= 10){
-            game->gamePlayer.setSpeed(game->gamePlayer.getSpeed() - 1);
+            game->gamePlayer.setSpeed(game->gamePlayer.getSpeed() - 0.2);
             game->gamePlayer.loseGold(10);
         }
         else if (isTextClicked(buttons[2]) && game->gamePlayer.getGold() >= 10){
@@ -108,8 +108,11 @@ void StoreState::update(const float dt){
             game->gamePlayer.gainGold(5);
             game->gamePlayer.loseCrew(2);
         }
-        else if (isTextClicked(buttons[4]))
+        else if (isTextClicked(buttons[4])){
             game->backToMainState();
+            clickTimer = 0; // Since it will return
+            return;
+        }
         clickTimer = 0;
     }
 

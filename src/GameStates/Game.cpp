@@ -94,7 +94,7 @@ void Game::setup(){
         makeTexture(playerTexture[7], "Ship_Sprite/Status_Right_Wing.png");
         makeTexture(playerTexture[8], "Ship_Sprite/explosion.png");
 
-        defaultPlayer = Player(playerTexture, sf::Vector2u(9,9), sf::Vector2f(VIEW_WIDTH/2, 0.0), 8, 15, 0);
+        defaultPlayer = Player(playerTexture, sf::Vector2u(9,9), sf::Vector2f(VIEW_WIDTH/2, 0.0), 8, 5, 0);
         gamePlayer = defaultPlayer;
 
         // Create Entity Textures

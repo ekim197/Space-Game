@@ -1,7 +1,6 @@
 #include <SFML\Graphics.hpp>
 #include "Gamestate.h"
 
-
 using namespace Resource;
 
 EventState::EventState(Game* game, PlayState* prev, int type): prevState(prev), eventType(type){
@@ -52,8 +51,8 @@ EventState::EventState(Game* game, PlayState* prev, int type): prevState(prev), 
         textInfo.setString("There isn't much of the crew left. There is no options left,");
         textInfo2.setString(" you must fix the ship, its a 50-50 chance you will live");
 
-        choiceButtons[0].setString("");
-        choiceButtons[1].setString("");
+        choiceButtons[0].setString("Test your fate");
+        choiceButtons[1].setString("Give up");
     }
     else if(eventType == veer){
         background.setTexture(&backgroundTexture[5]);
@@ -144,13 +143,17 @@ void EventState::update(const float dt){
 		else if (eventType == lastMember) {
 			if (isTextClicked(choiceButtons[0])) {
                 soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
-				if (rng % 100 > 50) game->push_state(new OutcomeState(game, prevState, OutcomeState::lastFail));
-				else game->push_state(new OutcomeState(game, prevState, OutcomeState::lastSuccess));
+				if (rng % 100 > 50){
+                    prevState->player.loseCrew(prevState->player.getCrew());
+                    game->push_state(new OutcomeState(game, prevState, OutcomeState::lastFail));
+				}
+				else
+                    game->push_state(new OutcomeState(game, prevState, OutcomeState::lastSuccess));
 			}
 			else if (isTextClicked(choiceButtons[1])) {
                 soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
-				if (rng % 100 > 50) game->push_state(new OutcomeState(game, prevState, OutcomeState::lastFail));
-				else game->push_state(new OutcomeState(game, prevState, OutcomeState::lastSuccess));
+				prevState->player.loseCrew(prevState->player.getCrew());
+				game->push_state(new OutcomeState(game, prevState, OutcomeState::lastFail));
 			}
 		}
 		else if (eventType == veer) {

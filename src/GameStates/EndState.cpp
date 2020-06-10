@@ -2,7 +2,7 @@
 
 using namespace Resource;
 
-EndState::EndState(Game* game, GameState* prev): PauseState(prev){
+EndState::EndState(Game* game, PlayState* prev): PauseState(game, prev){
     // Title
     title.setPosition(100, game->view.getCenter().y - VIEW_HEIGHT/2 + 100);
     title.setString("GAMEOVER");
@@ -19,6 +19,8 @@ EndState::EndState(Game* game, GameState* prev): PauseState(prev){
     for(auto& key: buttons)
         key.setPosition(100, game->view.getCenter().y - VIEW_HEIGHT/2 + 750 + i++ * 100);
 
-    buttons[0].setString("CONTINUE");
+    buttons[0].setString("");
     buttons[1].setString("MENU");
+
+    game->gamePlayer.setGold(prev->player.getGold());
 }

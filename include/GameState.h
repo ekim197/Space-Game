@@ -185,7 +185,7 @@ public:
 class EndState: public PauseState{
 public:
     // Constructor and Destructor
-    EndState(Game* game, GameState* prev);
+    EndState(Game* game, PlayState* prev);
 
     // Loop
 //    virtual void handle_input() override;
