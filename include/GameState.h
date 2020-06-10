@@ -176,6 +176,7 @@ public:
     virtual void handle_input() override;
     virtual void update(const float dt) override;
     virtual void draw() override;
+	virtual bool isTextClicked(sf::Text text);
 };
 
 /*_____________End_____________*/
