@@ -61,6 +61,11 @@ void PlayState::handle_input(){
 }
 
 void PlayState::update(const float dt){
+    if (!soundList.getStatusOfMusic(RESOURCE_PATH + "Audio/PlayState.ogg")){
+	soundList.stopAllSounds();
+	soundList.playSound(RESOURCE_PATH + "Audio/PlayState.ogg");
+    }
+
     // Three second delay before things start spawning in
     timeIncrement(dt);
 

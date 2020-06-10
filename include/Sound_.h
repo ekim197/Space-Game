@@ -19,6 +19,7 @@ public:
 	static std::vector<std::string> listOfSoundFiles;
 	static sf::Sound sound_player;
 	static sf::Music music_player;
+	static std::string currentMusicPlaying;
 
 	// Constructors and Destructors
 	Sound_() = default;
@@ -39,7 +40,7 @@ public:
 	static void playOffset(std::string s, float seconds);
     static void stopAllSounds();
 	static void resetPitchVolume();
+	static bool getStatusOfMusic(std::string soundName);
 };
 
 #endif // SOUND__H
-

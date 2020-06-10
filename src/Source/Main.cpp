@@ -3,8 +3,6 @@
 #include "Collision.h"
 #include "Game.h"
 #include "GameState.h"
-//#include "Score.h"
-//#include "Date.h"
 
 int main(){
     // Start Game

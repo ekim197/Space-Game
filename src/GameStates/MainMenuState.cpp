@@ -32,6 +32,12 @@ MainMenuState::MainMenuState(Game* game) : MenuState(game, 5){
 }
 
 void MainMenuState::update(const float dt){
+    //Sound
+    if (!soundList.getStatusOfMusic(RESOURCE_PATH + "Audio/MainMenu.ogg")) {
+        soundList.stopAllSounds();
+        soundList.playSound(RESOURCE_PATH + "Audio/MainMenu.ogg");
+    }
+
     timeIncrement(dt);
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickTimer >= 0.25){

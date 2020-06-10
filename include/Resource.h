@@ -27,6 +27,9 @@ namespace Resource{
     // Time stuff
     extern long long int rng;
     extern float clickTimer;
+    // File names
+    extern std::string highScoreFile;
+
 }
 
 

@@ -6,6 +6,8 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <sstream>
+#include <iomanip>
 #include "Game.h"
 #include "Collision.h"
 #include "Entity.h"
@@ -14,6 +16,8 @@
 #include "Coin.h"
 #include "WarZone.h"
 #include "Resource.h"
+#include "Date.h"
+#include "Score.h"
 
 class Game;
 
@@ -183,9 +187,9 @@ public:
 class EndState: public MenuState{
 private:
     GameState* prevState;
-    std::ifstream fin;
-    std::ofstream fout;
-
+    std::vector<sf::Text> highScoreText;
+    Score highScore[10];
+    bool updateScores;
 
 public:
     // Constructor and Destructor
@@ -198,6 +202,7 @@ public:
 
     // Action
     virtual bool isTextClicked(sf::Text text);
+    void scoreManage(Score newScore);
 };
 
 /*_____________Event_____________*/

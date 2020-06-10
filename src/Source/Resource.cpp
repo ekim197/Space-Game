@@ -15,4 +15,5 @@ namespace Resource{
     // Time stuff
     long long int rng = 0;
     float clickTimer = 0;
+    std::string highScoreFile = "High_Score.bin";
 }

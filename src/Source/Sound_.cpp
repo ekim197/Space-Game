@@ -1,9 +1,11 @@
+
 #include "Sound_.h"
 
 std::unordered_map<std::string, sf::SoundBuffer> Sound_::soundBuffers{};
 std::vector<std::string> Sound_::listOfSoundFiles{};
 sf::Sound Sound_::sound_player{};
 sf::Music Sound_::music_player{};
+std::string Sound_::currentMusicPlaying{};
 
 Sound_::Sound_(std::vector<std::string> s) {
 	// Using overloaded assignment operator in vector
@@ -61,6 +63,7 @@ void Sound_::playSound(std::string s) {
         resetPitchVolume();
 		music_player.openFromFile(s);
 		music_player.play();
+		currentMusicPlaying = s;
 	}
 }
 
@@ -77,6 +80,7 @@ void Sound_::playSound(std::string s, float volume) {
 		music_player.openFromFile(s);
 		music_player.setVolume(volume);
 		music_player.play();
+		currentMusicPlaying = s;
 	}
 }
 
@@ -95,6 +99,7 @@ void Sound_::playSound(std::string s, float volume, float pitch) {
 		music_player.setVolume(volume);
 		music_player.setPitch(pitch);
 		music_player.play();
+		currentMusicPlaying = s;
 	}
 }
 
@@ -149,6 +154,7 @@ bool Sound_::isFileTypeWav(std::string s) {
 void Sound_::stopAllSounds() {
 	sound_player.stop();
 	music_player.stop();
+	currentMusicPlaying = "";
 }
 
 void Sound_::resetPitchVolume() {
@@ -158,5 +164,11 @@ void Sound_::resetPitchVolume() {
 	music_player.setPitch(1);
 }
 
-
-
+bool Sound_::getStatusOfMusic(std::string soundName) {
+	if (currentMusicPlaying == soundName) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
