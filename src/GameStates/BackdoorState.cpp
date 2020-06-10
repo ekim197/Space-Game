@@ -63,6 +63,9 @@ void BackdoorState::handle_input(){
 }
 
 void BackdoorState::update(const float dt){
+
+	soundList.stopAllSounds();
+
     // Three second delay before things start spawning in
     timeIncrement(dt);
 

@@ -49,7 +49,7 @@ void Player::update(float dt){
     move(dt);
 
     // Check for explosion animation
-    if(isExplode)
+    if(isExplode || isInWarZone)
         animation.updateOnce(dt);
     else
         animation.reset();
@@ -147,6 +147,7 @@ void Player::setOrigin(float x, float y) {
 
 void Player::reset(){
     isExplode = false;
+	isInWarZone = false;
     numRightHit = 0;
     numLeftHit = 0;
     velocity = sf::Vector2f(0,0);
@@ -158,6 +159,10 @@ void Player::reset(){
 void Player::explode(){
     isExplode = true;
     mainStatus.setColor(sf::Color::Red);
+}
+
+void Player::warZone() {
+	isInWarZone = true;
 }
 
 void Player::hitLeft() {

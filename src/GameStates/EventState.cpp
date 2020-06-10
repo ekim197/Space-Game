@@ -1,15 +1,11 @@
 #include <SFML\Graphics.hpp>
 #include "Gamestate.h"
-#include <iostream>
+
 using namespace Resource;
 
 EventState::EventState(Game* game, PlayState* prev, int type): prevState(prev), eventType(type){
     // Push Game
     this->game = game;
-
-    // Music
-	soundList.stopAllSounds();
-    soundList.playSound(RESOURCE_PATH + "Audio/EventStates.ogg");
 
     // Background
     background.setSize(sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT * 2/3));
@@ -121,7 +117,14 @@ void EventState::draw(){
 }
 
 void EventState::update(const float dt){
+	//Sound
+	if (!soundList.getStatusOfMusic(RESOURCE_PATH + "Audio/EventStates.ogg")) {
+		soundList.stopAllSounds();
+		soundList.playSound(RESOURCE_PATH + "Audio/EventStates.ogg");
+	}
+
     timeIncrement(dt);
+
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickTimer >= 0.25){
 		if (eventType == asteroid) {
 			if (isTextClicked(choiceButtons[0])) {
@@ -131,9 +134,7 @@ void EventState::update(const float dt){
 			}
 			else if (isTextClicked(choiceButtons[1])) {
 				soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
-				std::cout << rng << std::endl;
-				std::cout << rng % 10000 << std::endl;
-				if (rng % 10000 > 6000) {
+				if (rng % 100 > 60) {
 					prevState->player.loseCrew(3);
 					game->push_state(new OutcomeState(game, prevState, OutcomeState::astFail));
 				}
