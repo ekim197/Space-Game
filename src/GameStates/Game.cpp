@@ -118,7 +118,9 @@ void Game::setup() {
 		makeTexture(backgroundTexture[9], "Background/veerfail.jpg");
 		makeTexture(backgroundTexture[10], "Background/veersuccess2.jpg");
 		makeTexture(backgroundTexture[11], "Background/astfail.jpg");
-<<<<<<< HEAD
+		makeTexture(backgroundTexture[12], "Background/Whirlwind.jpg");
+		makeTexture(backgroundTexture[13], "Background/SuckFail.jpg");
+		makeTexture(backgroundTexture[14], "Background/SuckSuccess.jpg");
 
         // Create Fonts
         makeFont(font[0], "Font/Mont-Heavy.otf");
@@ -131,24 +133,6 @@ void Game::setup() {
         std::cerr << "\n\n" << error << " failed to load\nSee if the file is missing or mispelled\n\n";
         exit(1);
     }
-=======
-		makeTexture(backgroundTexture[12], "Background/Whirlwind.jpg");
-		makeTexture(backgroundTexture[13], "Background/SuckFail.jpg");
-		makeTexture(backgroundTexture[14], "Background/SuckSuccess.jpg");
-
-		// Create Fonts
-		makeFont(font[0], "Font/Mont-Heavy.otf");
-		makeFont(font[1], "Font/Doctor-Glitch.otf");
-		makeFont(font[2], "Font/Glitch-City.ttf");
-		makeFont(font[3], "Font/Roboto-Italic.ttf");
-		makeFont(font[4], "Font/Roboto-Black.ttf");
-
-	}
-	catch (const std::string& error) {
-		std::cerr << "\n\n" << error << " failed to load\nSee if the file is missing or mispelled\n\n";
-		exit(1);
-	}
->>>>>>> 551267bfdcb65f6091872235a0fe79e934afda35
 }
 
 void Game::makeCollisionTexture(sf::Texture& text, std::string file) {
