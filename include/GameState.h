@@ -7,6 +7,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <cstring>
 #include <iomanip>
 #include "Game.h"
 #include "Collision.h"
@@ -42,10 +43,12 @@ public:
     virtual void handle_input() = 0;
 
     // Other
-    virtual bool isTextClicked(sf::Text text);
-    virtual void fadeIn(float factor = 1);
-    virtual void fadeOut(float factor = 1);
-    virtual void timeIncrement(const float dt);
+    bool isTextClicked(sf::Text text);
+    void fadeIn(float factor = 1);
+    void fadeOut(float factor = 1);
+    void timeIncrement(const float dt);
+//    void textSetup(sf::Text* objText, std::string tStr, sf::Font fType, int tSize, sf::Color tColor, sf::Vector2f pos);
+//    void textSetup(sf::Text* objText, std::string tStr, sf::Font fType, int tSize, sf::Color tColor, float x, float y);
 };
 
 /*_____________Menu_____________*/
@@ -185,10 +188,13 @@ public:
 /*_____________End_____________*/
 class EndState: public MenuState{
 private:
-    GameState* prevState;
+    PlayState* prevState;
     std::vector<sf::Text> highScoreText;
+    sf::Text name;
+    std::string nameStr;
     Score highScore[10];
     bool updateScores;
+    bool isNewScoreInserted;
 
 public:
     // Constructor and Destructor

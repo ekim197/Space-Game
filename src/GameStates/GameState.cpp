@@ -2,9 +2,9 @@
 
 bool GameState::isTextClicked(sf::Text text){
     float x = text.getPosition().x;
-	float y = text.getPosition().y - (game->view.getCenter().y - VIEW_HEIGHT/2) + 20;
+	float y = text.getPosition().y - (game->view.getCenter().y - VIEW_HEIGHT/2);
 	float width = text.getGlobalBounds().width;
-	float height = text.getGlobalBounds().height + 20;
+	float height = text.getGlobalBounds().height;
 	sf::IntRect rect(x, y, width, height);
 	if (rect.contains(sf::Mouse::getPosition(game->window))){
         return true;
@@ -44,3 +44,20 @@ void GameState::timeIncrement(const float dt){
     Resource::clickTimer += dt;
 }
 
+/*
+void GameState::textSetup(sf::Text* objText, std::string tStr, sf::Font fType, int tSize, sf::Color tColor, sf::Vector2f pos){
+    objText->setString(tStr);
+    objText->setFont(fType);
+    objText->setCharacterSize(tSize);
+    objText->setFillColor(tColor);
+    objText->setPosition(pos);
+}
+
+void GameState::textSetup(sf::Text* objText, std::string tStr, sf::Font fType, int tSize, sf::Color tColor, float x, float y){
+    objText->setString(tStr);
+    objText->setFont(fType);
+    objText->setCharacterSize(tSize);
+    objText->setFillColor(tColor);
+    objText->setPosition(x,y);
+}
+*/

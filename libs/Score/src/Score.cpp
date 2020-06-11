@@ -37,9 +37,9 @@ bool Score::operator < (const Score& objScore){
 }
 
 std::ostream& operator << (std::ostream& out, Score& obj){
-    Date temp(obj.getDate());
-    out << std::left << std::setw(19) << obj.getName()
-        << std::left << std::setw(SizeOfScore) << obj.getScore()
-        << temp;
+    Date date(obj.getDate());
+    out << std::setfill('_') << std::setw(19) << std::left << obj.getName()
+        << std::setfill('_') << std::setw(SizeOfScore) << std::left << obj.getScore()
+        << date;
     return out;
 }
