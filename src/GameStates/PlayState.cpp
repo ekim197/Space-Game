@@ -91,7 +91,7 @@ void PlayState::update(const float dt){
         }
         if(timerInsertCoin >= 1)
             insertCoin(abs(rng) / 1234, VIEW_HEIGHT * 2);
-        if(timerInsertPlanet >= 5)
+        if(timerInsertPlanet >= 10)
             insertPlanet(abs(rng) / 100, VIEW_HEIGHT * 2);
         if(timerInsertWarZone >= 20)
             insertWarZone(abs(rng) / 100000, VIEW_HEIGHT * 6);
