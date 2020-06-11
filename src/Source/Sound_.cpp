@@ -1,5 +1,5 @@
-
 #include "Sound_.h"
+#include <cstdlib>
 
 std::unordered_map<std::string, sf::SoundBuffer> Sound_::soundBuffers{};
 std::vector<std::string> Sound_::listOfSoundFiles{};
@@ -210,20 +210,19 @@ int Sound_::RecordSoundAndGetAmplitude(int milliseconds) {
 	const sf::Int16* samples = buffer.getSamples();
 
 	int largestAmplitude = 0;
+	int boundary1 = 2000;
+	int boundary2 = 10000;
 
-	//5000 is how many consecutive samples we were analyze
-	for (auto i = 0; i < 5000; i++)
+	for (auto i = 0; i < 2000; i++)
 	{
-		unsigned int difference = (int)samples[i] - (int)samples[i + 1];
+		int difference = abs(samples[i] - samples[i + 1]);
+		std::cout << samples[i] << std::endl;
 
-		//This if statement is to ensure we remove the outlier values
-		if (difference < 10000 && (int)samples[i] < 10000) {
-			if (largestAmplitude < (int)samples[i]) {
-				largestAmplitude = (int)samples[i];
+		if (difference < boundary1 && abs(samples[i]) <= boundary2) {
+			if (largestAmplitude < abs(samples[i])) {
+				largestAmplitude = abs(samples[i]);
 			}
 		}
-
-
 	}
 
 	return largestAmplitude;

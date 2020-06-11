@@ -255,7 +255,7 @@ private:
 
 public:
 	int eventType;
-	enum ocTypes { astSuccess, astSuccess2, astFail, lastSuccess, lastFail, veerSuccess, veerSuccess2, veerFail, veerFail2, suckSuccess, suckFail };
+	enum ocTypes { astSuccess, astSuccess2, astFail, lastSuccess, lastFail, veerSuccess, veerSuccess2, veerFail, suckSuccess, suckFail };
 
 	// Constructor and Destructor
 	OutcomeState(Game* game, PlayState* prev, int type);

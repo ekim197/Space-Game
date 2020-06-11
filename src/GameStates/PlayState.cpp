@@ -276,7 +276,7 @@ bool PlayState::collide(WarZone* obj, float dt){
     if(obj){
         if(PixelPerfectTest(player.getLeftWing(), obj->getBody()) && PixelPerfectTest(player.getRightWing(), obj->getBody())){
 			if(!player.getIsInWarZone())
-                soundList.playSoundConcurrently(RESOURCE_PATH + "Audio/WarZone2.wav", 50);
+                soundList.playSoundConcurrently(RESOURCE_PATH + "Audio/WarZone2.wav", 10);
             player.healLeft();
             player.healRight();
             timerInWarZone += dt;
