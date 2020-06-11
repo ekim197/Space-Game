@@ -69,7 +69,7 @@ public:
 class PlayState : virtual public GameState{
 protected:
     float timerInsertAsteroid, timerInsertCoin, timerInsertPlanet, timerInsertWarZone;
-    float timerCrash, timerOffCourse, timerInWarZone;
+	float timerCrash, timerOffCourse, timerInWarZone, timerSuck;
     float timerAddAsteroid;
     int asteroidPerTime;
     std::vector<Entity*> entityList;
