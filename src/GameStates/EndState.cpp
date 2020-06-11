@@ -49,7 +49,7 @@ void EndState::handle_input(){
         break;
         // TextEntered
         case sf::Event::TextEntered:
-                if (event.text.unicode < 128 && nameStr.size() < 16){
+                if (event.text.unicode < 128 && nameStr.size() < 15){
                     if(event.text.unicode == '\b' && nameStr.size() > 0)
                         nameStr.pop_back();
                     else if(event.text.unicode == ' ')
@@ -124,19 +124,11 @@ void EndState::draw(){
         fadeIn(5);
 }
 
-bool EndState::isTextClicked(sf::Text text){
-    sf::IntRect rect(text.getPosition().x, text.getPosition().y - (game->view.getCenter().y - VIEW_HEIGHT/2), text.getGlobalBounds().width, text.getGlobalBounds().height + 20);
-
-    if (rect.contains(sf::Mouse::getPosition(game->window)))
-        return true;
-    return false;
-}
-
 void EndState::scoreManage(Score newScore){
     // Read High_Score.bin
     std::ifstream fin(highScoreFile, std::ios::binary | std::ios::in);
     if (!fin){
-        std::cerr << "Unable to open input text file " << highScoreFile << '\n';
+        std::cerr << "Unable to open input binary file " << highScoreFile << '\n';
         exit(5);
     }
     unsigned numScores = 0;
@@ -184,7 +176,7 @@ void EndState::scoreManage(Score newScore){
         highScoreText[i].setFont(font[4]);
         highScoreText[i].setCharacterSize(50);
         highScoreText[i].setString(sout.str());
-        highScoreText[i].setPosition(VIEW_WIDTH - 1150, game->view.getCenter().y - VIEW_HEIGHT / 5 + i * 75);
+        highScoreText[i].setPosition(VIEW_WIDTH - 1175, game->view.getCenter().y - VIEW_HEIGHT / 5 + i * 75);
 
         if(i == 0)
             highScoreText[i].setFillColor(sf::Color(255,215,0));
@@ -206,5 +198,4 @@ void EndState::scoreManage(Score newScore){
         fout.write(reinterpret_cast<char*>(&highScore[i]), sizeof(highScore[i]));
     }
     fout.close();
-
 }

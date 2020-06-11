@@ -44,20 +44,3 @@ void GameState::timeIncrement(const float dt){
     Resource::clickTimer += dt;
 }
 
-/*
-void GameState::textSetup(sf::Text* objText, std::string tStr, sf::Font fType, int tSize, sf::Color tColor, sf::Vector2f pos){
-    objText->setString(tStr);
-    objText->setFont(fType);
-    objText->setCharacterSize(tSize);
-    objText->setFillColor(tColor);
-    objText->setPosition(pos);
-}
-
-void GameState::textSetup(sf::Text* objText, std::string tStr, sf::Font fType, int tSize, sf::Color tColor, float x, float y){
-    objText->setString(tStr);
-    objText->setFont(fType);
-    objText->setCharacterSize(tSize);
-    objText->setFillColor(tColor);
-    objText->setPosition(x,y);
-}
-*/

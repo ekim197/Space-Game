@@ -48,7 +48,8 @@ void TutorialState::update(const float dt){
 
         if(player.getGold() >= 5)
             instrTimer[2] += dt;
-
+        if(player.getIsExplode())
+            instrTimer[2] = 0;
         if(instrTimer[2] > 1){
             isInstrPass[2] = true;
             insertWarZone(abs(rng) / 100000, VIEW_HEIGHT * 6);
@@ -65,15 +66,15 @@ void TutorialState::update(const float dt){
             player.hitRight();
         }
 
-
         if(player.getNumLeftHit() == 0 && player.getNumRightHit() == 0)
             instrTimer[3] += dt;
-
+        if(player.getIsExplode())
+            instrTimer[3] = 0;
         if(instrTimer[3] > 1)
             isInstrPass[3] = true;
     }
     else if(!isInstrPass[4]){
-        instruction.setString("Nice!\n If you crash, you will get into an event\n");
+        instruction.setString("Nice!\n If you crash in game,\nyou will get into an event\nGood luck!\n\n Press Escape to exit");
 
     }
 
@@ -121,10 +122,8 @@ void TutorialState::update(const float dt){
     game->view.setCenter(sf::Vector2f(VIEW_WIDTH/2, player.getPosition().y - VIEW_HEIGHT/3));
 
     // Check if exploded
-    if(checkBadEvent(dt) != 0){
-        game->push_state(new EventState(game, dynamic_cast<PlayState*>(game->current_state()), checkBadEvent(dt)));
+    if(checkBadEvent(dt) != 0)
         reset();
-    }
 }
 
 void TutorialState::draw(){
