@@ -36,12 +36,12 @@ OutcomeState::OutcomeState(Game* game, PlayState* prev, int type) : prevState(pr
 		choiceButtons.push_back(textOption1);
 		choiceButtons[i].setPosition(textOption1.getPosition().x, textOption1.getPosition().y + i * 50);
 	}
-	choiceButtons[0].setString("Click here to continue");
-	choiceButtons[1].setString("");
+	choiceButtons[0].setString("");
+	choiceButtons[1].setString("Click here to continue");
 	if (outcomeType == astSuccess) {
 		background.setTexture(&backgroundTexture[4]);
-		textInfo.setString("Your crew draw sticks, the person who drew the shortest stick looked miserable.");
-		textInfo2.setString("The ship restarts, and we watched his lifeless body as we continue onward.\nHopefully his sacrifice won't be in vain");
+		textInfo.setString("Your crew draw sticks, the person who drew the shortest stick\nlooked miserable."); 
+		textInfo2.setString("\nThe ship restarts, and we watched his lifeless body \nas we continue onward.Hopefully his sacrifice won't be in vain");
 	}
 	else if (outcomeType == astSuccess2) {
 		background.setTexture(&backgroundTexture[6]);
