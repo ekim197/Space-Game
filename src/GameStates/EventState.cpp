@@ -205,10 +205,9 @@ void EventState::update(const float dt){
 				soundList.playSound(RESOURCE_PATH + "Audio/ButtonClick.wav", 400);
 
 				int minimumBlowAmplitude = 5000;
-				int largestAmplitude = soundList.RecordSoundAndGetAmplitude(3000);
-				std::cout << largestAmplitude;
+				int averageAmplitude = soundList.RecordSoundAndGetAmplitude(3000);
 			
-				if (largestAmplitude < minimumBlowAmplitude) {
+				if (averageAmplitude < minimumBlowAmplitude) {
 					game->push_state(new OutcomeState(game, prevState, OutcomeState::suckFail));
 				}
 				else {

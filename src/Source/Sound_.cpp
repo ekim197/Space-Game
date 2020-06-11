@@ -186,6 +186,14 @@ void Sound_::playSoundConcurrently(std::string soundName, float volume) {
 }
 
 int Sound_::RecordSoundAndGetAmplitude(int milliseconds) {
+	int bufferTime = 2000;
+	int largestAmplitude = 0;
+	int smallestAmplitude = 0;
+	int averageAmplitude = 0;
+	int boundary1 = 2000;
+	int boundary2 = 10000;
+	// create the recorder
+	sf::SoundBufferRecorder recorder;
 
 	if (!sf::SoundBufferRecorder::isAvailable())
 	{
@@ -193,8 +201,10 @@ int Sound_::RecordSoundAndGetAmplitude(int milliseconds) {
 
 	}
 
-	// create the recorder
-	sf::SoundBufferRecorder recorder;
+	// start the clock
+	sf::Clock clock2;
+
+	while (clock2.getElapsedTime().asMilliseconds() != bufferTime) {}
 
 	// start the capture
 	recorder.start();
@@ -209,21 +219,18 @@ int Sound_::RecordSoundAndGetAmplitude(int milliseconds) {
 	const sf::SoundBuffer& buffer = recorder.getBuffer();
 	const sf::Int16* samples = buffer.getSamples();
 
-	int largestAmplitude = 0;
-	int boundary1 = 2000;
-	int boundary2 = 10000;
-
 	for (auto i = 0; i < 2000; i++)
-	{
-		int difference = abs(samples[i] - samples[i + 1]);
+	{	
 		std::cout << samples[i] << std::endl;
-
-		if (difference < boundary1 && abs(samples[i]) <= boundary2) {
-			if (largestAmplitude < abs(samples[i])) {
-				largestAmplitude = abs(samples[i]);
-			}
+		if (samples[i] > largestAmplitude) {
+			largestAmplitude = samples[i];
+		}
+		else if (samples[i] < smallestAmplitude) {
+			smallestAmplitude = samples[i];
 		}
 	}
 
-	return largestAmplitude;
+	averageAmplitude = largestAmplitude + abs(smallestAmplitude);
+
+	return averageAmplitude;
 }
