@@ -40,7 +40,7 @@ OutcomeState::OutcomeState(Game* game, PlayState* prev, int type) : prevState(pr
 	choiceButtons[1].setString("Click here to continue");
 	if (outcomeType == astSuccess) {
 		background.setTexture(&backgroundTexture[4]);
-		textInfo.setString("Your crew draw sticks, the person who drew the shortest stick\nlooked miserable."); 
+		textInfo.setString("Your crew draw sticks, the person who drew the shortest stick\nlooked miserable.");
 		textInfo2.setString("\nThe ship restarts, and we watched his lifeless body \nas we continue onward.Hopefully his sacrifice won't be in vain");
 	}
 	else if (outcomeType == astSuccess2) {
@@ -77,6 +77,11 @@ OutcomeState::OutcomeState(Game* game, PlayState* prev, int type) : prevState(pr
 		background.setTexture(&backgroundTexture[5]);
 		textInfo.setString("You hand over your wallet, disgusted by the shady practices ");
 		textInfo2.setString("brought from intergalactic capitalism (lose 3 gold)");
+	}
+    else if (outcomeType == veerFail2) {
+		background.setTexture(&backgroundTexture[9]);
+		textInfo.setString("You try to navigate your way out");
+		textInfo2.setString("But its no use. We are lost forever... (Lose all your crew)");
 	}
 	else if (outcomeType == suckSuccess) {
 		background.setTexture(&backgroundTexture[14]);

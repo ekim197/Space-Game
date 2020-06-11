@@ -143,7 +143,7 @@ void EventState::update(const float dt){
 			}
 			else if (isTextClicked(choiceButtons[1])) {
 				soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
-				if (rng % 100 > 60) {
+				if (rng % 10000 > 6000) {
 					prevState->player.loseCrew(3);
 					game->push_state(new OutcomeState(game, prevState, OutcomeState::astFail));
 				}
@@ -154,7 +154,7 @@ void EventState::update(const float dt){
 		else if (eventType == lastMember) {
 			if (isTextClicked(choiceButtons[0])) {
                 soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
-				if (rng % 100 > 50){
+				if (rng % 10000 > 5000){
                     prevState->player.loseCrew(prevState->player.getCrew());
                     game->push_state(new OutcomeState(game, prevState, OutcomeState::lastFail));
 				}
@@ -170,28 +170,19 @@ void EventState::update(const float dt){
 		else if (eventType == veer) {
 			if (isTextClicked(choiceButtons[0])) {
 			    soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
-				if (rng % 100 > 50) {
-					if (prevState->player.getGold() < 3) {
-						game->push_state(new OutcomeState(game, prevState, OutcomeState::veerFail));
-					}
-					else {
-						game->push_state(new OutcomeState(game, prevState, OutcomeState::veerSuccess));
-					}
+				if (rng % 10000 > 5000) {
+                    prevState->player.setCrew(0);
+                    game->push_state(new OutcomeState(game, prevState, OutcomeState::veerFail2));
 				}
 				else {
-					prevState->player.loseGold(3);
-					game->push_state(new OutcomeState(game, prevState, OutcomeState::veerSuccess2));
+					game->push_state(new OutcomeState(game, prevState, OutcomeState::veerSuccess));
 				}
 			}
 			else if (isTextClicked(choiceButtons[1])) {
 			    soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
 				if (prevState->player.getGold() < 3) {
-					if (rng % 100 > 50) {
-						game->push_state(new OutcomeState(game, prevState, OutcomeState::veerFail));
-					}
-					else {
-						game->push_state(new OutcomeState(game, prevState, OutcomeState::veerSuccess));
-					}
+                    prevState->player.setCrew(0);
+                    game->push_state(new OutcomeState(game, prevState, OutcomeState::veerFail));
 				}
 				else {
 					prevState->player.loseGold(3);
