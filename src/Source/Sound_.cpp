@@ -198,7 +198,6 @@ int Sound_::RecordSoundAndGetAmplitude(int milliseconds) {
 	if (!sf::SoundBufferRecorder::isAvailable())
 	{
 		std::cout << "No Sound Recorders available";
-
 	}
 
 	// start the clock
@@ -210,7 +209,7 @@ int Sound_::RecordSoundAndGetAmplitude(int milliseconds) {
 	recorder.start();
 
 	// start the clock
-	sf::Clock clock; 
+	sf::Clock clock;
 
 	while (clock.getElapsedTime().asMilliseconds() != milliseconds) {}
 	recorder.stop();
@@ -220,8 +219,7 @@ int Sound_::RecordSoundAndGetAmplitude(int milliseconds) {
 	const sf::Int16* samples = buffer.getSamples();
 
 	for (auto i = 0; i < 2000; i++)
-	{	
-		std::cout << samples[i] << std::endl;
+	{
 		if (samples[i] > largestAmplitude) {
 			largestAmplitude = samples[i];
 		}

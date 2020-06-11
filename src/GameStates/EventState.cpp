@@ -62,8 +62,8 @@ EventState::EventState(Game* game, PlayState* prev, int type): prevState(prev), 
 	else if (eventType == planet) {
 		background.setTexture(&backgroundTexture[12]);
 
-		textInfo.setString("You are being sucked into the planet! Blow into the mic to get sucked back out into space!");
-		textInfo2.setString("Press the start button to begin blowing");
+		textInfo.setString("You are being sucked into the planet!\nBlow into the mic to get sucked back out into space!");
+		textInfo2.setString("\nPress the start button to begin blowing");
 
 		choiceButtons[0].setString("Start");
 
