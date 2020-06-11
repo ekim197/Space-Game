@@ -6,8 +6,8 @@
 #include <map>
 #include "Collision.h"
 
-namespace Collision
-{
+namespace Collision{
+
 	class BitmaskManager{
 	public:
 		~BitmaskManager() {
@@ -26,8 +26,7 @@ namespace Collision
 		sf::Uint8* GetMask (const sf::Texture* tex) {
 			sf::Uint8* mask;
 			std::map<const sf::Texture*, sf::Uint8*>::iterator pair = Bitmasks.find(tex);
-			if (pair==Bitmasks.end())
-			{
+			if (pair==Bitmasks.end()){
 				sf::Image img = tex->copyToImage();
 				mask = CreateMask (tex, img);
 			}
@@ -40,8 +39,7 @@ namespace Collision
 		sf::Uint8* CreateMask (const sf::Texture* tex, const sf::Image& img) {
 			sf::Uint8* mask = new sf::Uint8[tex->getSize().y*tex->getSize().x];
 
-			for (unsigned int y = 0; y<tex->getSize().y; y++)
-			{
+			for (unsigned int y = 0; y<tex->getSize().y; y++){
 				for (unsigned int x = 0; x<tex->getSize().x; x++)
 					mask[x+y*tex->getSize().x] = img.getPixel(x,y).a;
 			}

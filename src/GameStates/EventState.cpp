@@ -198,6 +198,7 @@ void EventState::update(const float dt){
 				int averageAmplitude = soundList.RecordSoundAndGetAmplitude(3000);
 
 				if (averageAmplitude < minimumBlowAmplitude) {
+					prevState->player.setCrew(0);
 					game->push_state(new OutcomeState(game, prevState, OutcomeState::suckFail));
 				}
 				else {

@@ -154,8 +154,8 @@ void OutcomeState::draw() {
 void OutcomeState::update(const float dt) {
 	timeIncrement(dt);
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickTimer > 0.25){
-		if(outcomeType == suckFail) game->push_state(new EndState(game, dynamic_cast<PlayState*>(game->current_state())));
-        else game->pop_state(2);
+		
+        game->pop_state(2);
         clickTimer = 0;
 	}
 }
