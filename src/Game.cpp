@@ -4,7 +4,7 @@
 using namespace Resource;
 
 Game::Game() {
-	window.create(sf::VideoMode(VIEW_WIDTH, VIEW_HEIGHT), "Endless Void", sf::Style::Close | sf::Style::Titlebar);
+	window.create(sf::VideoMode(VIEW_WIDTH, VIEW_HEIGHT), "Endless Void", sf::Style::Close);
 	setup();
 }
 
@@ -107,7 +107,7 @@ void Game::setup() {
 
 		// Create Backround Textures
 		makeTexture(backgroundTexture[0], "Background/Menu_Bg.png");
-		makeTexture(backgroundTexture[1], "Background/Play_Bg.png");
+		makeTexture(backgroundTexture[1], "Background/Event5_Bg.png");
 		makeTexture(backgroundTexture[2], "Background/Store_Bg.png");
 		makeTexture(backgroundTexture[3], "Background/Event1_Bg.png");
 		makeTexture(backgroundTexture[4], "Background/Event2_Bg.png");
@@ -121,6 +121,10 @@ void Game::setup() {
 		makeTexture(backgroundTexture[12], "Background/Whirlwind.jpg");
 		makeTexture(backgroundTexture[13], "Background/SuckFail.jpg");
 		makeTexture(backgroundTexture[14], "Background/SuckSuccess.jpg");
+		makeTexture(backgroundTexture[15], "Background/fightSuccess.png");
+		makeTexture(backgroundTexture[16], "Background/fightFail.png");
+		makeTexture(backgroundTexture[17], "Background/flightSuccess.png");
+
 
         // Create Fonts
         makeFont(font[0], "Font/Mont-Heavy.otf");

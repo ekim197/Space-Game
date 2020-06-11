@@ -62,7 +62,15 @@ EventState::EventState(Game* game, PlayState* prev, int type): prevState(prev), 
 		textInfo2.setString("Press Start and Blow into the mic to escape!");
 
 		choiceButtons[0].setString("Start");
+	}
+    else if (eventType == warZone) {
+		background.setTexture(&backgroundTexture[12]);
 
+		textInfo.setString("Your ship was shot down!");
+		textInfo2.setString("Its fight or flight!");
+
+        choiceButtons[0].setString("Option 1: Fight(50% success)");
+        choiceButtons[1].setString("Option 2: Flight(70% success)");
 	}
 }
 
@@ -205,6 +213,28 @@ void EventState::update(const float dt){
 				}
 				else {
 					game->push_state(new OutcomeState(game, prevState, OutcomeState::suckSuccess));
+				}
+			}
+		}
+        else if (eventType == warZone) {
+            if (isTextClicked(choiceButtons[0])) {
+			    soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
+				if (rng % 10000 > 5000) {
+                    prevState->player.loseCrew(2);
+                    game->push_state(new OutcomeState(game, prevState, OutcomeState::fightFail));
+				}
+				else
+                    prevState->player.gainGold(10);
+					game->push_state(new OutcomeState(game, prevState, OutcomeState::fightSuccess));
+			}
+			else if (isTextClicked(choiceButtons[1])) {
+			    soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
+				if (rng % 10000 > 7000) {
+                    prevState->player.loseCrew(3);
+                    game->push_state(new OutcomeState(game, prevState, OutcomeState::flightSuccess));
+				}
+				else {
+					game->push_state(new OutcomeState(game, prevState, OutcomeState::flightFail));
 				}
 			}
 		}

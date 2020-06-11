@@ -109,8 +109,6 @@ public:
     void insertPlanet(int rngVal, float distY);
     void insertCoin(int rngVal, float distY);
     void insertWarZone(int rngVal, float distY);
-
-
 };
 
 /*_____________Backdoor_____________*/
@@ -241,7 +239,7 @@ public:
     // Constructor and Destructor
     EventState() = default;
     EventState(Game* game, PlayState* prev, int type);
-	enum evTypes {blank, asteroid, lastMember, veer, planet };
+	enum evTypes {blank, asteroid, lastMember, veer, planet, warZone};
     // Loop
     virtual void handle_input() override;
     virtual void update(const float dt) override;
@@ -258,7 +256,8 @@ public:
 	// Public Variables
 	int eventType;
 	enum ocTypes {astSuccess, astSuccess2, astFail, lastSuccess, lastFail, veerSuccess, veerSuccess2,
-                  veerFail, veerFail2, suckSuccess, suckFail, suckFail2};
+                  veerFail, veerFail2, suckSuccess, suckFail, suckFail2,
+                  fightSuccess, fightFail, flightSuccess, flightFail};
 
 	// Constructor and Destructor
 	OutcomeState(Game* game, PlayState* prev, int type);
