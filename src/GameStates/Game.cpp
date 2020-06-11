@@ -124,7 +124,6 @@ void Game::setup(){
         makeFont(font[2], "Font/Glitch-City.ttf");
         makeFont(font[3], "Font/Roboto-Italic.ttf");
         makeFont(font[4], "Font/Roboto-Black.ttf");
-
     }
     catch(const std::string& error){
         std::cerr << "\n\n" << error << " failed to load\nSee if the file is missing or mispelled\n\n";

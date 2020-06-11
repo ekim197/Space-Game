@@ -2,10 +2,10 @@
 
 using namespace Resource;
 
-EndState::EndState(Game* game, PlayState* prev): MenuState(game, 1), prevState(prev){
+EndState::EndState(Game* game, PlayState* prev): MenuState(game, 1), prevState(prev), isNewScoreInserted(false){
     // Title
     title.setPosition(50, game->view.getCenter().y - VIEW_HEIGHT/2 + 100);
-    title.setString("GAME\n    OVER");
+    title.setString("GAMEOVER");
 
 	//Sound
 	if (!soundList.getStatusOfMusic(RESOURCE_PATH + "Audio/GameOver.wav")) {
@@ -21,11 +21,11 @@ EndState::EndState(Game* game, PlayState* prev): MenuState(game, 1), prevState(p
     buttons[0].setString("Back to Menu");
 
     // Get name
-    char name[16] = "Brandon Nguyen";
-    Score newScore(name , -prev->player.getPosition().y);
-
-    // Score Management
-    scoreManage(newScore);
+    name.setFont(font[4]);
+    name.setCharacterSize(60);
+    name.setFillColor(sf::Color::White);
+    name.setPosition(150, game->view.getCenter().y - VIEW_HEIGHT/2 + 600);
+    name.setString("Type in Your Name\nPress Enter to Submit");
 }
 
 void EndState::handle_input(){
@@ -47,6 +47,30 @@ void EndState::handle_input(){
                     i.setFont(font[0]);
             }
         break;
+        // TextEntered
+        case sf::Event::TextEntered:
+                if (event.text.unicode < 128 && nameStr.size() < 16){
+                    if(event.text.unicode == '\b' && nameStr.size() > 0)
+                        nameStr.pop_back();
+                    else if(event.text.unicode == ' ')
+                        nameStr += "_";
+                    else
+                        nameStr += static_cast<char>(event.text.unicode);
+                    name.setString(nameStr);
+                }
+        break;
+        // KeyPressed
+        case sf::Event::KeyPressed:
+            if (event.key.code == sf::Keyboard::Return && !isNewScoreInserted){
+                char nameChar[16];
+                memset(nameChar, '_', 16);
+                strcpy(nameChar, nameStr.c_str());
+                Score newScore(nameChar , -prevState->player.getPosition().y);
+                scoreManage(newScore);
+                isNewScoreInserted = true;
+            }
+
+            break;
         default:
             break;
         }
@@ -66,6 +90,8 @@ void EndState::update(const float dt){
             game->backToMainState();
         clickTimer = 0;
     }
+
+
 }
 
 void EndState::draw(){
@@ -86,6 +112,9 @@ void EndState::draw(){
     // Draw Scores
     for (auto x : highScoreText)
         game->window.draw(x);
+
+    // Draw Name
+    game->window.draw(name);
 
     // Draw Title
     game->window.draw(title);
@@ -155,7 +184,7 @@ void EndState::scoreManage(Score newScore){
         highScoreText[i].setFont(font[4]);
         highScoreText[i].setCharacterSize(50);
         highScoreText[i].setString(sout.str());
-        highScoreText[i].setPosition(VIEW_WIDTH - 1000, game->view.getCenter().y - VIEW_HEIGHT / 4 + i * 75);
+        highScoreText[i].setPosition(VIEW_WIDTH - 1150, game->view.getCenter().y - VIEW_HEIGHT / 5 + i * 75);
 
         if(i == 0)
             highScoreText[i].setFillColor(sf::Color(255,215,0));
