@@ -220,7 +220,10 @@ void EventState::update(const float dt){
             if (isTextClicked(choiceButtons[0])) {
 			    soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
 				if (rng % 10000 > 5000) {
-                    prevState->player.loseCrew(2);
+                    if(prevState->player.getCrew() > 2)
+                        prevState->player.loseCrew(2);
+                    else
+                        prevState->player.setCrew(0);
                     game->push_state(new OutcomeState(game, prevState, OutcomeState::fightFail));
 				}
 				else
@@ -230,7 +233,10 @@ void EventState::update(const float dt){
 			else if (isTextClicked(choiceButtons[1])) {
 			    soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
 				if (rng % 10000 > 7000) {
-                    prevState->player.loseCrew(3);
+                    if(prevState->player.getCrew() > 3)
+                        prevState->player.loseCrew(3);
+                    else
+                        prevState->player.setCrew(0);
                     game->push_state(new OutcomeState(game, prevState, OutcomeState::flightSuccess));
 				}
 				else {
