@@ -94,6 +94,7 @@ public:
     // Collision Detection
     bool collide(Entity* obj, float dt);
     bool collide(Obstacle* obj);
+	bool collide(Planet* obj);
     bool collide(Coin* obj);
     bool collide(WarZone* obj, float dt);
 
@@ -230,7 +231,7 @@ private:
 public:
     // Constructor and Destructor
     EventState(Game* game, PlayState* prev, int type);
-	enum evTypes {blank, asteroid, lastMember, veer };
+	enum evTypes {blank, asteroid, lastMember, veer, planet };
     // Loop
     virtual void handle_input() override;
     virtual void update(const float dt) override;
@@ -248,7 +249,7 @@ private:
 
 public:
 	int eventType;
-	enum ocTypes { astSuccess, astSuccess2, astFail, lastSuccess, lastFail, veerSuccess, veerSuccess2, veerFail };
+	enum ocTypes { astSuccess, astSuccess2, astFail, lastSuccess, lastFail, veerSuccess, veerSuccess2, veerFail, suckSuccess, suckFail };
 
 	// Constructor and Destructor
 	OutcomeState(Game* game, PlayState* prev, int type);

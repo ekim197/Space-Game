@@ -22,6 +22,7 @@ public:
 	static std::string currentMusicPlaying;
 	static sf::Sound sound_player2;
 
+
 	// Constructors and Destructors
 	Sound_() = default;
 	Sound_(std::vector<std::string> s);
@@ -43,6 +44,7 @@ public:
 	static void resetPitchVolume();
 	static bool getStatusOfMusic(std::string soundName);
 	static void playSoundConcurrently(std::string soundName, float volume);
+	static int RecordSoundAndGetAmplitude(int milliseconds);
 };
 
 #endif // SOUND__H

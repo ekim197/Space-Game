@@ -16,6 +16,7 @@ protected:
     int gold;
     bool isExplode;
 	bool isInWarZone;
+	bool isSucked;
     float numRightHit;
     float numLeftHit;
 
@@ -41,6 +42,7 @@ public:
     int getGold() const { return gold; }
     bool getIsExplode(){ return isExplode; }
 	bool getIsInWarZone() { return isInWarZone;  }
+	bool getIsSucked() { return isSucked;  }
     float getNumLeftHit() { return numLeftHit; }
     float getNumRightHit() { return numRightHit; }
 
@@ -71,6 +73,7 @@ public:
     void explode();
 	void warZone(){	isInWarZone = true; }
 	void unWarZone(){	isInWarZone = false; }
+	void sucked();
     void hitLeft();
     void hitRight();
     void healLeft();

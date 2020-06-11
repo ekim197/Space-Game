@@ -214,10 +214,12 @@ void PlayState::reset(){
 
 bool PlayState::collide(Entity* obj, float dt){
     if(obj){
-        if(obj->name() == "Coin")
-            return collide(dynamic_cast<Coin*>(obj));
-        else if(obj->name() == "WarZone")
-            return collide(dynamic_cast<WarZone*>(obj), dt);
+		if (obj->name() == "Coin")
+			return collide(dynamic_cast<Coin*>(obj));
+		else if (obj->name() == "WarZone")
+			return collide(dynamic_cast<WarZone*>(obj), dt);
+		else if (obj->name() == "Planet")
+			return collide(dynamic_cast<Planet*>(obj));
         else
             return collide(dynamic_cast<Obstacle*>(obj));
     }
@@ -237,6 +239,17 @@ bool PlayState::collide(Obstacle* obj){
     }
     return 0;
 }
+
+bool PlayState::collide(Planet* obj) {
+	if (obj) {
+		if (PixelPerfectTest(player.getBody(), obj->getBody()) && !player.getIsExplode()) {
+			soundList.playSound(RESOURCE_PATH + "Audio/Tornado.wav", 110);
+			player.sucked();
+		}
+	}
+	return 0;
+}
+
 
 bool PlayState::collide(Coin* obj){
     if(obj){
@@ -307,6 +320,11 @@ int PlayState::checkBadEvent(float dt){
                 return 2;
         }
     }
+
+	// Check if collision with planet
+	if (player.getIsSucked()) {
+		return 4;
+	}
 
     // Check if veered off course
     if(player.getPosition().x < 0 || player.getPosition().x > VIEW_WIDTH){
