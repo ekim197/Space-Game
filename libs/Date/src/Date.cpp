@@ -14,10 +14,8 @@ Date::Date(time_t timeArg){
 }
 
 Date::Date(const char* timeChar){
-    if(timeChar[2] == '/' || timeChar[2] == '-')    
-		date = slashDashToTime(timeChar);
-    else                                           
-		date = monthToTime(timeChar);
+    if(timeChar[2] == '/' || timeChar[2] == '-')    date = slashDashToTime(timeChar);
+    else                                            date = monthToTime(timeChar);
 }
 
 // Private Functions
