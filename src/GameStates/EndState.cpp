@@ -26,6 +26,8 @@ EndState::EndState(Game* game, PlayState* prev): MenuState(game, 1), prevState(p
     name.setFillColor(sf::Color::White);
     name.setPosition(150, game->view.getCenter().y - VIEW_HEIGHT/2 + 600);
     name.setString("Type in Your Name\nPress Enter to Submit");
+
+    game->gamePlayer.setGold(prevState->player.getGold());
 }
 
 void EndState::handle_input(){

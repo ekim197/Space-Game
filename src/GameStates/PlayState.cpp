@@ -113,7 +113,7 @@ void PlayState::update(const float dt){
     }
 
     // Update Player
-    if(!player.getIsExplode()){
+    if(!player.getIsExplode() && !player.getIsSucked()){
         // Keyboard Input
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
             player.moveLeft();
