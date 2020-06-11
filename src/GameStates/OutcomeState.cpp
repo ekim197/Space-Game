@@ -17,12 +17,12 @@ OutcomeState::OutcomeState(Game* game, PlayState* prev, int type) : prevState(pr
 
 	// Text
 	textInfo.setFont(font[4]);
-	textInfo.setPosition(300, 825);
+	textInfo.setPosition(200, 825);
 	textInfo.setCharacterSize(50); // in pixels, not points!
 	textInfo.setFillColor(sf::Color::White);
 
 	textInfo2.setFont(font[4]);
-	textInfo2.setPosition(400, 875);
+	textInfo2.setPosition(300, 875);
 	textInfo2.setCharacterSize(50); // in pixels, not points!
 	textInfo2.setFillColor(sf::Color::White);
 
