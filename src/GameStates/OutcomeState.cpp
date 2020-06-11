@@ -76,7 +76,7 @@ OutcomeState::OutcomeState(Game* game, PlayState* prev, int type) : prevState(pr
 	else if (outcomeType == veerSuccess2) {
 		background.setTexture(&backgroundTexture[5]);
 		textInfo.setString("You hand over your wallet, disgusted by the shady practices ");
-		textInfo2.setString("brought from intergalactic capitalism (lose 3 gold)");
+		textInfo2.setString("brought from intergalactic capitalism (lose 10 gold)");
 	}
     else if (outcomeType == veerFail2) {
 		background.setTexture(&backgroundTexture[9]);

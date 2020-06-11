@@ -57,7 +57,7 @@ EventState::EventState(Game* game, PlayState* prev, int type): prevState(prev), 
         textInfo2.setString("findYourWayBack module by EngiAtom(EA) ");
 
         choiceButtons[0].setString("Option 1: Try to figure it out yourself(What's the worst that could happen)");
-        choiceButtons[1].setString("Option 2: Pay 3 gold to use the module (guarantee to get back)");
+        choiceButtons[1].setString("Option 2: Pay 10 gold to use the module (guarantee to get back)");
     }
 	else if (eventType == planet) {
 		background.setTexture(&backgroundTexture[12]);
@@ -180,12 +180,12 @@ void EventState::update(const float dt){
 			}
 			else if (isTextClicked(choiceButtons[1])) {
 			    soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
-				if (prevState->player.getGold() < 3) {
+				if (prevState->player.getGold() < 10) {
                     prevState->player.setCrew(0);
                     game->push_state(new OutcomeState(game, prevState, OutcomeState::veerFail));
 				}
 				else {
-					prevState->player.loseGold(3);
+					prevState->player.loseGold(10);
 					game->push_state(new OutcomeState(game, prevState, OutcomeState::veerSuccess2));
 				}
 			}
