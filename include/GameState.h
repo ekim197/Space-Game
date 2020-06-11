@@ -73,7 +73,7 @@ protected:
 	float timerCrash, timerSuck, timerOffCourse, timerInWarZone;
     float timerAddAsteroid;
     int asteroidPerTime;
-    std::vector<Entity*> entityList;
+    std::vector<Entity*> entityVector;
     std::vector<sf::Text> gameText;
     sf::RectangleShape background[2];
 
@@ -110,8 +110,7 @@ public:
     void insertCoin(int rngVal, float distY);
     void insertWarZone(int rngVal, float distY);
 
-    // Other
-    void setup();
+
 };
 
 /*_____________Backdoor_____________*/

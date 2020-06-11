@@ -8,6 +8,10 @@
 #include <SFML/Audio.hpp>
 #include "GameState.h"
 #include "Resource.h"
+#include "Entity.h"
+#include "Player.h"
+#include "Obstacle.h"
+#include "Coin.h"
 
 class GameState;
 
@@ -37,9 +41,6 @@ public:
     void pop_state(unsigned numStates = 1);
     void backToMainState();
     void game_loop();
-    void makeCollisionTexture(sf::Texture& text, std::string file);
-    void makeTexture(sf::Texture& text, std::string file);
-    void makeFont(sf::Font& font, std::string file);
 };
 
 #endif // GAME_H
