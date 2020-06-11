@@ -243,7 +243,7 @@ bool PlayState::collide(Obstacle* obj){
 
 bool PlayState::collide(Planet* obj) {
 	if (obj) {
-		if (PixelPerfectTest(player.getBody(), obj->getBody()) && !player.getIsExplode()) {
+		if (PixelPerfectTest(player.getBody(), obj->getBody()) && !player.getIsSucked()) {
 			soundList.playSound(RESOURCE_PATH + "Audio/Tornado.wav", 110);
 			player.sucked();
 		}
