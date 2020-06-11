@@ -19,6 +19,7 @@
 #include "Resource.h"
 #include "Date.h"
 #include "Score.h"
+#include "Resource.h"
 
 class Game;
 
@@ -231,6 +232,7 @@ public:
 class EventState : public GameState{
 private:
     PlayState* prevState;
+protected:
     sf::RectangleShape background;
     sf::Text textInfo, textInfo2;
 	int eventType;
@@ -238,6 +240,7 @@ private:
 
 public:
     // Constructor and Destructor
+    EventState() = default;
     EventState(Game* game, PlayState* prev, int type);
 	enum evTypes {blank, asteroid, lastMember, veer, planet };
     // Loop
@@ -247,25 +250,22 @@ public:
 };
 
 /*_____________Outcome_____________*/
-class OutcomeState : public GameState {
+class OutcomeState : public EventState {
 private:
-	PlayState* prevState;
-	sf::RectangleShape background;
-	sf::Text textInfo, textInfo2;
-	std::vector<sf::Text> choiceButtons;
+    PlayState* prevState;
 	int outcomeType;
 
 public:
+	// Public Variables
 	int eventType;
-	enum ocTypes { astSuccess, astSuccess2, astFail, lastSuccess, lastFail, veerSuccess, veerSuccess2, veerFail, veerFail2, suckSuccess, suckFail };
+	enum ocTypes {astSuccess, astSuccess2, astFail, lastSuccess, lastFail, veerSuccess, veerSuccess2,
+                  veerFail, veerFail2, suckSuccess, suckFail, suckFail2};
 
 	// Constructor and Destructor
 	OutcomeState(Game* game, PlayState* prev, int type);
 
 	// Loop
-	virtual void handle_input() override;
 	virtual void update(const float dt) override;
-	virtual void draw() override;
 };
 
 #endif // GameState_H

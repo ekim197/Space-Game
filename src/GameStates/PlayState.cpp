@@ -23,12 +23,12 @@ PlayState::PlayState(Game* game, Player& playerObj)
     // Text Stuff
     sf::Text tempText;
     tempText.setFont(font[0]);
-    tempText.setCharacterSize(30);
+    tempText.setCharacterSize(30 * VIEW_RATIO);
     tempText.setFillColor(sf::Color::White);
 
     for(auto i = 0; i < 4; i++){
         gameText.push_back(tempText);
-        gameText[i].setPosition(VIEW_WIDTH - 500 , player.getPosition().y - VIEW_HEIGHT * 8/10 + i * 50);
+        gameText[i].setPosition(VIEW_WIDTH * 3.0/4.0 , player.getPosition().y - VIEW_HEIGHT * 4.0/5.0 + i * 50.0 * VIEW_RATIO);
     }
 }
 
@@ -165,7 +165,7 @@ void PlayState::draw(){
     // Fade
     if(fadeTimer <= 3)
         fadeIn();
-    if(timerCrash >= 2 || timerOffCourse >= 4 || timerSuck >= 2)
+    if(timerCrash >= 2 || timerOffCourse >= 2 || timerSuck >= 2)
         fadeOut();
 }
 
@@ -251,7 +251,6 @@ bool PlayState::collide(Planet* obj) {
 	return 0;
 }
 
-
 bool PlayState::collide(Coin* obj){
     if(obj){
         if(PixelPerfectTest(player.getLeftWing(), obj->getBody())){
@@ -322,14 +321,6 @@ int PlayState::checkBadEvent(float dt){
         }
     }
 
-	// Check if collision with planet
-	if (player.getIsSucked()) {
-		timerSuck += dt;
-		if (timerSuck >= 2) {
-			return 4;
-		}
-	}
-
     // Check if veered off course
     if(player.getPosition().x < 0 || player.getPosition().x > VIEW_WIDTH){
         if(player.getPosition().x < 0)
@@ -338,11 +329,19 @@ int PlayState::checkBadEvent(float dt){
             player.hitRight();
 
         timerOffCourse += dt;
-        if(timerOffCourse >= 5)
+        if(timerOffCourse >= 3)
             return 3;
     }
     else
         timerOffCourse = 0;
+
+    // Check if collision with planet
+	if (player.getIsSucked()) {
+		timerSuck += dt;
+		if (timerSuck >= 3) {
+			return 4;
+		}
+	}
 
     return 0;
 }
@@ -365,9 +364,9 @@ void PlayState::insertCoin(int rngVal, float distY){
 void PlayState::insertPlanet(int rngVal, float distY){
     float side;
     if(rngVal % 2)
-        side = -1/2 * VIEW_WIDTH;
+        side = -VIEW_WIDTH/20.0;
     else
-        side = 3/2 * VIEW_WIDTH;
+        side = VIEW_WIDTH * 21.0/20.0;
     entityList.push_back(new Planet(&planetTexture, sf::Vector2u(4,1),
         /*Position*/                sf::Vector2f(side, player.getPosition().y - distY),
         /*Select Image*/            rng % 4, 0,
@@ -379,9 +378,9 @@ void PlayState::insertPlanet(int rngVal, float distY){
 void PlayState::insertWarZone(int rngVal, float distY){
     float side;
     if(rngVal % 2)
-        side = -1/2 * VIEW_WIDTH;
+        side = 0.0;
     else
-        side = 3/2 * VIEW_WIDTH;
+        side = VIEW_WIDTH;
     entityList.push_back(new WarZone(&warZoneTexture,
         /*Position*/                sf::Vector2f(side, player.getPosition().y - distY),
         /*Scale*/                   3 ));

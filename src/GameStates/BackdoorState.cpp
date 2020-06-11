@@ -2,19 +2,19 @@
 
 using namespace Resource;
 
-BackdoorState::BackdoorState(Game* game): PlayState(game, game->defaultPlayer), MenuState(game, 4){
+BackdoorState::BackdoorState(Game* game): PlayState(game, game->defaultPlayer), MenuState(game, 8){
 	//Sound
 	soundList.stopAllSounds();
 
     // Title
-    title.setPosition(800,100);
+    title.setPosition(VIEW_WIDTH * 2.0/5.0, VIEW_HEIGHT/20.0);
     title.setString("ENDLESS\n    VOID Backdoor");
 
     // Buttons
     for(size_t i = 0; i < buttons.size(); i++){
         buttons[i].setFont(font[4]);
-        buttons[i].setPosition(100, player.getPosition().y - (550 + i * 80));
-        buttons[i].setCharacterSize(75);
+        buttons[i].setPosition(VIEW_WIDTH/20.0, player.getPosition().y - VIEW_HEIGHT/2.0 + i * 40 * VIEW_RATIO);
+        buttons[i].setCharacterSize(40 * VIEW_RATIO);
         buttons[i].setFillColor(sf::Color::White);
     }
 
@@ -22,6 +22,10 @@ BackdoorState::BackdoorState(Game* game): PlayState(game, game->defaultPlayer), 
     buttons[1].setString("Key 2: Insert Planet");
     buttons[2].setString("Key 3: Insert Coin");
     buttons[3].setString("Key 4: Insert WarZone");
+    buttons[4].setString("Key 5: Add Crew");
+    buttons[5].setString("Key 6: Lose Crew");
+    buttons[6].setString("Key 7: Add Gold");
+    buttons[7].setString("Key 8: Lose Gold");
 }
 
 void BackdoorState::handle_input(){
@@ -47,6 +51,14 @@ void BackdoorState::handle_input(){
                 insertCoin(rng, 600);
             else if(event.key.code == sf::Keyboard::Num4)
                 insertWarZone(rng, 600*6);
+            else if(event.key.code == sf::Keyboard::Num5)
+                player.gainCrew();
+            else if(event.key.code == sf::Keyboard::Num6)
+                player.loseCrew();
+            else if(event.key.code == sf::Keyboard::Num7)
+                player.gainGold();
+            else if(event.key.code == sf::Keyboard::Num8)
+                player.loseGold();
             break;
         case sf::Event::MouseMoved:
             for(auto& i : buttons){
@@ -54,7 +66,7 @@ void BackdoorState::handle_input(){
                     i.setFillColor(sf::Color::Red);
                 else
                     i.setFillColor(sf::Color::White);
-                }
+            }
         break;
         default:
             break;
@@ -76,7 +88,7 @@ void BackdoorState::update(const float dt){
     }
 
     // Update Player
-    if(!player.getIsExplode()){
+    if(!player.getIsExplode() && !player.getIsSucked()){
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
             player.moveUp();
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
@@ -101,10 +113,18 @@ void BackdoorState::update(const float dt){
             insertAsteroid(rng, 600);
         else if(isTextClicked(buttons[1]))
             insertPlanet(rng, 600);
-        else if (isTextClicked(buttons[2]))
+        else if(isTextClicked(buttons[2]))
             insertCoin(rng, 600);
-        else if (isTextClicked(buttons[3]))
+        else if(isTextClicked(buttons[3]))
             insertWarZone(rng, 600 * 6);
+        else if(isTextClicked(buttons[4]))
+            player.gainCrew();
+        else if(isTextClicked(buttons[5]))
+            player.loseCrew();
+        else if(isTextClicked(buttons[6]))
+            player.gainGold();
+        else if(isTextClicked(buttons[7]))
+            player.loseGold();
         clickTimer = 0;
     }
     for(auto& i: buttons)

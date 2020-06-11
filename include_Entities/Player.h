@@ -74,10 +74,10 @@ public:
 	void warZone(){	isInWarZone = true; }
 	void unWarZone(){	isInWarZone = false; }
 	void sucked();
-    void hitLeft();
-    void hitRight();
-    void healLeft();
-    void healRight();
+    void hitLeft(int num = 1);
+    void hitRight(int num = 1);
+    void healLeft(int num = 1);
+    void healRight(int num = 1);
     void colorStatus();
 };
 

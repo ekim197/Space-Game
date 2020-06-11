@@ -8,20 +8,20 @@ MainMenuState::MainMenuState(Game* game) : MenuState(game, 6){
 	soundList.playSound(RESOURCE_PATH + "Audio/MainMenu.ogg");
 
     // Title
-    title.setPosition(800,100);
+    title.setPosition(VIEW_WIDTH * 2.0/5.0, VIEW_HEIGHT/10.0);
     title.setString("ENDLESS\n    VOID");
 
     // Buttons
     for(size_t i = 0; i < buttons.size(); i++){
         buttons[i].setFont(font[0]);
-        buttons[i].setPosition(100, 400 + i * 150);
-        buttons[i].setCharacterSize(100);
+        buttons[i].setPosition(VIEW_WIDTH/20.0, VIEW_HEIGHT * 2.0/5.0 + i * 100.0 * VIEW_RATIO);
+        buttons[i].setCharacterSize(75.0 * VIEW_RATIO);
         buttons[i].setFillColor(sf::Color::White);
     }
 
     buttons[5].setFont(font[0]);
-    buttons[5].setPosition(2000, 1050);
-    buttons[5].setCharacterSize(40); // in pixels, not points!
+    buttons[5].setPosition(VIEW_WIDTH * 19.0 / 20.0, VIEW_HEIGHT * 19.0 / 20.0);
+    buttons[5].setCharacterSize(30.0 * VIEW_RATIO); // in pixels, not points!
     buttons[5].setFillColor(sf::Color(229, 245, 249));   // set the color
 
     buttons[0].setString("PLAY GAME");

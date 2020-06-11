@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Resource.h"
 
 Player::Player(sf::Texture* text, sf::Vector2u aICount, sf::Vector2f pos, float spd, int crw, int gld)
     : Entity(text, pos, spd), animation(text + 8, aICount, 0.025f), crew(crw), gold(gld), numRightHit(0), numLeftHit(0){
@@ -14,13 +15,14 @@ Player::Player(sf::Texture* text, sf::Vector2u aICount, sf::Vector2f pos, float 
 
     // Set Position and Origin
     setPosition(pos);
-    setStatusPosition(9.0 / 10.0 * 2000.0, pos.y);
+    setStatusPosition(Resource::VIEW_WIDTH * 9.0/10.0, pos.y);
     setOrigin(body.getGlobalBounds().width / 2, body.getGlobalBounds().height / 2);
     explosion.setOrigin(explosion.getGlobalBounds().width / 2 / 9, explosion.getGlobalBounds().height / 2 / 9);
 
     // Scale down to right scale
-    sf::Vector2f scaleFactor(200 / body.getGlobalBounds().width, 200 / body.getGlobalBounds().height);
-    sf::Vector2f scaleFactor2(200 * aICount.x / explosion.getGlobalBounds().width, 200 * aICount.y / explosion.getGlobalBounds().height);
+    float idealSize = Resource::VIEW_HEIGHT/5;
+    sf::Vector2f scaleFactor(idealSize / body.getGlobalBounds().width, idealSize / body.getGlobalBounds().height);
+    sf::Vector2f scaleFactor2(idealSize * aICount.x / explosion.getGlobalBounds().width, idealSize * aICount.y / explosion.getGlobalBounds().height);
 
     body.scale(scaleFactor);
     leftWing[0].scale(scaleFactor);
@@ -149,12 +151,11 @@ void Player::reset(){
     isExplode = false;
 	isInWarZone = false;
 	isSucked = false;
-    numRightHit = 0;
-    numLeftHit = 0;
     velocity = sf::Vector2f(0,0);
+    numLeftHit = 0;
+    numRightHit = 0;
     mainStatus.setColor(sf::Color::White);
-    leftStatus.setColor(sf::Color::White);
-    rightStatus.setColor(sf::Color::White);
+    colorStatus();
 }
 
 void Player::explode(){
@@ -167,25 +168,27 @@ void Player::sucked() {
 	mainStatus.setColor(sf::Color::Yellow);
 }
 
-void Player::hitLeft() {
-    numLeftHit++;
+void Player::hitLeft(int num) {
+        numLeftHit+=num;
+        colorStatus();
+}
+
+void Player::hitRight(int num) {
+    numRightHit+=num;
     colorStatus();
 }
 
-void Player::hitRight() {
-    numRightHit++;
+void Player::healLeft(int num) {
+    numLeftHit-= 0.1 * num;
+    if(numLeftHit < 0)
+        numLeftHit = 0;
     colorStatus();
 }
 
-void Player::healLeft() {
-    if(numLeftHit > 0)
-        numLeftHit-= 0.1;
-    colorStatus();
-}
-
-void Player::healRight() {
-    if(numRightHit > 0)
-        numRightHit-= 0.1;
+void Player::healRight(int num) {
+    numRightHit-= 0.1 * num;
+    if(numRightHit < 0)
+        numRightHit = 0;
     colorStatus();
 }
 

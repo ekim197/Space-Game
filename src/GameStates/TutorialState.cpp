@@ -8,14 +8,14 @@ TutorialState::TutorialState(Game* game): PlayState(game, game->defaultPlayer){
 
     // Instruction Text
     instruction.setFont(font[0]);
-    instruction.setCharacterSize(30);
+    instruction.setCharacterSize(30 * VIEW_RATIO);
     instruction.setFillColor(sf::Color::Red);
-    instruction.setPosition(100, player.getPosition().y - 100);
+    instruction.setPosition(VIEW_WIDTH/20.0, player.getPosition().y - VIEW_HEIGHT/20.0);
 
     // Instruction Properties
     for(size_t i = 0; i < 5; i++){
         isInstrPass[i] = false;
-        instrTimer[i] = 0;
+        instrTimer[i] = 0.0;
     }
 }
 
@@ -28,7 +28,7 @@ void TutorialState::update(const float dt){
         instruction.setString("Welcome to the tutorial\n Begin by using the A and D key\n to move left and right");
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
             instrTimer[0] += dt;
-        if(instrTimer[0] > 3)
+        if(instrTimer[0] > 3.0)
             isInstrPass[0] = true;
     }
     // Instruction 2
@@ -38,7 +38,7 @@ void TutorialState::update(const float dt){
         timerInsertPlanet += dt;
         instrTimer[1] += dt;
 
-        if(instrTimer[1] > 10)
+        if(instrTimer[1] > 10.0)
             isInstrPass[1] = true;
     }
     // Instruction 2
@@ -50,7 +50,7 @@ void TutorialState::update(const float dt){
             instrTimer[2] += dt;
         if(player.getIsExplode())
             instrTimer[2] = 0;
-        if(instrTimer[2] > 1){
+        if(instrTimer[2] > 1.0){
             isInstrPass[2] = true;
             insertWarZone(abs(rng) / 100000, VIEW_HEIGHT * 6);
         }
@@ -61,7 +61,7 @@ void TutorialState::update(const float dt){
 
         timerInsertWarZone += dt;
 
-        if(player.getNumLeftHit() < 200 && player.getNumRightHit() < 200 && timerInsertWarZone < 1){
+        if(player.getNumLeftHit() < 200.0 && player.getNumRightHit() < 200.0 && timerInsertWarZone < 1.0){
             player.hitLeft();
             player.hitRight();
         }
@@ -70,12 +70,15 @@ void TutorialState::update(const float dt){
             instrTimer[3] += dt;
         if(player.getIsExplode())
             instrTimer[3] = 0;
-        if(instrTimer[3] > 1)
+        if(instrTimer[3] > 1.0)
             isInstrPass[3] = true;
     }
     else if(!isInstrPass[4]){
-        instruction.setString("Nice!\n If you crash in game,\nyou will get into an event\nGood luck!\n\n Press Escape to exit");
-
+        instrTimer[4] += dt;
+        if(instrTimer[4] < 10.0)
+            instruction.setString("Thats all the game mechanics\n If you crash in game,\nyou will be put in a\nlife or death situatation");
+        else
+            instruction.setString("Try to keep as much of\n your crew alive\nSave as much gold too\nGood Luck Captain\nPress Escape to leave");
     }
 
     // Insert Entities
@@ -100,7 +103,7 @@ void TutorialState::update(const float dt){
     }
 
     // Update Player
-    if(!player.getIsExplode()){
+    if(!player.getIsExplode() && !player.getIsSucked()){
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
             player.moveLeft();
         }
@@ -147,6 +150,6 @@ void TutorialState::draw(){
     // Fade
     if(fadeTimer <= 3)
         fadeIn();
-    if(timerCrash >= 2 || timerOffCourse >= 4)
+    if(timerCrash >= 2 || timerOffCourse >= 2 || timerSuck >= 2)
         fadeOut();
 }

@@ -1,8 +1,10 @@
 #include "GameState.h"
 
+using namespace Resource;
+
 bool GameState::isTextClicked(sf::Text text){
     float x = text.getPosition().x;
-	float y = text.getPosition().y - (game->view.getCenter().y - VIEW_HEIGHT/2);
+	float y = text.getPosition().y - (game->topView());
 	float width = text.getGlobalBounds().width;
 	float height = text.getGlobalBounds().height;
 	sf::IntRect rect(x, y, width, height);

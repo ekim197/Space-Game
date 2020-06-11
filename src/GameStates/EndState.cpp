@@ -4,7 +4,7 @@ using namespace Resource;
 
 EndState::EndState(Game* game, PlayState* prev): MenuState(game, 1), prevState(prev), isNewScoreInserted(false){
     // Title
-    title.setPosition(50, game->view.getCenter().y - VIEW_HEIGHT/2 + 100);
+    title.setPosition(VIEW_WIDTH/40.0, game->topView() + VIEW_HEIGHT/20.0);
     title.setString("GAMEOVER");
 
 	//Sound
@@ -15,16 +15,16 @@ EndState::EndState(Game* game, PlayState* prev): MenuState(game, 1), prevState(p
 
     // Buttons
     buttons[0].setFont(font[0]);
-    buttons[0].setCharacterSize(100);
+    buttons[0].setCharacterSize(75 * VIEW_RATIO);
     buttons[0].setFillColor(sf::Color::White);
-    buttons[0].setPosition(100, game->view.getCenter().y - VIEW_HEIGHT/2 + 850);
+    buttons[0].setPosition(VIEW_WIDTH/40.0, game->topView() + VIEW_HEIGHT * 3.0/4.0);
     buttons[0].setString("Back to Menu");
 
     // Get name
     name.setFont(font[4]);
-    name.setCharacterSize(60);
+    name.setCharacterSize(45 * VIEW_RATIO);
     name.setFillColor(sf::Color::White);
-    name.setPosition(150, game->view.getCenter().y - VIEW_HEIGHT/2 + 600);
+    name.setPosition(VIEW_WIDTH * 3.0/40.0, game->topView() + VIEW_HEIGHT/2.0);
     name.setString("Type in Your Name\nPress Enter to Submit");
 
     game->gamePlayer.setGold(prevState->player.getGold());
@@ -176,9 +176,9 @@ void EndState::scoreManage(Score newScore){
         sout << std::left << std::setw(3) << i+1 << highScore[i];
         highScoreText.push_back(sf::Text());
         highScoreText[i].setFont(font[4]);
-        highScoreText[i].setCharacterSize(50);
+        highScoreText[i].setCharacterSize(40.0 * VIEW_RATIO);
         highScoreText[i].setString(sout.str());
-        highScoreText[i].setPosition(VIEW_WIDTH - 1175, game->view.getCenter().y - VIEW_HEIGHT / 5 + i * 75);
+        highScoreText[i].setPosition(VIEW_WIDTH * 9.0/20.0, game->topView() + VIEW_HEIGHT/3.0 + i * 50.0 * VIEW_RATIO);
 
         if(i == 0)
             highScoreText[i].setFillColor(sf::Color(255,215,0));

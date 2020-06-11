@@ -9,10 +9,6 @@
 #include "GameState.h"
 #include "Resource.h"
 
-const float VIEW_WIDTH = 2048.0;
-const float VIEW_HEIGHT = 1152.0;
-const std::string RESOURCE_PATH = "resources/";
-
 class GameState;
 
 class Game{
@@ -31,6 +27,9 @@ public:
     // Constructor and Destructor
     Game();
     virtual ~Game();
+
+    // Getter
+    float topView() { return view.getCenter().y - Resource::VIEW_HEIGHT/2; };
 
     // Action
     GameState* current_state();

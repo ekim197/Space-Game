@@ -8,28 +8,24 @@ EventState::EventState(Game* game, PlayState* prev, int type): prevState(prev), 
     this->game = game;
 
     // Background
-    background.setSize(sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT * 2/3));
+    background.setSize(sf::Vector2f(VIEW_WIDTH, VIEW_HEIGHT * 2.0/3.0));
 
     // Text
     textInfo.setFont(font[4]);
-    textInfo.setPosition(300, 825);
-    textInfo.setCharacterSize(50); // in pixels, not points!
+    textInfo.setPosition(VIEW_WIDTH * 3.0/20.0, VIEW_HEIGHT * 3.0/4.0);
+    textInfo.setCharacterSize(50 * VIEW_RATIO); // in pixels, not points!
     textInfo.setFillColor(sf::Color::White);
 
     textInfo2.setFont(font[4]);
-    textInfo2.setPosition(400, 875);
-    textInfo2.setCharacterSize(50); // in pixels, not points!
+    textInfo2.setPosition(VIEW_WIDTH * 3.0/20.0, VIEW_HEIGHT * 4.0/5.0);
+    textInfo2.setCharacterSize(50 * VIEW_RATIO); // in pixels, not points!
     textInfo2.setFillColor(sf::Color::White);
 
-    sf::Text textOption1; //text for choices button
-    textOption1.setFont(font[3]);
-    textOption1.setPosition(400, 1000);
-    textOption1.setCharacterSize(35); // in pixels, not points!
-    textOption1.setFillColor(sf::Color::White);
-
     for (int i = 0; i < 2; i++){
-        choiceButtons.push_back(textOption1);
-        choiceButtons[i].setPosition(textOption1.getPosition().x, textOption1.getPosition().y + i * 50);
+        choiceButtons.push_back(sf::Text());
+        choiceButtons[i].setFont(font[3]);
+        choiceButtons[i].setPosition(VIEW_WIDTH * 1.0/5.0, VIEW_HEIGHT * 9.0/10.0 + i * 35.0 * VIEW_RATIO);
+        choiceButtons[i].setFillColor(sf::Color::White);
     }
 
     if(eventType == asteroid){
@@ -62,8 +58,8 @@ EventState::EventState(Game* game, PlayState* prev, int type): prevState(prev), 
 	else if (eventType == planet) {
 		background.setTexture(&backgroundTexture[12]);
 
-		textInfo.setString("You are being sucked into the planet!\nBlow into the mic to get sucked back out into space!");
-		textInfo2.setString("\nPress the start button to begin blowing");
+		textInfo.setString("You flew too close! The storms are sucking you in!");
+		textInfo2.setString("Press Start and Blow into the mic to escape!");
 
 		choiceButtons[0].setString("Start");
 
@@ -198,8 +194,14 @@ void EventState::update(const float dt){
 				int averageAmplitude = soundList.RecordSoundAndGetAmplitude(3000);
 
 				if (averageAmplitude < minimumBlowAmplitude) {
-					prevState->player.setCrew(0);
-					game->push_state(new OutcomeState(game, prevState, OutcomeState::suckFail));
+					if(prevState->player.getCrew() > 4){
+                        prevState->player.loseCrew(4);
+                        game->push_state(new OutcomeState(game, prevState, OutcomeState::suckFail));
+					}
+                    else{
+                        prevState->player.setCrew(0);
+                        game->push_state(new OutcomeState(game, prevState, OutcomeState::suckFail2));
+                    }
 				}
 				else {
 					game->push_state(new OutcomeState(game, prevState, OutcomeState::suckSuccess));

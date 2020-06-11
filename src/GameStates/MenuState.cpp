@@ -5,7 +5,7 @@ using namespace Resource;
 MenuState::MenuState(Game* game, int buttonNum): numButtons(buttonNum){
     // Title
     title.setFont(font[2]);
-    title.setCharacterSize(200);
+    title.setCharacterSize(150.0 * VIEW_RATIO);
     title.setFillColor(sf::Color::White);
 
     //Buttons
@@ -54,7 +54,7 @@ void MenuState::draw(){
     background.setTexture(&backgroundTexture[0]);
 
     // Set View
-    sf::View view(sf::Vector2f(0.0f,0.0f), sf::Vector2f(VIEW_WIDTH,VIEW_HEIGHT));
+    sf::View view(sf::Vector2f(), sf::Vector2f(VIEW_WIDTH,VIEW_HEIGHT));
     view.setCenter(VIEW_WIDTH/2, VIEW_HEIGHT/2);
     game->view.setCenter(view.getCenter());
     game->window.setView(view);

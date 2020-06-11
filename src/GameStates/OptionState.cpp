@@ -4,26 +4,21 @@ using namespace Resource;
 
 OptionState::OptionState(Game* game, GameState* prev): MenuState(game, 4), prevState(prev){
     // Title
-    title.setPosition(100, game->view.getCenter().y - VIEW_HEIGHT/2 + 100);
+    title.setPosition(VIEW_WIDTH/20.0, game->topView() + VIEW_HEIGHT/20.0);
     title.setString("OPTIONS");
 
     // Buttons
     for(size_t i = 0; i < buttons.size(); i++){
         buttons[i].setFont(font[0]);
-        buttons[i].setPosition(100, VIEW_HEIGHT /3 + i * 150);
-        buttons[i].setCharacterSize(100);
+        buttons[i].setPosition(VIEW_WIDTH/20.0, game->topView() + VIEW_HEIGHT * 2.0/5.0 + i * 100.0 * VIEW_RATIO);
+        buttons[i].setCharacterSize(75.0 * VIEW_RATIO);
         buttons[i].setFillColor(sf::Color::White);
     }
-
-    int i = 0;
-    for(auto& key: buttons)
-        key.setPosition(100, game->view.getCenter().y - VIEW_HEIGHT/2 + 500 + i++ * 100);
 
     buttons[0].setString("HIGHSCORES");
     buttons[1].setString("RESET PLAYER");
     buttons[2].setString("RESET SCORES");
     buttons[3].setString("BACK");
-
 }
 
 void OptionState::handle_input(){
@@ -80,7 +75,7 @@ void OptionState::draw(){
     // Set rect
     sf::RectangleShape rect(sf::Vector2f(VIEW_WIDTH,VIEW_HEIGHT));
     rect.setFillColor(sf::Color(30,30,30,230));
-    rect.setPosition(0, game->view.getCenter().y - VIEW_HEIGHT/2);
+    rect.setPosition(0, game->topView());
 
     // Draw Background
     game->window.clear();
@@ -132,9 +127,9 @@ void OptionState::printBinFile(){
         sout << std::left << std::setw(3) << i+1 << highScore[i];
         highScoreText.push_back(sf::Text());
         highScoreText[i].setFont(font[4]);
-        highScoreText[i].setCharacterSize(50);
+        highScoreText[i].setCharacterSize(40.0 * VIEW_RATIO);
         highScoreText[i].setString(sout.str());
-        highScoreText[i].setPosition(VIEW_WIDTH - 1175, game->view.getCenter().y - VIEW_HEIGHT / 5 + i * 75);
+        highScoreText[i].setPosition(VIEW_WIDTH * 9.0/20.0, game->topView() + VIEW_HEIGHT/3.0 + i * 50.0 * VIEW_RATIO);
 
         if(i == 0)
             highScoreText[i].setFillColor(sf::Color(255,215,0));

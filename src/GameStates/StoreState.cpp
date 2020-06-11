@@ -7,18 +7,27 @@ using namespace Resource;
 
 StoreState::StoreState(Game* game): MenuState(game, 5){
     // Title
-    title.setPosition(100,100);
-    title.setCharacterSize(150); // in pixels, not points!
-    title.setString("SPACE MECHANIC");
+    title.setPosition(VIEW_WIDTH/20.0, VIEW_HEIGHT/20.0);
+    title.setCharacterSize(120.0 * VIEW_RATIO); // in pixels, not points!
+    title.setString("SPACE\n   MECHANIC");
+    title.setOutlineColor(sf::Color::Black);
+    title.setOutlineThickness(4.0 * VIEW_RATIO);
 
-    // Buttons
+    // Buttons and Prices
     for (int i = 0; i < numButtons; i++){
         buttons[i].setFont(font[0]);
-        buttons[i].setPosition(100, 550 + i * 100);
-        buttons[i].setCharacterSize(75);
+        buttons[i].setPosition(VIEW_WIDTH/20.0, VIEW_HEIGHT * 5.0/12.0 + i * 100.0 * VIEW_RATIO);
+        buttons[i].setCharacterSize(75.0 * VIEW_RATIO);
         buttons[i].setFillColor(sf::Color::White);
         buttons[i].setOutlineColor(sf::Color::Black);
-        buttons[i].setOutlineThickness(4);
+        buttons[i].setOutlineThickness(4.0 * VIEW_RATIO);
+        prices.push_back(sf::Text());
+        prices[i].setFont(font[0]);
+        prices[i].setPosition(VIEW_WIDTH/2.0, VIEW_HEIGHT * 5.0/12.0  + i * 100.0 * VIEW_RATIO);
+        prices[i].setCharacterSize(75.0 * VIEW_RATIO);
+        prices[i].setFillColor(sf::Color::White);
+        prices[i].setOutlineColor(sf::Color::Black);
+        prices[i].setOutlineThickness(4.0 * VIEW_RATIO);
     }
 
     buttons[0].setString("Increase Speed");
@@ -26,17 +35,6 @@ StoreState::StoreState(Game* game): MenuState(game, 5){
     buttons[2].setString("Increase Crew");
     buttons[3].setString("Decrease Crew");
     buttons[4].setString("Back");
-
-    // Prices
-    for (int i = 0; i < 4; i++){
-        prices.push_back(sf::Text());
-        prices[i].setFont(font[0]);
-        prices[i].setPosition(900, 550 + i * 100);
-        prices[i].setCharacterSize(75);
-        prices[i].setFillColor(sf::Color::White);
-        prices[i].setOutlineColor(sf::Color::Black);
-        prices[i].setOutlineThickness(4);
-    }
     prices[0].setString("Spend 10 gold");
     prices[1].setString("Spend 10 gold");
     prices[2].setString("Spend 10 gold");
@@ -46,11 +44,11 @@ StoreState::StoreState(Game* game): MenuState(game, 5){
     for(int i = 0; i < 3; i++){
         playerInfo.push_back(sf::Text());
         playerInfo[i].setFont(font[0]);
-        playerInfo[i].setPosition(VIEW_WIDTH - 600, 300 + i * 80);
-        playerInfo[i].setCharacterSize(75);
+        playerInfo[i].setPosition(VIEW_WIDTH * 13.0/20.0, VIEW_HEIGHT/20.0 + i * 80 * VIEW_RATIO);
+        playerInfo[i].setCharacterSize(75.0 * VIEW_RATIO);
         playerInfo[i].setFillColor(sf::Color::Yellow);
         playerInfo[i].setOutlineColor(sf::Color::Black);
-        playerInfo[i].setOutlineThickness(4);
+        playerInfo[i].setOutlineThickness(4.0 * VIEW_RATIO);
     }
 }
 

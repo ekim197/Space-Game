@@ -4,20 +4,16 @@ using namespace Resource;
 
 PauseState::PauseState(Game* game, GameState* prev): MenuState(game, 3), prevState(prev){
     // Title
-    title.setPosition(100, game->view.getCenter().y - VIEW_HEIGHT/2 + 100);
+    title.setPosition(VIEW_WIDTH/20.0, game->topView() + VIEW_HEIGHT/20.0);
     title.setString("ENDLESS\n    PAUSE");
 
     // Buttons
     for(size_t i = 0; i < buttons.size(); i++){
         buttons[i].setFont(font[0]);
-        buttons[i].setPosition(100, 750 + i * 150);
-        buttons[i].setCharacterSize(100);
+        buttons[i].setPosition(VIEW_WIDTH/20.0, game->topView() + VIEW_HEIGHT * 3.0/5.0 + i * 100.0 * VIEW_RATIO);
+        buttons[i].setCharacterSize(75.0 * VIEW_RATIO);
         buttons[i].setFillColor(sf::Color::White);
     }
-
-    int i = 0;
-    for(auto& key: buttons)
-        key.setPosition(100, game->view.getCenter().y - VIEW_HEIGHT/2 + 750 + i++ * 100);
 
     buttons[0].setString("CONTINUE");
     buttons[1].setString("OPTIONS");
@@ -73,7 +69,7 @@ void PauseState::draw(){
     // Set Rect
     sf::RectangleShape rect(sf::Vector2f(VIEW_WIDTH,VIEW_HEIGHT));
     rect.setFillColor(sf::Color(30,30,30,150));
-    rect.setPosition(0, game->view.getCenter().y - VIEW_HEIGHT/2);
+    rect.setPosition(0, game->topView());
 
     // Draw Background
     game->window.clear();
