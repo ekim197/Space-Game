@@ -40,7 +40,7 @@ OutcomeState::OutcomeState(Game* game, PlayState* prev, int type) : prevState(pr
 	choiceButtons[1].setString("Click here to continue");
 	if (outcomeType == astSuccess) {
 		background.setTexture(&backgroundTexture[4]);
-		textInfo.setString("Your crew draw sticks, the person who drew the shortest stick\nlooked miserable."); 
+		textInfo.setString("Your crew draw sticks, the person who drew the shortest stick\nlooked miserable.");
 		textInfo2.setString("\nThe ship restarts, and we watched his lifeless body \nas we continue onward.Hopefully his sacrifice won't be in vain");
 	}
 	else if (outcomeType == astSuccess2) {
@@ -68,9 +68,14 @@ OutcomeState::OutcomeState(Game* game, PlayState* prev, int type) : prevState(pr
 		textInfo.setString("You storage is already been sucked dry ");
 		textInfo2.setString("We won't be able to continue the journey, this is the end ");
 	}
+    else if (outcomeType == veerFail2) {
+		background.setTexture(&backgroundTexture[9]);
+		textInfo.setString("You try to navigate back to main course");
+		textInfo2.setString("It's no use, we are lost forever");
+    }
 	else if (outcomeType == veerSuccess) {
 		background.setTexture(&backgroundTexture[8]);
-		textInfo.setString("You used the asteroids as a guide and made it back to the main course. ");
+		textInfo.setString("You use the asteroids as a guide and made it back to the main course. ");
 		textInfo2.setString("Well done captain.");
 	}
 	else if (outcomeType == veerSuccess2) {

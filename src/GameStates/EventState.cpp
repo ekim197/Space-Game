@@ -57,7 +57,7 @@ EventState::EventState(Game* game, PlayState* prev, int type): prevState(prev), 
         textInfo2.setString("findYourWayBack module by EngiAtom(EA) ");
 
         choiceButtons[0].setString("Option 1: Try to figure it out yourself(What's the worst that could happen)");
-        choiceButtons[1].setString("Option 2: Pay 3 gold to use the module (guarantee to get back)");
+        choiceButtons[1].setString("Option 2: Pay 10 gold to use the module (guarantee to get back)");
     }
 	else if (eventType == planet) {
 		background.setTexture(&backgroundTexture[12]);
@@ -143,7 +143,7 @@ void EventState::update(const float dt){
 			}
 			else if (isTextClicked(choiceButtons[1])) {
 				soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
-				if (rng % 100 > 60) {
+				if (rng % 10000 > 6000) {
 					prevState->player.loseCrew(3);
 					game->push_state(new OutcomeState(game, prevState, OutcomeState::astFail));
 				}
@@ -154,7 +154,7 @@ void EventState::update(const float dt){
 		else if (eventType == lastMember) {
 			if (isTextClicked(choiceButtons[0])) {
                 soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
-				if (rng % 100 > 50){
+				if (rng % 10000 > 5000){
                     prevState->player.loseCrew(prevState->player.getCrew());
                     game->push_state(new OutcomeState(game, prevState, OutcomeState::lastFail));
 				}
@@ -170,31 +170,21 @@ void EventState::update(const float dt){
 		else if (eventType == veer) {
 			if (isTextClicked(choiceButtons[0])) {
 			    soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
-				if (rng % 100 > 50) {
-					if (prevState->player.getGold() < 3) {
-						game->push_state(new OutcomeState(game, prevState, OutcomeState::veerFail));
-					}
-					else {
-						game->push_state(new OutcomeState(game, prevState, OutcomeState::veerSuccess));
-					}
+				if (rng % 10000 > 5000) {
+                    prevState->player.setCrew(0);
+                    game->push_state(new OutcomeState(game, prevState, OutcomeState::veerFail2));
 				}
-				else {
-					prevState->player.loseGold(3);
-					game->push_state(new OutcomeState(game, prevState, OutcomeState::veerSuccess2));
-				}
+				else
+					game->push_state(new OutcomeState(game, prevState, OutcomeState::veerSuccess));
 			}
 			else if (isTextClicked(choiceButtons[1])) {
 			    soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
-				if (prevState->player.getGold() < 3) {
-					if (rng % 100 > 50) {
-						game->push_state(new OutcomeState(game, prevState, OutcomeState::veerFail));
-					}
-					else {
-						game->push_state(new OutcomeState(game, prevState, OutcomeState::veerSuccess));
-					}
+				if (prevState->player.getGold() < 10) {
+                    prevState->player.setCrew(0);
+                    game->push_state(new OutcomeState(game, prevState, OutcomeState::veerFail));
 				}
 				else {
-					prevState->player.loseGold(3);
+					prevState->player.loseGold(10);
 					game->push_state(new OutcomeState(game, prevState, OutcomeState::veerSuccess2));
 				}
 			}
@@ -206,7 +196,7 @@ void EventState::update(const float dt){
 
 				int minimumBlowAmplitude = 5000;
 				int averageAmplitude = soundList.RecordSoundAndGetAmplitude(3000);
-			
+
 				if (averageAmplitude < minimumBlowAmplitude) {
 					game->push_state(new OutcomeState(game, prevState, OutcomeState::suckFail));
 				}
