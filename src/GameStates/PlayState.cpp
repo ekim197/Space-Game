@@ -7,7 +7,7 @@ using namespace Collision;
 using namespace Resource;
 
 PlayState::PlayState(Game* game, Player& playerObj)
-    : timerInsertAsteroid(0), timerInsertCoin(0), timerInsertPlanet(0), timerCrash(0),
+    : timerInsertAsteroid(0), timerInsertCoin(0), timerInsertPlanet(0), timerCrash(0), timerSuck(0),
       timerOffCourse(0), timerInWarZone(0), timerAddAsteroid(0), asteroidPerTime(1), player(playerObj){
     //Sound Stuff
 	soundList.stopAllSounds();
@@ -91,7 +91,7 @@ void PlayState::update(const float dt){
         }
         if(timerInsertCoin >= 1)
             insertCoin(abs(rng) / 1234, VIEW_HEIGHT * 2);
-        if(timerInsertPlanet >= 10)
+        if(timerInsertPlanet >= 5)
             insertPlanet(abs(rng) / 100, VIEW_HEIGHT * 2);
         if(timerInsertWarZone >= 20)
             insertWarZone(abs(rng) / 100000, VIEW_HEIGHT * 6);
@@ -165,7 +165,7 @@ void PlayState::draw(){
     // Fade
     if(fadeTimer <= 3)
         fadeIn();
-    if(timerCrash >= 2 || timerOffCourse >= 4)
+    if(timerCrash >= 2 || timerOffCourse >= 4 || timerSuck >= 2)
         fadeOut();
 }
 
@@ -204,6 +204,7 @@ void PlayState::reset(){
     timerInsertCoin = 0;
     timerInsertPlanet = 0;
     timerCrash = 0;
+	timerSuck = 0;
     timerOffCourse = 0;
     timerInWarZone = 0;
     timerAddAsteroid = 0;
@@ -323,7 +324,10 @@ int PlayState::checkBadEvent(float dt){
 
 	// Check if collision with planet
 	if (player.getIsSucked()) {
-		return 4;
+		timerSuck += dt;
+		if (timerSuck >= 2) {
+			return 4;
+		}
 	}
 
     // Check if veered off course
