@@ -85,7 +85,7 @@ OutcomeState::OutcomeState(Game* game, PlayState* prev, int type): prevState(pre
 	else if (outcomeType == suckSuccess) {
 		background.setTexture(&backgroundTexture[14]);
 		textInfo.setString("Congrats!\nYour efforts have paid off.");
-		textInfo2.setString("\nYou escaped and sustained minimal damaged.");
+		textInfo2.setString("\nYou escaped and sustained minimal damage.");
 	}
 	else if (outcomeType == suckFail) {
 		background.setTexture(&backgroundTexture[13]);
