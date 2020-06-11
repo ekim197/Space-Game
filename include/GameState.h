@@ -75,7 +75,6 @@ protected:
     int asteroidPerTime;
     std::vector<Entity*> entityVector;
     std::vector<sf::Text> gameText;
-    sf::RectangleShape background[2];
 
 public:
     // Public Variables

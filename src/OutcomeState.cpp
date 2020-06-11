@@ -100,24 +100,28 @@ OutcomeState::OutcomeState(Game* game, PlayState* prev, int type): prevState(pre
     else if (outcomeType == fightSuccess) {
 		background.setTexture(&backgroundTexture[15]);
 		textInfo.setString("You fought bravely, and you were able to");
-		textInfo2.setString("\ndestroy the enemy and gain 30 gold.");
+		textInfo2.setString("destroy the enemy and gain 10 gold.");
 	}
     else if (outcomeType == fightFail) {
 		background.setTexture(&backgroundTexture[16]);
 		textInfo.setString("You fought bravely, but you sustain damage");
-		textInfo2.setString("\nYou lost some crew members.");
+		textInfo2.setString("You lost some crew members.");
 	}
-    else if (outcomeType == flightFail) {
+    else if (outcomeType == flightSuccess) {
 		background.setTexture(&backgroundTexture[17]);
 		textInfo.setString("There is no way you can risk any more harm to your crew");
-		textInfo2.setString("\nYou scurried away before they can shoot you down.");
+		textInfo2.setString("You scurried away before they can shoot you down.");
+	}
+   else if (outcomeType == flightFail) {
+		background.setTexture(&backgroundTexture[16]);
+		textInfo.setString("You try to escape. But you got caught in a crossfire");
+		textInfo2.setString("and lost a significant amount of crew members.");
 	}
 }
 
 void OutcomeState::update(const float dt) {
 	timeIncrement(dt);
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && clickTimer > 0.25){
-
         game->pop_state(2);
         clickTimer = 0;
 	}

@@ -48,8 +48,6 @@ void TutorialState::update(const float dt){
 
         if(player.getGold() >= 5)
             instrTimer[2] += dt;
-        if(player.getIsExplode())
-            instrTimer[2] = 0;
         if(instrTimer[2] > 1.0){
             isInstrPass[2] = true;
             insertWarZone(abs(rng) / 100000, VIEW_HEIGHT * 6);
@@ -73,9 +71,10 @@ void TutorialState::update(const float dt){
         if(instrTimer[3] > 1.0)
             isInstrPass[3] = true;
     }
+    // Instruction 4
     else if(!isInstrPass[4]){
         instrTimer[4] += dt;
-        if(instrTimer[4] < 10.0)
+        if(instrTimer[4] < 6.0)
             instruction.setString("Thats all the game mechanics\n If you crash in game,\nyou will be put in a\nlife or death situatation");
         else
             instruction.setString("Try to keep as much of\n your crew alive\nSave as much gold too\nGood Luck Captain\nPress Escape to leave");

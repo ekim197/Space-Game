@@ -314,10 +314,15 @@ int PlayState::checkBadEvent(float dt){
     if(player.getIsExplode()){
         timerCrash += dt;
         if(timerCrash >= 3){
-            if(player.getCrew() > 3)
-                return 1;
-            else
-                return 2;
+            if(timerInWarZone > 2){
+                return 5;
+            }
+            else{
+                if(player.getCrew() > 3)
+                    return 1;
+                else
+                    return 2;
+            }
         }
     }
 

@@ -64,7 +64,7 @@ EventState::EventState(Game* game, PlayState* prev, int type): prevState(prev), 
 		choiceButtons[0].setString("Start");
 	}
     else if (eventType == warZone) {
-		background.setTexture(&backgroundTexture[12]);
+		background.setTexture(&backgroundTexture[1]);
 
 		textInfo.setString("Your ship was shot down!");
 		textInfo2.setString("Its fight or flight!");
@@ -147,7 +147,7 @@ void EventState::update(const float dt){
 			}
 			else if (isTextClicked(choiceButtons[1])) {
 				soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
-				if (rng % 10000 > 6000) {
+				if (rng % 50 > 30) {
 					prevState->player.loseCrew(3);
 					game->push_state(new OutcomeState(game, prevState, OutcomeState::astFail));
 				}
@@ -158,7 +158,7 @@ void EventState::update(const float dt){
 		else if (eventType == lastMember) {
 			if (isTextClicked(choiceButtons[0])) {
                 soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
-				if (rng % 10000 > 5000){
+				if (rng % 40 > 20){
                     prevState->player.loseCrew(prevState->player.getCrew());
                     game->push_state(new OutcomeState(game, prevState, OutcomeState::lastFail));
 				}
@@ -174,7 +174,7 @@ void EventState::update(const float dt){
 		else if (eventType == veer) {
 			if (isTextClicked(choiceButtons[0])) {
 			    soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
-				if (rng % 10000 > 5000) {
+				if (rng % 40 > 20) {
                     prevState->player.setCrew(0);
                     game->push_state(new OutcomeState(game, prevState, OutcomeState::veerFail2));
 				}
@@ -219,28 +219,31 @@ void EventState::update(const float dt){
         else if (eventType == warZone) {
             if (isTextClicked(choiceButtons[0])) {
 			    soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
-				if (rng % 10000 > 5000) {
+                    std::cout << rng << " " <<  rng % 40 << '\n';
+
+				if (rng % 40 >= 20) {
                     if(prevState->player.getCrew() > 2)
                         prevState->player.loseCrew(2);
                     else
                         prevState->player.setCrew(0);
                     game->push_state(new OutcomeState(game, prevState, OutcomeState::fightFail));
 				}
-				else
+				else{
                     prevState->player.gainGold(10);
 					game->push_state(new OutcomeState(game, prevState, OutcomeState::fightSuccess));
+				}
 			}
 			else if (isTextClicked(choiceButtons[1])) {
 			    soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
-				if (rng % 10000 > 7000) {
+				if (rng % 50 > 35) {
                     if(prevState->player.getCrew() > 3)
                         prevState->player.loseCrew(3);
                     else
                         prevState->player.setCrew(0);
-                    game->push_state(new OutcomeState(game, prevState, OutcomeState::flightSuccess));
+                    game->push_state(new OutcomeState(game, prevState, OutcomeState::flightFail));
 				}
 				else {
-					game->push_state(new OutcomeState(game, prevState, OutcomeState::flightFail));
+					game->push_state(new OutcomeState(game, prevState, OutcomeState::flightSuccess));
 				}
 			}
 		}
