@@ -78,6 +78,17 @@ OutcomeState::OutcomeState(Game* game, PlayState* prev, int type) : prevState(pr
 		textInfo.setString("You hand over your wallet, disgusted by the shady practices ");
 		textInfo2.setString("brought from intergalactic capitalism (lose 3 gold)");
 	}
+	else if (outcomeType == suckSuccess) {
+		background.setTexture(&backgroundTexture[14]);
+		textInfo.setString("Congrats! Your efforts have paid off ");
+		textInfo2.setString("and you will successfully return to space.");
+	}
+	else if (outcomeType == suckFail) {
+		background.setTexture(&backgroundTexture[13]);
+		textInfo.setString("Unfortunately, your efforts were not good enough.");
+		textInfo2.setString("You will suffer consequences.");
+	}
+
 }
 
 void OutcomeState::handle_input() {

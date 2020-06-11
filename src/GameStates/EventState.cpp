@@ -59,6 +59,15 @@ EventState::EventState(Game* game, PlayState* prev, int type): prevState(prev), 
         choiceButtons[0].setString("Option 1: Try to figure it out yourself(What's the worst that could happen)");
         choiceButtons[1].setString("Option 2: Pay 3 gold to use the module (guarantee to get back)");
     }
+	else if (eventType == planet) {
+		background.setTexture(&backgroundTexture[12]);
+
+		textInfo.setString("You are being sucked into the planet! Blow into the mic to get sucked back out into space!");
+		textInfo2.setString("Press the start button to begin blowing");
+
+		choiceButtons[0].setString("Start");
+
+	}
 }
 
 void EventState::handle_input(){
@@ -187,6 +196,20 @@ void EventState::update(const float dt){
 				else {
 					prevState->player.loseGold(3);
 					game->push_state(new OutcomeState(game, prevState, OutcomeState::veerSuccess2));
+				}
+			}
+		}
+		else if (eventType == planet) {
+			if (isTextClicked(choiceButtons[0])) {
+				soundList.stopAllSounds();
+				soundList.playSound(RESOURCE_PATH + "Audio/ButtonClick.wav", 400);
+				int largestAmplitude = soundList.RecordSoundAndGetAmplitude(3000);
+				std::cout << largestAmplitude;
+				if (largestAmplitude < 5000) {
+					game->push_state(new OutcomeState(game, prevState, OutcomeState::suckFail));
+				}
+				else {
+					game->push_state(new OutcomeState(game, prevState, OutcomeState::suckSuccess));
 				}
 			}
 		}

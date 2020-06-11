@@ -184,3 +184,47 @@ void Sound_::playSoundConcurrently(std::string soundName, float volume) {
 		sound_player2.play();
 	}
 }
+
+int Sound_::RecordSoundAndGetAmplitude(int milliseconds) {
+
+	if (!sf::SoundBufferRecorder::isAvailable())
+	{
+		std::cout << "No Sound Recorders available";
+
+	}
+
+	// create the recorder
+	sf::SoundBufferRecorder recorder;
+
+	// start the capture
+	recorder.start();
+
+	// start the clock
+	sf::Clock clock; 
+
+	while (clock.getElapsedTime().asMilliseconds() != milliseconds) {}
+	recorder.stop();
+
+	// retrieve the buffer that contains the captured audio data
+	const sf::SoundBuffer& buffer = recorder.getBuffer();
+	const sf::Int16* samples = buffer.getSamples();
+
+	int largestAmplitude = 0;
+
+	//5000 is how many consecutive samples we were analyze
+	for (auto i = 0; i < 5000; i++)
+	{
+		unsigned int difference = (int)samples[i] - (int)samples[i + 1];
+
+		//This if statement is to ensure we remove the outlier values
+		if (difference < 10000 && (int)samples[i] < 10000) {
+			if (largestAmplitude < (int)samples[i]) {
+				largestAmplitude = (int)samples[i];
+			}
+		}
+
+
+	}
+
+	return largestAmplitude;
+}
