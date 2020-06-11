@@ -47,8 +47,6 @@ public:
     void fadeIn(float factor = 1);
     void fadeOut(float factor = 1);
     void timeIncrement(const float dt);
-//    void textSetup(sf::Text* objText, std::string tStr, sf::Font fType, int tSize, sf::Color tColor, sf::Vector2f pos);
-//    void textSetup(sf::Text* objText, std::string tStr, sf::Font fType, int tSize, sf::Color tColor, float x, float y);
 };
 
 /*_____________Menu_____________*/
@@ -206,7 +204,6 @@ public:
     virtual void draw() override;
 
     // Action
-    virtual bool isTextClicked(sf::Text text);
     void scoreManage(Score newScore);
 };
 
@@ -214,6 +211,7 @@ public:
 class OptionState : public MenuState{
 private:
     GameState* prevState;
+    std::vector<sf::Text> highScoreText;
 
 public:
     // Constructor
@@ -223,6 +221,10 @@ public:
     virtual void handle_input() override;
     virtual void update(const float dt) override;
     virtual void draw() override;
+
+    // Other
+    void clearBinFile();
+    void printBinFile();
 };
 
 /*_____________Event_____________*/

@@ -1,5 +1,5 @@
-
 #include "Sound_.h"
+#include <cstdlib>
 
 std::unordered_map<std::string, sf::SoundBuffer> Sound_::soundBuffers{};
 std::vector<std::string> Sound_::listOfSoundFiles{};
@@ -186,6 +186,14 @@ void Sound_::playSoundConcurrently(std::string soundName, float volume) {
 }
 
 int Sound_::RecordSoundAndGetAmplitude(int milliseconds) {
+	int bufferTime = 2000;
+	int largestAmplitude = 0;
+	int smallestAmplitude = 0;
+	int averageAmplitude = 0;
+	int boundary1 = 2000;
+	int boundary2 = 10000;
+	// create the recorder
+	sf::SoundBufferRecorder recorder;
 
 	if (!sf::SoundBufferRecorder::isAvailable())
 	{
@@ -193,8 +201,10 @@ int Sound_::RecordSoundAndGetAmplitude(int milliseconds) {
 
 	}
 
-	// create the recorder
-	sf::SoundBufferRecorder recorder;
+	// start the clock
+	sf::Clock clock2;
+
+	while (clock2.getElapsedTime().asMilliseconds() != bufferTime) {}
 
 	// start the capture
 	recorder.start();
@@ -209,22 +219,18 @@ int Sound_::RecordSoundAndGetAmplitude(int milliseconds) {
 	const sf::SoundBuffer& buffer = recorder.getBuffer();
 	const sf::Int16* samples = buffer.getSamples();
 
-	int largestAmplitude = 0;
-
-	//5000 is how many consecutive samples we were analyze
-	for (auto i = 0; i < 5000; i++)
-	{
-		unsigned int difference = (int)samples[i] - (int)samples[i + 1];
-
-		//This if statement is to ensure we remove the outlier values
-		if (difference < 10000 && (int)samples[i] < 10000) {
-			if (largestAmplitude < (int)samples[i]) {
-				largestAmplitude = (int)samples[i];
-			}
+	for (auto i = 0; i < 2000; i++)
+	{	
+		std::cout << samples[i] << std::endl;
+		if (samples[i] > largestAmplitude) {
+			largestAmplitude = samples[i];
 		}
-
-
+		else if (samples[i] < smallestAmplitude) {
+			smallestAmplitude = samples[i];
+		}
 	}
 
-	return largestAmplitude;
+	averageAmplitude = largestAmplitude + abs(smallestAmplitude);
+
+	return averageAmplitude;
 }

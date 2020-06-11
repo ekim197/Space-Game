@@ -68,20 +68,20 @@ OutcomeState::OutcomeState(Game* game, PlayState* prev, int type) : prevState(pr
 		textInfo.setString("You storage is already been sucked dry ");
 		textInfo2.setString("We won't be able to continue the journey, this is the end ");
 	}
+    else if (outcomeType == veerFail2) {
+		background.setTexture(&backgroundTexture[9]);
+		textInfo.setString("You try to navigate back to main course");
+		textInfo2.setString("It's no use, we are lost forever");
+    }
 	else if (outcomeType == veerSuccess) {
 		background.setTexture(&backgroundTexture[8]);
-		textInfo.setString("You used the asteroids as a guide and made it back to the main course. ");
+		textInfo.setString("You use the asteroids as a guide and made it back to the main course. ");
 		textInfo2.setString("Well done captain.");
 	}
 	else if (outcomeType == veerSuccess2) {
 		background.setTexture(&backgroundTexture[5]);
 		textInfo.setString("You hand over your wallet, disgusted by the shady practices ");
-		textInfo2.setString("brought from intergalactic capitalism (lose 10 gold)");
-	}
-    else if (outcomeType == veerFail2) {
-		background.setTexture(&backgroundTexture[9]);
-		textInfo.setString("You try to navigate your way out");
-		textInfo2.setString("But its no use. We are lost forever... (Lose all your crew)");
+		textInfo2.setString("brought from intergalactic capitalism (lose 3 gold)");
 	}
 	else if (outcomeType == suckSuccess) {
 		background.setTexture(&backgroundTexture[14]);

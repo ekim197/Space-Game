@@ -174,9 +174,8 @@ void EventState::update(const float dt){
                     prevState->player.setCrew(0);
                     game->push_state(new OutcomeState(game, prevState, OutcomeState::veerFail2));
 				}
-				else {
+				else
 					game->push_state(new OutcomeState(game, prevState, OutcomeState::veerSuccess));
-				}
 			}
 			else if (isTextClicked(choiceButtons[1])) {
 			    soundList.playSound(RESOURCE_PATH + "Audio/Bells_Cut.wav");
@@ -194,9 +193,11 @@ void EventState::update(const float dt){
 			if (isTextClicked(choiceButtons[0])) {
 				soundList.stopAllSounds();
 				soundList.playSound(RESOURCE_PATH + "Audio/ButtonClick.wav", 400);
-				int largestAmplitude = soundList.RecordSoundAndGetAmplitude(3000);
-				std::cout << largestAmplitude;
-				if (largestAmplitude < 5000) {
+
+				int minimumBlowAmplitude = 5000;
+				int averageAmplitude = soundList.RecordSoundAndGetAmplitude(3000);
+
+				if (averageAmplitude < minimumBlowAmplitude) {
 					game->push_state(new OutcomeState(game, prevState, OutcomeState::suckFail));
 				}
 				else {
